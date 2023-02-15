@@ -1,0 +1,50 @@
+---
+- name: Manage Arista EOS EVPN/VXLAN Configuration
+  hosts: ATD_FABRIC_DEV
+  connection: local
+  gather_facts: false
+  vars:
+    fabric_dir_name: "{{ fabric_name }}"
+    execute_tasks: false
+  tasks:
+
+    - name: Generate intended variables
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+    - name: Copy configs to snapshots folder for Batfish
+      ansible.builtin.copy:
+        src: ../atd-inventory/dev/intended/configs
+        dest: ../atd-inventory/dev/intended/snapshots/
+        mode: 0644
+      delegate_to: localhost
+      run_once: true
+
+- name: Manage Arista EOS EVPN/VXLAN Configuration
+  hosts: ATD_FABRIC_PROD
+  connection: local
+  gather_facts: false
+  vars:
+    fabric_dir_name: "{{ fabric_name }}"
+    execute_tasks: false
+  tasks:
+
+    - name: Generate intended variables
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+    - name: Copy configs to snapshots folder for Batfish
+      ansible.builtin.copy:
+        src: ../atd-inventory/prod/intended/configs
+        dest: ../atd-inventory/prod/intended/snapshots/
+        mode: 0644
+      delegate_to: localhost
+      run_once: true

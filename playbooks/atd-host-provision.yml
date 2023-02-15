@@ -1,0 +1,43 @@
+---
+- name: Configuration deployment with CVP
+  hosts: cv_servers_dev
+  connection: local
+  gather_facts: false
+  vars:
+    configlet_list:
+      host1: "{{ lookup('file', '../host_nodes/host1.txt') }}"
+    cvp_devices:
+      - fqdn: s1-host1.atd.lab
+        parentContainerName: ATD_SERVERS_DEV
+        configlets:
+          - 'host1'
+      - fqdn: s2-host1.atd.lab
+        parentContainerName: ATD_SERVERS_PROD
+        configlets:
+          - 'host1'
+
+  tasks:
+    - name: "Create configlets on CVP {{ inventory_hostname }}"
+      arista.cvp.cv_configlet_v3:
+        configlets: "{{ configlet_list }}"
+        configlets_notes: "Configlet managed by Ansible"
+      register: cvp_configlet
+
+    - name: Execute all tasks
+      arista.cvp.cv_task:
+        tasks: "{{ cvp_configlet.taskIds }}"
+      when:
+        - cvp_configlet.taskIds | length > 0
+
+    - name: "Configure devices on {{ inventory_hostname }}"
+      arista.cvp.cv_device_v3:
+        devices: "{{ cvp_devices }}"
+        state: present
+        search_key: fqdn
+      register: configure_hosts
+
+    - name: Execute all tasks
+      arista.cvp.cv_task_v3:
+        tasks: "{{ configure_hosts.taskIds }}"
+      when:
+        - configure_hosts.taskIds | length > 0

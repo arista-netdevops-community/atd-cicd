@@ -1,0 +1,88 @@
+direction: down
+dev: Dev {
+  s1-spine1: {
+    shape: image
+    icon: ./diagrams/arista-switch.png
+  }
+
+  s1-leaf1: {
+    shape: image
+    icon: ./diagrams/arista-switch.png
+  }
+
+  s1-leaf2: {
+    shape: image
+    icon: ./diagrams/arista-switch.png
+  }
+
+  s1-spine1 -- s1-leaf1
+  s1-spine1 -- s1-leaf2
+}
+
+s1-host1: {
+  VRF-BLUE: {
+    style.fill: blue
+  }
+
+  VRF-RED: {
+    style.fill: red
+  }
+}
+
+dev.s1-leaf1 -- s1-host1.VRF-RED: 10.10.10.2/24 {
+  style: {
+    font-size: 20
+    bold: true
+  }
+}
+
+dev.s1-leaf2 -- s1-host1.VRF-BLUE: 10.10.10.1/24 {
+  style: {
+    font-size: 20
+    bold: true
+  }
+}
+
+prod: Prod {
+  s2-spine1: {
+    shape: image
+    icon: ./diagrams/arista-switch.png
+  }
+
+  s2-leaf1: {
+    shape: image
+    icon: ./diagrams/arista-switch.png
+  }
+
+  s2-leaf2: {
+    shape: image
+    icon: ./diagrams/arista-switch.png
+  }
+
+  s2-spine1 -- s2-leaf1
+
+  s2-spine1 -- s2-leaf2
+}
+
+s2-host1: {
+  VRF-BLUE: {
+    style.fill: blue
+  }
+  VRF-RED: {
+    style.fill: red
+  }
+}
+
+prod.s2-leaf1 -- s2-host1.VRF-RED: 10.10.10.2/24 {
+  style: {
+    font-size: 20
+    bold: true
+  }
+}
+
+prod.s2-leaf2 -- s2-host1.VRF-BLUE: 10.10.10.1/24 {
+  style: {
+    font-size: 20
+    bold: true
+  }
+}

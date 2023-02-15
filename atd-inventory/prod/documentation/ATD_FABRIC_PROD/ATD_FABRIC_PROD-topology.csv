@@ -1,0 +1,19 @@
+Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface Enabled
+l3leaf,s2-leaf1,Ethernet1,,,,False
+l3leaf,s2-leaf1,Ethernet2,spine,s2-spine1,Ethernet2,True
+l3leaf,s2-leaf1,Ethernet3,,,,False
+l3leaf,s2-leaf1,Ethernet4,server,host2,Eth1,True
+l3leaf,s2-leaf1,Ethernet6,,,,False
+l3leaf,s2-leaf2,Ethernet1,,,,False
+l3leaf,s2-leaf2,Ethernet2,spine,s2-spine1,Ethernet3,True
+l3leaf,s2-leaf2,Ethernet3,,,,False
+l3leaf,s2-leaf2,Ethernet4,server,host2,Eth2,True
+l3leaf,s2-leaf2,Ethernet6,,,,False
+spine,s2-spine1,Ethernet1,,,,False
+spine,s2-spine1,Ethernet2,l3leaf,s2-leaf1,Ethernet2,True
+spine,s2-spine1,Ethernet3,l3leaf,s2-leaf2,Ethernet2,True
+spine,s2-spine1,Ethernet4,,,,False
+spine,s2-spine1,Ethernet5,,,,False
+spine,s2-spine1,Ethernet6,,,,False
+spine,s2-spine1,Ethernet7,,,,False
+spine,s2-spine1,Ethernet8,,,,False

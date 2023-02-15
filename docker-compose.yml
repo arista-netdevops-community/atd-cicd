@@ -1,0 +1,20 @@
+---
+version: '3.3'
+services:
+  batfish:
+    container_name: batfish
+    volumes:
+      - '.:/data'
+    ports:
+      - '9997:9997'
+      - '9996:9996'
+    image: batfish/batfish
+
+  atd-cicd:
+    container_name: atd-cicd
+    volumes:
+      - '.:/app'
+    image: juliopdx/atd-cicd
+    environment:
+      - PASS=$PASS
+      - net=$net
