@@ -24,7 +24,7 @@
       register: cvp_configlet
 
     - name: Execute all tasks
-      arista.cvp.cv_task:
+      arista.cvp.cv_task_v3:
         tasks: "{{ cvp_configlet.taskIds }}"
       when:
         - cvp_configlet.taskIds | length > 0
