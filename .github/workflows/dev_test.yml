@@ -16,24 +16,24 @@ jobs:
       - name: Hi
         run: echo "Hello World!"
 
-      # - name: Checkout
-      #   uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      # - name: yaml-lint
-      #   uses: ibiqlik/action-yamllint@v3
-      #   with:
-      #     file_or_dir: atd-inventory/dev/group_vars/ atd-inventory/dev/host_vars/
-      #     config_file: .yamllint.yml
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: atd-inventory/dev/group_vars/ atd-inventory/dev/host_vars/
+          config_file: .yamllint.yml
 
-#       - name: Start containers
-#         run: docker-compose -f "docker-compose.yml" up -d --build
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
 
-#       - name: Test with Batfish
-#         run: docker-compose run atd-cicd python3 batfish-test.py
+      - name: Test with Batfish
+        run: docker-compose run atd-cicd python3 batfish-test.py
 
-#       - name: Push configurations to dev
-#         run: docker-compose run atd-cicd ansible-playbook playbooks/atd-fabric-provision.yml
+      - name: Push configurations to dev
+        run: docker-compose run atd-cicd ansible-playbook playbooks/atd-fabric-provision.yml
 
-#       - name: Stop containers
-#         if: always()
-#         run: docker-compose -f "docker-compose.yml" down
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down
