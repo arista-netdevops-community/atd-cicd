@@ -8,6 +8,11 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -18,17 +23,26 @@ router_bgp:
       ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
       EVPN-OVERLAY-PEERS:
         activate: false
-  address_family_evpn:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
   neighbors:
+    172.30.255.2:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65001'
+      description: s2-spine1_Ethernet3
     192.0.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: s2-spine1
       remote_as: '65001'
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
   vrfs:
     Tenant_A_OP_Zone:
       router_id: 192.0.255.4
@@ -110,8 +124,6 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.30.255.3/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
   Ethernet4:
     peer: host2
     peer_interface: Eth2
@@ -132,26 +144,29 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     shutdown: false
     ip_address: 192.0.255.4/32
-    ospf_area: 0.0.0.0
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 192.0.254.4/32
-    ospf_area: 0.0.0.0
   Loopback100:
     description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address: 10.255.1.4/32
-router_ospf:
-  process_ids:
-    100:
-      passive_interface_default: true
-      router_id: 192.0.255.4
-      max_lsa: 12000
-      no_passive_interfaces:
-      - Ethernet2
-      bfd_enable: false
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.0.255.0/24 eq 32
+      20:
+        action: permit 192.0.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 1200
