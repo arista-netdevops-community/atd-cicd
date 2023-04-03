@@ -35,7 +35,7 @@ ansible-galaxy collection list
 If AVD version `3.8.1` or greater is not present, please upgrade to the latest stable version.
 
 ```shell
-ansible-galaxy collection install arista.avd --force
+ansible-galaxy collection install arista.avd arista.cvp --force
 export ARISTA_AVD_DIR=$(ansible-galaxy collection list arista.avd --format yaml | head -1 | cut -d: -f1)
 pip3 config set global.disable-pip-version-check true
 pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt
