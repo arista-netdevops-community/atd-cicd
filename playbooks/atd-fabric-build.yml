@@ -18,8 +18,8 @@
 
     - name: Copy configs to snapshots folder for Batfish
       ansible.builtin.copy:
-        src: ../atd-inventory/dev/intended/configs
-        dest: ../atd-inventory/dev/intended/snapshots/
+        src: ../atd-inventory/intended/configs
+        dest: ../atd-inventory/intended/snapshots/
         mode: 0644
       delegate_to: localhost
       run_once: true

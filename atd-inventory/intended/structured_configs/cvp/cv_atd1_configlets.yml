@@ -397,7 +397,7 @@ CVP_TOPOLOGY:
     - s1-leaf4
     parent_container: ATD_LEAFS-DC1
   ATD_LEAFS-DC1:
-    parent_container: ATD_FABRIC
+    parent_container: DC1
   ATD_SERVERS:
     devices: []
     parent_container: ATD_FABRIC
@@ -405,8 +405,10 @@ CVP_TOPOLOGY:
     devices:
     - s1-spine1
     - s1-spine2
-    parent_container: ATD_FABRIC
+    parent_container: DC1
   ATD_TENANTS_NETWORKS:
     devices: []
+    parent_container: ATD_FABRIC
+  DC1:
     parent_container: ATD_FABRIC
 changed: false
