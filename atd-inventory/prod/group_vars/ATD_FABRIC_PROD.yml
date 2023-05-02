@@ -84,7 +84,7 @@ l3leaf:
         s2-leaf1:
           id: 1
           mgmt_ip: 192.168.0.22/24
-          uplink_switch_interfaces: [Ethernet, Ethernet2]
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
         s2-leaf2:
           id: 2
           mgmt_ip: 192.168.0.23/24
