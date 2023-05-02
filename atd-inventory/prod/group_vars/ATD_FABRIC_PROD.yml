@@ -59,10 +59,14 @@ l3leaf:
     loopback_ipv4_pool: 192.0.255.0/24
     loopback_ipv6_pool: 2001:db8:c01d:c01a::/64
     loopback_ipv4_offset: 2
+    loopback_ipv6_offset: 2
     vtep_loopback_ipv4_pool: 192.0.254.0/24
     uplink_interfaces: [Ethernet2, Ethernet3]
     uplink_switches: [s2-spine1, s2-spine2]
     uplink_ipv4_pool: 172.30.255.0/24
+    mlag_interfaces: [Ethernet1, Ethernet6]
+    mlag_peer_ipv4_pool: 172.30.254.0/24
+    mlag_peer_l3_ipv4_pool: 172.30.253.0/24
     virtual_router_mac_address: 00:1c:73:00:dc:01
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
@@ -85,8 +89,7 @@ l3leaf:
           id: 2
           mgmt_ip: 192.168.0.23/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
-
-    pod2:
+    LEAF_PAIR_2:
       bgp_as: 65102
       nodes:
         s2-leaf3:
