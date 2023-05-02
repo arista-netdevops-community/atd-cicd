@@ -1,8 +1,6 @@
 ---
 custom_structured_configuration_ethernet_interfaces:
-  Ethernet1:
+  Ethernet7:
     shutdown: true
-  Ethernet3:
-    shutdown: true
-  Ethernet6:
+  Ethernet8:
     shutdown: true

@@ -19,7 +19,10 @@
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
 | ATD_FABRIC_PROD | l3leaf | s2-leaf1 | 192.168.0.22/24 | CEOS-LAB | Provisioned |
 | ATD_FABRIC_PROD | l3leaf | s2-leaf2 | 192.168.0.23/24 | CEOS-LAB | Provisioned |
+| ATD_FABRIC_PROD | l3leaf | s2-leaf3 | 192.168.0.24/24 | CEOS-LAB | Provisioned |
+| ATD_FABRIC_PROD | l3leaf | s2-leaf4 | 192.168.0.25/24 | CEOS-LAB | Provisioned |
 | ATD_FABRIC_PROD | spine | s2-spine1 | 192.168.0.20/24 | CEOS-LAB | Provisioned |
+| ATD_FABRIC_PROD | spine | s2-spine2 | 192.168.0.21/24 | CEOS-LAB | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -31,8 +34,18 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| l3leaf | s2-leaf1 | Ethernet2 | spine | s2-spine1 | Ethernet2 |
+| l3leaf | s2-leaf1 | Ethernet1 | mlag_peer | s2-leaf2 | Ethernet1 |
+| l3leaf | s2-leaf1 | Ethernet2 | spine | s2-spine1 | Ethernet |
+| l3leaf | s2-leaf1 | Ethernet3 | spine | s2-spine2 | Ethernet2 |
+| l3leaf | s2-leaf1 | Ethernet6 | mlag_peer | s2-leaf2 | Ethernet6 |
 | l3leaf | s2-leaf2 | Ethernet2 | spine | s2-spine1 | Ethernet3 |
+| l3leaf | s2-leaf2 | Ethernet3 | spine | s2-spine2 | Ethernet3 |
+| l3leaf | s2-leaf3 | Ethernet1 | mlag_peer | s2-leaf4 | Ethernet1 |
+| l3leaf | s2-leaf3 | Ethernet2 | spine | s2-spine1 | Ethernet4 |
+| l3leaf | s2-leaf3 | Ethernet3 | spine | s2-spine2 | Ethernet4 |
+| l3leaf | s2-leaf3 | Ethernet6 | mlag_peer | s2-leaf4 | Ethernet6 |
+| l3leaf | s2-leaf4 | Ethernet2 | spine | s2-spine1 | Ethernet5 |
+| l3leaf | s2-leaf4 | Ethernet3 | spine | s2-spine2 | Ethernet5 |
 
 # Fabric IP Allocation
 
@@ -40,20 +53,26 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 172.30.255.0/24 | 256 | 4 | 1.57 % |
+| 172.30.255.0/24 | 256 | 16 | 6.25 % |
 
 ## Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
-| s2-leaf1 | Ethernet2 | 172.30.255.1/31 | s2-spine1 | Ethernet2 | 172.30.255.0/31 |
-| s2-leaf2 | Ethernet2 | 172.30.255.3/31 | s2-spine1 | Ethernet3 | 172.30.255.2/31 |
+| s2-leaf1 | Ethernet2 | 172.30.255.1/31 | s2-spine1 | Ethernet | 172.30.255.0/31 |
+| s2-leaf1 | Ethernet3 | 172.30.255.3/31 | s2-spine2 | Ethernet2 | 172.30.255.2/31 |
+| s2-leaf2 | Ethernet2 | 172.30.255.5/31 | s2-spine1 | Ethernet3 | 172.30.255.4/31 |
+| s2-leaf2 | Ethernet3 | 172.30.255.7/31 | s2-spine2 | Ethernet3 | 172.30.255.6/31 |
+| s2-leaf3 | Ethernet2 | 172.30.255.9/31 | s2-spine1 | Ethernet4 | 172.30.255.8/31 |
+| s2-leaf3 | Ethernet3 | 172.30.255.11/31 | s2-spine2 | Ethernet4 | 172.30.255.10/31 |
+| s2-leaf4 | Ethernet2 | 172.30.255.13/31 | s2-spine1 | Ethernet5 | 172.30.255.12/31 |
+| s2-leaf4 | Ethernet3 | 172.30.255.15/31 | s2-spine2 | Ethernet5 | 172.30.255.14/31 |
 
 ## Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.0.255.0/24 | 256 | 3 | 1.18 % |
+| 192.0.255.0/24 | 256 | 6 | 2.35 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -61,17 +80,22 @@
 | --- | ---- | --------- |
 | ATD_FABRIC_PROD | s2-leaf1 | 192.0.255.3/32 |
 | ATD_FABRIC_PROD | s2-leaf2 | 192.0.255.4/32 |
+| ATD_FABRIC_PROD | s2-leaf3 | 192.0.255.5/32 |
+| ATD_FABRIC_PROD | s2-leaf4 | 192.0.255.6/32 |
 | ATD_FABRIC_PROD | s2-spine1 | 192.0.255.1/32 |
+| ATD_FABRIC_PROD | s2-spine2 | 192.0.255.2/32 |
 
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.0.254.0/24 | 256 | 2 | 0.79 % |
+| 192.0.254.0/24 | 256 | 4 | 1.57 % |
 
 ## VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
 | ATD_FABRIC_PROD | s2-leaf1 | 192.0.254.3/32 |
-| ATD_FABRIC_PROD | s2-leaf2 | 192.0.254.4/32 |
+| ATD_FABRIC_PROD | s2-leaf2 | 192.0.254.3/32 |
+| ATD_FABRIC_PROD | s2-leaf3 | 192.0.254.5/32 |
+| ATD_FABRIC_PROD | s2-leaf4 | 192.0.254.5/32 |
