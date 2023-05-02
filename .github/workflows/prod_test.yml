@@ -28,6 +28,9 @@ jobs:
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d --build
 
+      - name: Build prod configs
+        run: docker-compose run atd-cicd ansible-playbook playbooks/atd-fabric-build.yml -i atd-inventory/prod/hosts.yml
+
       - name: Test with Batfish
         run: docker-compose run atd-cicd python3 batfish-test.py
 
