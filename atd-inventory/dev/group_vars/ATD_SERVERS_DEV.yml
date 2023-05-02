@@ -12,6 +12,8 @@ servers:
   #       switch_ports: [Ethernet4, Ethernet4]
   #       switches: [s1-leaf1, s1-leaf2]
   #       profile: TENANT_A
+  #       port_channel:
+  #         mode: active
   # host2:
   #   adapters:
   #     - type: nic
@@ -19,3 +21,5 @@ servers:
   #       switch_ports: [Ethernet4, Ethernet4]
   #       switches: [s1-leaf3, s1-leaf4]
   #       profile: TENANT_A
+  #       port_channel:
+  #         mode: active
