@@ -26,6 +26,14 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: true
   neighbors:
+    192.0.255.7:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: s1-brdr1
+      remote_as: '65103'
+    192.0.255.8:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: s1-brdr2
+      remote_as: '65103'
     192.0.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: s1-leaf1
@@ -121,6 +129,28 @@ ethernet_interfaces:
     ip_address: 172.30.255.14/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
+  Ethernet7:
+    peer: s1-brdr1
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+    description: P2P_LINK_TO_S1-BRDR1_Ethernet3
+    shutdown: false
+    mtu: 1500
+    type: routed
+    ip_address: 172.30.255.18/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
+  Ethernet8:
+    peer: s1-brdr2
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+    description: P2P_LINK_TO_S1-BRDR2_Ethernet3
+    shutdown: false
+    mtu: 1500
+    type: routed
+    ip_address: 172.30.255.22/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -138,6 +168,8 @@ router_ospf:
       - Ethernet3
       - Ethernet4
       - Ethernet5
+      - Ethernet7
+      - Ethernet8
       bfd_enable: false
 router_bfd:
   multihop:

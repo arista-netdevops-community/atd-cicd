@@ -168,6 +168,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet3 | P2P_LINK_TO_S1-LEAF2_Ethernet3 | routed | - | 172.30.255.6/31 | default | 1500 | False | - | - |
 | Ethernet4 | P2P_LINK_TO_S1-LEAF3_Ethernet3 | routed | - | 172.30.255.10/31 | default | 1500 | False | - | - |
 | Ethernet5 | P2P_LINK_TO_S1-LEAF4_Ethernet3 | routed | - | 172.30.255.14/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_S1-BRDR1_Ethernet3 | routed | - | 172.30.255.18/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_S1-BRDR2_Ethernet3 | routed | - | 172.30.255.22/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -206,6 +208,24 @@ interface Ethernet5
    mtu 1500
    no switchport
    ip address 172.30.255.14/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet7
+   description P2P_LINK_TO_S1-BRDR1_Ethernet3
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.30.255.18/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet8
+   description P2P_LINK_TO_S1-BRDR2_Ethernet3
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.30.255.22/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 ```
@@ -293,7 +313,7 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.0.255.2 | enabled | Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 192.0.255.2 | enabled | Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet7 <br> Ethernet8 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 ### OSPF Interfaces
 
@@ -303,6 +323,8 @@ ip route 0.0.0.0/0 192.168.0.1
 | Ethernet3 | 0.0.0.0 | - | True |
 | Ethernet4 | 0.0.0.0 | - | True |
 | Ethernet5 | 0.0.0.0 | - | True |
+| Ethernet7 | 0.0.0.0 | - | True |
+| Ethernet8 | 0.0.0.0 | - | True |
 | Loopback0 | 0.0.0.0 | - | - |
 
 ### Router OSPF Device Configuration
@@ -316,6 +338,8 @@ router ospf 100
    no passive-interface Ethernet3
    no passive-interface Ethernet4
    no passive-interface Ethernet5
+   no passive-interface Ethernet7
+   no passive-interface Ethernet8
    max-lsa 12000
 ```
 
@@ -357,6 +381,8 @@ router ospf 100
 | 192.0.255.4 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 | 192.0.255.5 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 | 192.0.255.6 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.0.255.7 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.0.255.8 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -397,6 +423,12 @@ router bgp 65001
    neighbor 192.0.255.6 peer group EVPN-OVERLAY-PEERS
    neighbor 192.0.255.6 remote-as 65102
    neighbor 192.0.255.6 description s1-leaf4
+   neighbor 192.0.255.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.0.255.7 remote-as 65103
+   neighbor 192.0.255.7 description s1-brdr1
+   neighbor 192.0.255.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.0.255.8 remote-as 65103
+   neighbor 192.0.255.8 description s1-brdr2
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
