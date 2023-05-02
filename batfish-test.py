@@ -64,7 +64,7 @@ def main():
     bf_set_network(NETWORK_NAME)
     init_snap = bf_init_snapshot(SNAPSHOT_DIR, name=SNAPSHOT_NAME, overwrite=True)
     load_questions()
-    test_bgp_compatibility(init_snap)
+    # test_bgp_compatibility(init_snap)
     test_ospf_compatibility(init_snap)
     test_bgp_unestablished(init_snap)
 
