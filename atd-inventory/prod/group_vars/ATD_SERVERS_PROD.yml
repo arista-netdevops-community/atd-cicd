@@ -2,13 +2,20 @@
 port_profiles:
   TENANT_A:
     mode: access
-    vlans: "110"
+    vlans: "210"
 
 servers:
-  host2:
-    adapters:
-      - type: nic
-        server_ports: [Eth1, Eth2]
-        switch_ports: [Ethernet4, Ethernet4]
-        switches: [s2-leaf1, s2-leaf2]
-        profile: TENANT_A
+  # host1:
+  #   adapters:
+  #     - type: nic
+  #       server_ports: [Eth1, Eth2]
+  #       switch_ports: [Ethernet4, Ethernet4]
+  #       switches: [s2-leaf1, s2-leaf2]
+  #       profile: TENANT_A
+  # host2:
+  #   adapters:
+  #     - type: nic
+  #       server_ports: [Eth1, Eth2]
+  #       switch_ports: [Ethernet4, Ethernet4]
+  #       switches: [s2-leaf3, s2-leaf4]
+  #       profile: TENANT_A
