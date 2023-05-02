@@ -1,25 +1,41 @@
 ---
 CVP_DEVICES:
   - fqdn: s1-leaf1
-    parentContainerName: ATD_LEAFS_DEV
+    parentContainerName: ATD_LEAF1-DC1
     configlets:
-      - AVD_DEV_s1-leaf1
+      - AVD_s1-leaf1
   - fqdn: s1-leaf2
-    parentContainerName: ATD_LEAFS_DEV
+    parentContainerName: ATD_LEAF1-DC1
     configlets:
-      - AVD_DEV_s1-leaf2
+      - AVD_s1-leaf2
+  - fqdn: s1-leaf3
+    parentContainerName: ATD_LEAF2-DC1
+    configlets:
+      - AVD_s1-leaf3
+  - fqdn: s1-leaf4
+    parentContainerName: ATD_LEAF2-DC1
+    configlets:
+      - AVD_s1-leaf4
   - fqdn: s1-spine1
-    parentContainerName: ATD_SPINES_DEV
+    parentContainerName: ATD_SPINES-DC1
     configlets:
-      - AVD_DEV_s1-spine1
+      - AVD_s1-spine1
+  - fqdn: s1-spine2
+    parentContainerName: ATD_SPINES-DC1
+    configlets:
+      - AVD_s1-spine2
 CVP_CONTAINERS:
-  ATD_FABRIC_DEV:
+  ATD_FABRIC:
     parentContainerName: Tenant
-  ATD_LEAFS_DEV:
-    parentContainerName: ATD_FABRIC_DEV
-  ATD_SERVERS_DEV:
-    parentContainerName: ATD_FABRIC_DEV
-  ATD_SPINES_DEV:
-    parentContainerName: ATD_FABRIC_DEV
-  ATD_TENANTS_NETWORKS_DEV:
-    parentContainerName: ATD_FABRIC_DEV
+  ATD_LEAF1-DC1:
+    parentContainerName: ATD_LEAFS-DC1
+  ATD_LEAF2-DC1:
+    parentContainerName: ATD_LEAFS-DC1
+  ATD_LEAFS-DC1:
+    parentContainerName: ATD_FABRIC
+  ATD_SERVERS:
+    parentContainerName: ATD_FABRIC
+  ATD_SPINES-DC1:
+    parentContainerName: ATD_FABRIC
+  ATD_TENANTS_NETWORKS:
+    parentContainerName: ATD_FABRIC

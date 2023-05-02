@@ -1,4 +1,4 @@
-# s1-spine1
+# s1-spine2
 # Table of Contents
 
 - [Management](#management)
@@ -44,7 +44,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | default | 192.168.0.10/24 | 192.168.0.1 |
+| Management0 | oob_management | oob | default | 192.168.0.11/24 | 192.168.0.1 |
 
 #### IPv6
 
@@ -59,7 +59,7 @@
 interface Management0
    description oob_management
    no shutdown
-   ip address 192.168.0.10/24
+   ip address 192.168.0.11/24
 ```
 
 ## DNS Domain
@@ -157,10 +157,6 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  - | access | - | - | - | - |
-| Ethernet6 |  - | access | - | - | - | - |
-| Ethernet7 |  - | access | - | - | - | - |
-| Ethernet8 |  - | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -168,66 +164,50 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_S1-LEAF1_Ethernet2 | routed | - | 172.30.255.0/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_S1-LEAF2_Ethernet2 | routed | - | 172.30.255.4/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_S1-LEAF3_Ethernet2 | routed | - | 172.30.255.8/31 | default | 1500 | True | - | - |
-| Ethernet5 | P2P_LINK_TO_S1-LEAF4_Ethernet2 | routed | - | 172.30.255.12/31 | default | 1500 | True | - | - |
+| Ethernet2 | P2P_LINK_TO_S1-LEAF1_Ethernet3 | routed | - | 172.30.255.2/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_S1-LEAF2_Ethernet3 | routed | - | 172.30.255.6/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_S1-LEAF3_Ethernet3 | routed | - | 172.30.255.10/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_S1-LEAF4_Ethernet3 | routed | - | 172.30.255.14/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet1
-   shutdown
-   switchport
-!
 interface Ethernet2
-   description P2P_LINK_TO_S1-LEAF1_Ethernet2
+   description P2P_LINK_TO_S1-LEAF1_Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.0/31
+   ip address 172.30.255.2/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
 interface Ethernet3
-   description P2P_LINK_TO_S1-LEAF2_Ethernet2
+   description P2P_LINK_TO_S1-LEAF2_Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.4/31
+   ip address 172.30.255.6/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
 interface Ethernet4
-   description P2P_LINK_TO_S1-LEAF3_Ethernet2
-   shutdown
+   description P2P_LINK_TO_S1-LEAF3_Ethernet3
+   no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.8/31
+   ip address 172.30.255.10/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
 interface Ethernet5
-   description P2P_LINK_TO_S1-LEAF4_Ethernet2
-   shutdown
+   description P2P_LINK_TO_S1-LEAF4_Ethernet3
+   no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.12/31
+   ip address 172.30.255.14/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
-!
-interface Ethernet6
-   shutdown
-   switchport
-!
-interface Ethernet7
-   shutdown
-   switchport
-!
-interface Ethernet8
-   shutdown
-   switchport
 ```
 
 ## Loopback Interfaces
@@ -238,7 +218,7 @@ interface Ethernet8
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.0.255.1/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.0.255.2/32 |
 
 #### IPv6
 
@@ -254,7 +234,7 @@ interface Ethernet8
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.0.255.1/32
+   ip address 192.0.255.2/32
    ip ospf area 0.0.0.0
 ```
 
@@ -313,7 +293,7 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.0.255.1 | enabled | Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 192.0.255.2 | enabled | Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 ### OSPF Interfaces
 
@@ -330,7 +310,7 @@ ip route 0.0.0.0/0 192.168.0.1
 ```eos
 !
 router ospf 100
-   router-id 192.0.255.1
+   router-id 192.0.255.2
    passive-interface default
    no passive-interface Ethernet2
    no passive-interface Ethernet3
@@ -345,7 +325,7 @@ router ospf 100
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65001|  192.0.255.1 |
+| 65001|  192.0.255.2 |
 
 | BGP Tuning |
 | ---------- |
@@ -391,7 +371,7 @@ router ospf 100
 ```eos
 !
 router bgp 65001
-   router-id 192.0.255.1
+   router-id 192.0.255.2
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
