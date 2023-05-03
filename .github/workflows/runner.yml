@@ -23,9 +23,6 @@ jobs:
           file_or_dir: atd-inventory/group_vars/
           config_file: .yamllint.yml
 
-      - name: check Liveliness and Reachability of Development CVP
-        run: ping -c 2 avd-cicd-demo-prep-1-2de17e3f-eos.topo.testdrive.arista.com
-
       - name: Build Configurations
         run: ansible-playbook -i atd-inventory/hosts.yml playbooks/atd-fabric-build.yml
 
