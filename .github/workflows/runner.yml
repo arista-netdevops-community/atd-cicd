@@ -11,8 +11,17 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
-      - name: Hi
-        run: echo "Hello World!"
+      - name: Install Ansible
+        run: pip install ansible
+
+      - name: Install Arista AVD
+        run: ansible-galaxy collection install arista.avd:>=3.8
+
+      - name: Install AVD Requirements
+        run: sudo pip install -r ~/.ansible/collections/ansible_collections/arista/avd/requirements.txt
+
+      - name: Upgrade requests to 2.27.0 or above
+        run: pip install requests>=2.27.0 --upgrade
 
       - name: Checkout
         uses: actions/checkout@v3
