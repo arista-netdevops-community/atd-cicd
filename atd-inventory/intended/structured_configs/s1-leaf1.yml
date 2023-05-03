@@ -68,7 +68,7 @@ router_bgp:
         - '10:10'
       redistribute_routes:
       - learned
-      vlan: '210'
+      vlan: 100,210
     Extend:
       tenant: Tenant_A
       rd: 192.0.255.3:10110
@@ -130,6 +130,9 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  100:
+    tenant: Tenant_A
+    name: VLAN100
   210:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -155,6 +158,12 @@ vlan_interfaces:
     ip_address: 10.255.252.0/31
     no_autostate: true
     mtu: 1500
+  Vlan100:
+    tenant: Tenant_A
+    description: VLAN100
+    shutdown: false
+    ip_address_virtual: 10.10.10.1/24
+    vrf: Tenant_A_OP_Zone
   Vlan210:
     tenant: Tenant_A
     tags:
@@ -181,6 +190,13 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel4:
+    description: s1-Host1_PortChannel to s1-Host1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4000
+    mlag: 4
 ethernet_interfaces:
   Ethernet1:
     peer: s1-leaf2
@@ -188,7 +204,7 @@ ethernet_interfaces:
     peer_type: mlag_peer
     description: MLAG_PEER_s1-leaf2_Ethernet1
     type: switched
-    shutdown: true
+    shutdown: false
     channel_group:
       id: 1
       mode: active
@@ -198,7 +214,7 @@ ethernet_interfaces:
     peer_type: mlag_peer
     description: MLAG_PEER_s1-leaf2_Ethernet6
     type: switched
-    shutdown: true
+    shutdown: false
     channel_group:
       id: 1
       mode: active
@@ -218,21 +234,24 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_S1-SPINE2_Ethernet2
-    shutdown: true
+    shutdown: false
     mtu: 1500
     type: routed
     ip_address: 172.30.255.3/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet4:
-    peer: host1
-    peer_interface: Eth1
+    peer: s1-Host1
+    peer_interface: E1
     peer_type: server
-    description: host1_Eth1
+    description: s1-Host1_E1
     type: switched
     shutdown: false
-    mode: access
-    vlans: '110'
+    mode: trunk
+    vlans: 1-4000
+    channel_group:
+      id: 4
+      mode: active
 mlag_configuration:
   domain_id: ATD_LEAF1-DC1
   local_interface: Vlan4094
@@ -291,6 +310,8 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
+        100:
+          vni: 10100
         210:
           vni: 10210
         110:

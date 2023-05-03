@@ -203,6 +203,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 100 | VLAN100 | - |
 | 110 | Extend | - |
 | 210 | Tenant_A_OP_Zone_1 | - |
 | 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
@@ -212,6 +213,9 @@ vlan internal order ascending range 1006 1199
 ## VLANs Device Configuration
 
 ```eos
+!
+vlan 100
+   name VLAN100
 !
 vlan 110
    name Extend
@@ -253,6 +257,9 @@ vlan 4094
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet7 | routed | - | 172.31.254.17/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet7 | routed | - | 172.31.254.19/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_s1-brdr1_Port-Channel4 | *routed | 4 | *172.16.200.1/31 | **default | *1500 | *False | **- | **- |
+| Ethernet5 | P2P_LINK_TO_s1-brdr1_Port-Channel4 | *routed | 4 | *172.16.200.1/31 | **default | *1500 | *False | **- | **- |
+*Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
 
@@ -281,6 +288,16 @@ interface Ethernet3
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
+interface Ethernet4
+   description P2P_LINK_TO_s1-brdr1_Port-Channel4
+   no shutdown
+   channel-group 4 mode active
+!
+interface Ethernet5
+   description P2P_LINK_TO_s1-brdr1_Port-Channel4
+   no shutdown
+   channel-group 4 mode active
+!
 interface Ethernet6
    description MLAG_PEER_s2-brdr2_Ethernet6
    no shutdown
@@ -297,6 +314,12 @@ interface Ethernet6
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | MLAG_PEER_s2-brdr2_Po1 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel4 | P2P_LINK_TO_s1-brdr1_Port-Channel4 | routed | - | 172.16.200.1/31 | default | 1500 | False | - | - |
+
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
@@ -309,6 +332,15 @@ interface Port-Channel1
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+!
+interface Port-Channel4
+   description P2P_LINK_TO_s1-brdr1_Port-Channel4
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.16.200.1/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
 ```
 
 ## Loopback Interfaces
@@ -361,6 +393,7 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan100 | VLAN100 | Tenant_A_OP_Zone | - | False |
 | Vlan210 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
 | Vlan3009 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
@@ -370,6 +403,7 @@ interface Loopback100
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan100 |  Tenant_A_OP_Zone  |  -  |  10.10.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan210 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan3009 |  Tenant_A_OP_Zone  |  10.255.251.8/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.251.8/31  |  -  |  -  |  -  |  -  |  -  |
@@ -378,6 +412,12 @@ interface Loopback100
 ### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan100
+   description VLAN100
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.10.10.1/24
 !
 interface Vlan210
    description Tenant_A_OP_Zone_1
@@ -422,6 +462,7 @@ interface Vlan4094
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
+| 100 | 10100 | - | - |
 | 110 | 10110 | - | - |
 | 210 | 10210 | - | - |
 
@@ -440,6 +481,7 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan vlan 100 vni 10100
    vxlan vlan 110 vni 10110
    vxlan vlan 210 vni 10210
    vxlan vrf Tenant_A_OP_Zone vni 10
@@ -516,7 +558,7 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.2.255.7 | enabled | Ethernet2 <br> Ethernet3 <br> Vlan4093 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 192.2.255.7 | enabled | Ethernet2 <br> Ethernet3 <br> Vlan4093 <br> Port-Channel4 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 ### OSPF Interfaces
 
@@ -524,6 +566,7 @@ ip route 0.0.0.0/0 192.168.0.1
 | -------- | -------- | -------- | -------- |
 | Ethernet2 | 0.0.0.0 | - | True |
 | Ethernet3 | 0.0.0.0 | - | True |
+| Port-Channel4 | 0.0.0.0 | - | True |
 | Vlan4093 | 0.0.0.0 | - | True |
 | Loopback0 | 0.0.0.0 | - | - |
 | Loopback1 | 0.0.0.0 | - | - |
@@ -538,6 +581,7 @@ router ospf 100
    no passive-interface Ethernet2
    no passive-interface Ethernet3
    no passive-interface Vlan4093
+   no passive-interface Port-Channel4
    max-lsa 12000
 ```
 
@@ -558,6 +602,17 @@ router ospf 100
 | maximum-paths 4 ecmp 4 |
 
 ### Router BGP Peer Groups
+
+#### EVPN-OVERLAY-CORE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 15 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
 
 #### EVPN-OVERLAY-PEERS
 
@@ -584,6 +639,7 @@ router ospf 100
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 192.0.255.7 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - |
 | 192.2.255.1 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 | 192.2.255.2 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 | 10.255.251.9 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - |
@@ -594,14 +650,23 @@ router ospf 100
 
 | Peer Group | Activate |
 | ---------- | -------- |
+| EVPN-OVERLAY-CORE | True |
 | EVPN-OVERLAY-PEERS | True |
+
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
 
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Extend | 192.2.255.7:10110 | 10110:10110 | - | - | learned | 110 |
-| Tenant_A_OP_Zone | 192.2.255.7:10 | 10:10 | - | - | learned | 210 |
+| Extend | 192.2.255.7:10110 | 10110:10110<br>remote 10110:10110 | - | - | learned | 110 |
+| Tenant_A_OP_Zone | 192.2.255.7:10 | 10:10<br>remote 10:10 | - | - | learned | 100,210 |
 
 ### Router BGP VRFs
 
@@ -620,6 +685,12 @@ router bgp 65203
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-CORE peer group
+   neighbor EVPN-OVERLAY-CORE update-source Loopback0
+   neighbor EVPN-OVERLAY-CORE bfd
+   neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
+   neighbor EVPN-OVERLAY-CORE send-community
+   neighbor EVPN-OVERLAY-CORE maximum-routes 0
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -635,6 +706,9 @@ router bgp 65203
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
+   neighbor 192.0.255.7 peer group EVPN-OVERLAY-CORE
+   neighbor 192.0.255.7 remote-as 65103
+   neighbor 192.0.255.7 description s1-brdr1
    neighbor 192.2.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.2.255.1 remote-as 65201
    neighbor 192.2.255.1 description s2-spine1
@@ -644,20 +718,28 @@ router bgp 65203
    !
    vlan-aware-bundle Extend
       rd 192.2.255.7:10110
+      rd evpn domain remote 192.2.255.7:10110
       route-target both 10110:10110
+      route-target import export evpn domain remote 10110:10110
       redistribute learned
       vlan 110
    !
    vlan-aware-bundle Tenant_A_OP_Zone
       rd 192.2.255.7:10
+      rd evpn domain remote 192.2.255.7:10
       route-target both 10:10
+      route-target import export evpn domain remote 10:10
       redistribute learned
-      vlan 210
+      vlan 100,210
    !
    address-family evpn
+      neighbor EVPN-OVERLAY-CORE activate
+      neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !

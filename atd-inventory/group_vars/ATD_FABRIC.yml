@@ -44,3 +44,33 @@ bfd_multihop:
   interval: 1200
   min_rx: 1200
   multiplier: 3
+
+
+l3_edge:
+  p2p_links_ip_pools:
+    BORDER_IP: 172.16.200.0/24
+  p2p_links:
+    - id: 1
+      ip_pool: BORDER_IP
+      nodes: [ s1-brdr1, s2-brdr1 ]
+      interfaces: [ Ethernet4, Ethernet4 ]
+      as: [ 65003, 65203 ]
+      descriptions: [ "s1 Border Leaf 1", "s2 Border Leaf 1" ]
+      include_in_underlay_protocol: true
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          s1-brdr1: [ Ethernet4, Ethernet5 ]
+          s2-brdr1: [ Ethernet4, Ethernet5 ]
+    # - id: 2
+    #   ip_pool: BORDER_IP
+    #   nodes: [ s1-brdr2, s2-brdr2 ]
+    #   interfaces: [ Ethernet4, Ethernet4 ]
+    #   as: [ 65003, 65203 ]
+    #   descriptions: [ "s1 Border Leaf 2", "s2 Border Leaf 2" ]
+    #   include_in_underlay_protocol: true
+    #   port_channel:
+    #     mode: active
+    #     nodes_child_interfaces:
+    #       s1-brdr1: [ Ethernet4, Ethernet5 ]
+    #       s2-brdr1: [ Ethernet4, Ethernet5 ]

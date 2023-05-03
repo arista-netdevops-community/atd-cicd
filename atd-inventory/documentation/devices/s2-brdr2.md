@@ -203,6 +203,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 100 | VLAN100 | - |
 | 110 | Extend | - |
 | 210 | Tenant_A_OP_Zone_1 | - |
 | 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
@@ -212,6 +213,9 @@ vlan internal order ascending range 1006 1199
 ## VLANs Device Configuration
 
 ```eos
+!
+vlan 100
+   name VLAN100
 !
 vlan 110
    name Extend
@@ -361,6 +365,7 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan100 | VLAN100 | Tenant_A_OP_Zone | - | False |
 | Vlan210 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
 | Vlan3009 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
@@ -370,6 +375,7 @@ interface Loopback100
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan100 |  Tenant_A_OP_Zone  |  -  |  10.10.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan210 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan3009 |  Tenant_A_OP_Zone  |  10.255.251.9/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.251.9/31  |  -  |  -  |  -  |  -  |  -  |
@@ -378,6 +384,12 @@ interface Loopback100
 ### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan100
+   description VLAN100
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.10.10.1/24
 !
 interface Vlan210
    description Tenant_A_OP_Zone_1
@@ -422,6 +434,7 @@ interface Vlan4094
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
+| 100 | 10100 | - | - |
 | 110 | 10110 | - | - |
 | 210 | 10210 | - | - |
 
@@ -440,6 +453,7 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan vlan 100 vni 10100
    vxlan vlan 110 vni 10110
    vxlan vlan 210 vni 10210
    vxlan vrf Tenant_A_OP_Zone vni 10
@@ -601,7 +615,7 @@ router ospf 100
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Extend | 192.2.255.8:10110 | 10110:10110 | - | - | learned | 110 |
-| Tenant_A_OP_Zone | 192.2.255.8:10 | 10:10 | - | - | learned | 210 |
+| Tenant_A_OP_Zone | 192.2.255.8:10 | 10:10 | - | - | learned | 100,210 |
 
 ### Router BGP VRFs
 
@@ -652,7 +666,7 @@ router bgp 65203
       rd 192.2.255.8:10
       route-target both 10:10
       redistribute learned
-      vlan 210
+      vlan 100,210
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate

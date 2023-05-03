@@ -74,6 +74,16 @@ l3leaf:
           id: 5
           mgmt_ip: 192.168.0.100/24
           uplink_switch_interfaces: [ Ethernet7, Ethernet7 ]
+          evpn_gateway:
+            remote_peers:
+              - hostname: s2-brdr1
+                # bgp_as: 65203
+                # ip_address: 2.2.2.2
+            evpn_l2:
+              enabled: true
+            evpn_l3:
+              enabled: true
+              inter_domain: true
         s1-brdr2:
           id: 6
           mgmt_ip: 192.168.0.101/24

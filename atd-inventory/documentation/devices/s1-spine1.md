@@ -157,8 +157,6 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  - | access | - | - | - | - |
-| Ethernet6 |  - | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -168,18 +166,14 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet2 | P2P_LINK_TO_S1-LEAF1_Ethernet2 | routed | - | 172.30.255.0/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_S1-LEAF2_Ethernet2 | routed | - | 172.30.255.4/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_S1-LEAF3_Ethernet2 | routed | - | 172.30.255.8/31 | default | 1500 | True | - | - |
-| Ethernet5 | P2P_LINK_TO_S1-LEAF4_Ethernet2 | routed | - | 172.30.255.12/31 | default | 1500 | True | - | - |
-| Ethernet7 | P2P_LINK_TO_S1-BRDR1_Ethernet2 | routed | - | 172.30.255.16/31 | default | 1500 | True | - | - |
-| Ethernet8 | P2P_LINK_TO_S1-BRDR2_Ethernet2 | routed | - | 172.30.255.20/31 | default | 1500 | True | - | - |
+| Ethernet4 | P2P_LINK_TO_S1-LEAF3_Ethernet2 | routed | - | 172.30.255.8/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_S1-LEAF4_Ethernet2 | routed | - | 172.30.255.12/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_S1-BRDR1_Ethernet2 | routed | - | 172.30.255.16/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_S1-BRDR2_Ethernet2 | routed | - | 172.30.255.20/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-!
-interface Ethernet1
-   shutdown
-   switchport
 !
 interface Ethernet2
    description P2P_LINK_TO_S1-LEAF1_Ethernet2
@@ -201,7 +195,7 @@ interface Ethernet3
 !
 interface Ethernet4
    description P2P_LINK_TO_S1-LEAF3_Ethernet2
-   shutdown
+   no shutdown
    mtu 1500
    no switchport
    ip address 172.30.255.8/31
@@ -210,20 +204,16 @@ interface Ethernet4
 !
 interface Ethernet5
    description P2P_LINK_TO_S1-LEAF4_Ethernet2
-   shutdown
+   no shutdown
    mtu 1500
    no switchport
    ip address 172.30.255.12/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
-interface Ethernet6
-   shutdown
-   switchport
-!
 interface Ethernet7
    description P2P_LINK_TO_S1-BRDR1_Ethernet2
-   shutdown
+   no shutdown
    mtu 1500
    no switchport
    ip address 172.30.255.16/31
@@ -232,7 +222,7 @@ interface Ethernet7
 !
 interface Ethernet8
    description P2P_LINK_TO_S1-BRDR2_Ethernet2
-   shutdown
+   no shutdown
    mtu 1500
    no switchport
    ip address 172.30.255.20/31

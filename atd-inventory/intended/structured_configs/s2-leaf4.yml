@@ -68,7 +68,7 @@ router_bgp:
         - '10:10'
       redistribute_routes:
       - learned
-      vlan: '210'
+      vlan: 100,210
     Extend:
       tenant: Tenant_A
       rd: 192.2.255.6:10110
@@ -130,6 +130,9 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  100:
+    tenant: Tenant_A
+    name: VLAN100
   210:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -155,6 +158,12 @@ vlan_interfaces:
     ip_address: 10.255.252.5/31
     no_autostate: true
     mtu: 1500
+  Vlan100:
+    tenant: Tenant_A
+    description: VLAN100
+    shutdown: false
+    ip_address_virtual: 10.10.10.1/24
+    vrf: Tenant_A_OP_Zone
   Vlan210:
     tenant: Tenant_A
     tags:
@@ -181,6 +190,13 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel4:
+    description: s2-Host2_PortChannel to s2-Host2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4000
+    mlag: 4
 ethernet_interfaces:
   Ethernet1:
     peer: s2-leaf3
@@ -224,6 +240,18 @@ ethernet_interfaces:
     ip_address: 172.31.254.15/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
+  Ethernet4:
+    peer: s2-Host2
+    peer_interface: E2
+    peer_type: server
+    description: s2-Host2_E2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4000
+    channel_group:
+      id: 4
+      mode: active
 mlag_configuration:
   domain_id: ATD_LEAF2-DC1
   local_interface: Vlan4094
@@ -282,6 +310,8 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
+        100:
+          vni: 10100
         210:
           vni: 10210
         110:

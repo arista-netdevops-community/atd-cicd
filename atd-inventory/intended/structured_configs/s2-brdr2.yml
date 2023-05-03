@@ -68,7 +68,7 @@ router_bgp:
         - '10:10'
       redistribute_routes:
       - learned
-      vlan: '210'
+      vlan: 100,210
     Extend:
       tenant: Tenant_A
       rd: 192.2.255.8:10110
@@ -130,6 +130,9 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  100:
+    tenant: Tenant_A
+    name: VLAN100
   210:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -155,6 +158,12 @@ vlan_interfaces:
     ip_address: 10.255.252.9/31
     no_autostate: true
     mtu: 1500
+  Vlan100:
+    tenant: Tenant_A
+    description: VLAN100
+    shutdown: false
+    ip_address_virtual: 10.10.10.1/24
+    vrf: Tenant_A_OP_Zone
   Vlan210:
     tenant: Tenant_A
     tags:
@@ -282,6 +291,8 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
+        100:
+          vni: 10100
         210:
           vni: 10210
         110:

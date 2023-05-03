@@ -1,14 +1,43 @@
 ---
 port_profiles:
-  TENANT_A:
-    mode: access
-    vlans: "110"
+  Host:
+    mode: trunk
+    vlans: "1-4000"
 
 servers:
-  host1:
+  s1-Host1:
     adapters:
-      - type: nic
-        server_ports: [Eth1, Eth2]
-        switch_ports: [Ethernet4, Ethernet4]
-        switches: [s1-leaf1, s1-leaf2]
-        profile: TENANT_A
+      - endpoint_ports: [ E1, E2 ]
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ s1-leaf1, s1-leaf2 ]
+        profile: Host
+        port_channel:
+          description: PortChannel to s1-Host1
+          mode: active
+  s1-Host2:
+    adapters:
+      - endpoint_ports: [ E1, E2 ]
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ s1-leaf3, s1-leaf4 ]
+        profile: Host
+        port_channel:
+          description: PortChannel to s1-Host2
+          mode: active
+  s2-Host1:
+    adapters:
+      - endpoint_ports: [ E1, E2 ]
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ s2-leaf1, s2-leaf2 ]
+        profile: Host
+        port_channel:
+          description: PortChannel to s2-Host1
+          mode: active
+  s2-Host2:
+    adapters:
+      - endpoint_ports: [ E1, E2 ]
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ s2-leaf3, s2-leaf4 ]
+        profile: Host
+        port_channel:
+          description: PortChannel to s2-Host2
+          mode: active
