@@ -140,7 +140,7 @@ management api http-commands
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| ATD_LEAF1-DC1 | Vlan4094 | 10.255.252.1 | Port-Channel1 |
+| ATD_LEAF1-DC2 | Vlan4094 | 10.255.252.1 | Port-Channel1 |
 
 Dual primary detection is disabled.
 
@@ -149,7 +149,7 @@ Dual primary detection is disabled.
 ```eos
 !
 mlag configuration
-   domain-id ATD_LEAF1-DC1
+   domain-id ATD_LEAF1-DC2
    local-interface Vlan4094
    peer-address 10.255.252.1
    peer-link Port-Channel1
@@ -256,8 +256,8 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet2 | routed | - | 172.31.254.1/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet2 | routed | - | 172.31.254.3/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet2 | routed | - | 172.31.255.1/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet2 | routed | - | 172.31.255.3/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -273,7 +273,7 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.254.1/31
+   ip address 172.31.255.1/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -282,7 +282,7 @@ interface Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.254.3/31
+   ip address 172.31.255.3/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -488,13 +488,13 @@ service routing protocols model multi-agent
 
 ### Virtual Router MAC Address Summary
 
-#### Virtual Router MAC Address: 00:1c:73:00:dc:01
+#### Virtual Router MAC Address: 00:1c:73:00:dc:02
 
 ### Virtual Router MAC Address Configuration
 
 ```eos
 !
-ip virtual-router mac-address 00:1c:73:00:dc:01
+ip virtual-router mac-address 00:1c:73:00:dc:02
 ```
 
 ## IP Routing
@@ -613,8 +613,8 @@ router ospf 100
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
-| 192.2.255.1 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
-| 192.2.255.2 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.2.255.1 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.2.255.2 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - |
 
 ### Router BGP EVPN Address Family
@@ -665,10 +665,10 @@ router bgp 65201
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 192.2.255.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.2.255.1 remote-as 65201
+   neighbor 192.2.255.1 remote-as 65002
    neighbor 192.2.255.1 description s2-spine1
    neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.2.255.2 remote-as 65201
+   neighbor 192.2.255.2 remote-as 65002
    neighbor 192.2.255.2 description s2-spine2
    !
    vlan-aware-bundle Extend

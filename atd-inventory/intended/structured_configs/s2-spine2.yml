@@ -1,5 +1,5 @@
 router_bgp:
-  as: '65201'
+  as: '65002'
   router_id: 192.2.255.2
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -93,7 +93,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.2/31
+    ip_address: 172.31.255.2/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet3:
@@ -104,7 +104,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.6/31
+    ip_address: 172.31.255.6/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet4:
@@ -115,7 +115,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.10/31
+    ip_address: 172.31.255.10/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet5:
@@ -126,7 +126,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.14/31
+    ip_address: 172.31.255.14/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet7:
@@ -137,7 +137,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.18/31
+    ip_address: 172.31.255.18/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet8:
@@ -148,7 +148,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.22/31
+    ip_address: 172.31.255.22/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
 loopback_interfaces:

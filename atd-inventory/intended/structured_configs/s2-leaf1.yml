@@ -39,11 +39,11 @@ router_bgp:
     192.2.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: s2-spine1
-      remote_as: '65201'
+      remote_as: '65002'
     192.2.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: s2-spine2
-      remote_as: '65201'
+      remote_as: '65002'
   vrfs:
     Tenant_A_OP_Zone:
       router_id: 192.2.255.3
@@ -226,7 +226,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.1/31
+    ip_address: 172.31.255.1/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet3:
@@ -237,7 +237,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.31.254.3/31
+    ip_address: 172.31.255.3/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet4:
@@ -253,7 +253,7 @@ ethernet_interfaces:
       id: 4
       mode: active
 mlag_configuration:
-  domain_id: ATD_LEAF1-DC1
+  domain_id: ATD_LEAF1-DC2
   local_interface: Vlan4094
   peer_address: 10.255.252.1
   peer_link: Port-Channel1
@@ -293,7 +293,7 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+ip_virtual_router_mac_address: 00:1c:73:00:dc:02
 route_maps:
   RM-MLAG-PEER-IN:
     sequence_numbers:
