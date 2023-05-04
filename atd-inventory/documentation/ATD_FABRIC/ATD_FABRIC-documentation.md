@@ -47,6 +47,8 @@
 | l3leaf | s1-brdr1 | Ethernet1 | mlag_peer | s1-brdr2 | Ethernet1 |
 | l3leaf | s1-brdr1 | Ethernet2 | spine | s1-spine1 | Ethernet7 |
 | l3leaf | s1-brdr1 | Ethernet3 | spine | s1-spine2 | Ethernet7 |
+| l3leaf | s1-brdr1 | Ethernet4 | l3leaf | s2-brdr1 | Port-Channel4 |
+| l3leaf | s1-brdr1 | Ethernet5 | l3leaf | s2-brdr1 | Port-Channel4 |
 | l3leaf | s1-brdr1 | Ethernet6 | mlag_peer | s1-brdr2 | Ethernet6 |
 | l3leaf | s1-brdr2 | Ethernet2 | spine | s1-spine1 | Ethernet8 |
 | l3leaf | s1-brdr2 | Ethernet3 | spine | s1-spine2 | Ethernet8 |
@@ -65,6 +67,8 @@
 | l3leaf | s2-brdr1 | Ethernet1 | mlag_peer | s2-brdr2 | Ethernet1 |
 | l3leaf | s2-brdr1 | Ethernet2 | spine | s2-spine1 | Ethernet7 |
 | l3leaf | s2-brdr1 | Ethernet3 | spine | s2-spine2 | Ethernet7 |
+| l3leaf | s2-brdr1 | Ethernet4 | l3leaf | s1-brdr1 | Port-Channel4 |
+| l3leaf | s2-brdr1 | Ethernet5 | l3leaf | s1-brdr1 | Port-Channel4 |
 | l3leaf | s2-brdr1 | Ethernet6 | mlag_peer | s2-brdr2 | Ethernet6 |
 | l3leaf | s2-brdr2 | Ethernet2 | spine | s2-spine1 | Ethernet8 |
 | l3leaf | s2-brdr2 | Ethernet3 | spine | s2-spine2 | Ethernet8 |

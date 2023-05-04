@@ -83,14 +83,10 @@ CVP_CONTAINERS:
     parentContainerName: DC1
   ATD_LEAFS-DC2:
     parentContainerName: DC2
-  ATD_SERVERS:
-    parentContainerName: ATD_FABRIC
   ATD_SPINES-DC1:
     parentContainerName: DC1
   ATD_SPINES-DC2:
     parentContainerName: DC2
-  ATD_TENANTS_NETWORKS:
-    parentContainerName: ATD_FABRIC
   DC1:
     parentContainerName: ATD_FABRIC
   DC2:
