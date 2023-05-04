@@ -71,6 +71,8 @@ l3leaf:
           mgmt_ip: 192.168.0.15/24
           uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
     ATD_BORDER-DC1:
+      filter: 
+        tags: [ special, opzone ]
       bgp_as: 65103
       nodes:
         s1-brdr1:
