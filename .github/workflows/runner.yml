@@ -33,10 +33,10 @@ jobs:
           config_file: .yamllint.yml
 
       - name: Build Configurations
-        run: ansible-playbook -i atd-inventory/hosts.yml playbooks/atd-fabric-build.yml
+        run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-build.yml
 
       - name: Deploy Configurations
-        run: ansible-playbook -i atd-inventory/hosts.yml playbooks/atd-fabric-provision.yml
+        run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-provision.yml
 
       # - name: Run AVD EOS Validate State Playbook against ACT
       #   run: ansible-playbook -i inventory/inventory-dev.yml playbooks/dc-validation.yml
