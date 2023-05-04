@@ -133,3 +133,11 @@ CVP_CONTAINERS_DELETE:
   #   parentContainerName: S2
   S2:
     parentContainerName: Tenant
+  # ATD_LEAF1-DC1:
+  #   parentContainerName: ATD_LEAFS-DC1
+  # ATD_LEAF2-DC1:
+  #   parentContainerName: ATD_LEAFS-DC1
+  # ATD_BORDER-DC1:
+  #   parentContainerName: ATD_BORDER-DC1
+  # ATD_SPINES:
+  #   parentContainerName: ATD_FABRIC

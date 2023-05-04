@@ -4,7 +4,7 @@
 - name: "Building Containers topology on {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_container_v3:
-    topology: '{{ CVP_CONTAINERS_INIT }}'
+    topology: "{{ CVP_CONTAINERS_INIT }}"
 
 - name: "Configure devices on {{ inventory_hostname }}"
   tags: [provision, apply]
@@ -24,5 +24,5 @@
 - name: "Refresh Containers topology on {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_container_v3:
-    topology: '{{ CVP_CONTAINERS_DELETE }}'
+    topology: "{{ CVP_CONTAINERS_DELETE }}"
     state: absent
