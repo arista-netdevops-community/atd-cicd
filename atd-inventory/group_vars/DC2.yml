@@ -43,9 +43,12 @@ l3leaf:
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
     filter:
+      tags: [ opzone ]
       # only_vlans_in_use: true
   node_groups:
     ATD_LEAF1-DC2:
+      filter: 
+        tags: [ special, opzone ]
       bgp_as: 65201
       nodes:
         s2-leaf1:

@@ -192,6 +192,8 @@ vlan_interfaces:
     mtu: 1500
   Vlan100:
     tenant: Tenant_A
+    tags:
+    - opzone
     description: VLAN100
     shutdown: false
     ip_address_virtual: 10.10.10.1/24
