@@ -37,28 +37,3 @@ jobs:
 
       - name: Deploy Configurations
         run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-provision.yml
-
-      # - name: Run AVD EOS Validate State Playbook against ACT
-      #   run: ansible-playbook -i inventory/inventory-dev.yml playbooks/dc-validation.yml
-  
-      # - name: Upload verification reports to github
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: ValidationReport
-      #     path: DC-information/reports/ # or path/to/artifact
-
-      # - name: Build and Deploy Production Configurations
-      #   run: ansible-playbook -i inventory/inventory-prod.yml playbooks/prod-DC-fabric-deploy.yml
-
-#       - name: Start containers
-#         run: docker-compose -f "docker-compose.yml" up -d --build
-
-#       - name: Test with Batfish
-#         run: docker-compose run atd-cicd python3 batfish-test.py
-
-#       - name: Push configurations to dev
-#         run: docker-compose run atd-cicd ansible-playbook playbooks/atd-fabric-provision.yml
-
-#       - name: Stop containers
-#         if: always()
-#         run: docker-compose -f "docker-compose.yml" down

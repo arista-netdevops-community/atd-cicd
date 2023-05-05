@@ -1,8 +1,11 @@
 ---
 port_profiles:
-  Host:
+  Profile1:
     mode: trunk
-    vlans: "1-4000"
+    vlans: "100,110,200"
+  Profile2:
+    mode: trunk
+    vlans: "100,110,200,210"
 
 servers:
   s1-Host1:
@@ -10,7 +13,7 @@ servers:
       - endpoint_ports: [ E1, E2 ]
         switch_ports: [ Ethernet4, Ethernet4 ]
         switches: [ s1-leaf1, s1-leaf2 ]
-        profile: Host
+        profile: Profile1
         port_channel:
           description: PortChannel to s1-Host1
           mode: active
@@ -19,7 +22,7 @@ servers:
       - endpoint_ports: [ E1, E2 ]
         switch_ports: [ Ethernet4, Ethernet4 ]
         switches: [ s1-leaf3, s1-leaf4 ]
-        profile: Host
+        profile: Profile2
         port_channel:
           description: PortChannel to s1-Host2
           mode: active
@@ -28,7 +31,7 @@ servers:
       - endpoint_ports: [ E1, E2 ]
         switch_ports: [ Ethernet4, Ethernet4 ]
         switches: [ s2-leaf1, s2-leaf2 ]
-        profile: Host
+        profile: Profile1
         port_channel:
           description: PortChannel to s2-Host1
           mode: active
@@ -37,7 +40,7 @@ servers:
       - endpoint_ports: [ E1, E2 ]
         switch_ports: [ Ethernet4, Ethernet4 ]
         switches: [ s2-leaf3, s2-leaf4 ]
-        profile: Host
+        profile: Profile2
         port_channel:
           description: PortChannel to s2-Host2
           mode: active
