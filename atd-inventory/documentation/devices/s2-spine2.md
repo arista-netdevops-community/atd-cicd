@@ -164,12 +164,12 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_S2-LEAF1_Ethernet3 | routed | - | 172.32.255.2/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_S2-LEAF2_Ethernet3 | routed | - | 172.32.255.6/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_S2-LEAF3_Ethernet3 | routed | - | 172.32.255.10/31 | default | 1500 | False | - | - |
-| Ethernet5 | P2P_LINK_TO_S2-LEAF4_Ethernet3 | routed | - | 172.32.255.14/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_S2-BRDR1_Ethernet3 | routed | - | 172.32.255.18/31 | default | 1500 | False | - | - |
-| Ethernet8 | P2P_LINK_TO_S2-BRDR2_Ethernet3 | routed | - | 172.32.255.22/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_S2-LEAF1_Ethernet3 | routed | - | 172.31.255.2/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_S2-LEAF2_Ethernet3 | routed | - | 172.31.255.6/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_S2-LEAF3_Ethernet3 | routed | - | 172.31.255.10/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_S2-LEAF4_Ethernet3 | routed | - | 172.31.255.14/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_S2-BRDR1_Ethernet3 | routed | - | 172.31.255.18/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_S2-BRDR2_Ethernet3 | routed | - | 172.31.255.22/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -180,7 +180,7 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.2/31
+   ip address 172.31.255.2/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -189,7 +189,7 @@ interface Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.6/31
+   ip address 172.31.255.6/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -198,7 +198,7 @@ interface Ethernet4
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.10/31
+   ip address 172.31.255.10/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -207,7 +207,7 @@ interface Ethernet5
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.14/31
+   ip address 172.31.255.14/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -216,7 +216,7 @@ interface Ethernet7
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.18/31
+   ip address 172.31.255.18/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -225,7 +225,7 @@ interface Ethernet8
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.22/31
+   ip address 172.31.255.22/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 ```

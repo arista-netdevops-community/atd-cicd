@@ -205,7 +205,6 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 100 | VLAN100 | - |
 | 110 | Extend | - |
-| 200 | VLAN200 | - |
 | 210 | Tenant_A_OP_Zone_1 | - |
 | 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
@@ -220,9 +219,6 @@ vlan 100
 !
 vlan 110
    name Extend
-!
-vlan 200
-   name VLAN200
 !
 vlan 210
    name Tenant_A_OP_Zone_1
@@ -260,8 +256,8 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet2 | routed | - | 172.32.255.1/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet2 | routed | - | 172.32.255.3/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet2 | routed | - | 172.31.255.1/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet2 | routed | - | 172.31.255.3/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -277,7 +273,7 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.1/31
+   ip address 172.31.255.1/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -286,7 +282,7 @@ interface Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.3/31
+   ip address 172.31.255.3/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -385,7 +381,6 @@ interface Loopback100
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan100 | VLAN100 | Tenant_A_OP_Zone | - | False |
-| Vlan200 | VLAN200 | Tenant_A_OP_Zone | - | False |
 | Vlan210 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
 | Vlan3009 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
@@ -396,7 +391,6 @@ interface Loopback100
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan100 |  Tenant_A_OP_Zone  |  -  |  10.10.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan200 |  Tenant_A_OP_Zone  |  -  |  20.20.20.1/24  |  -  |  -  |  -  |  -  |
 | Vlan210 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan3009 |  Tenant_A_OP_Zone  |  10.255.251.0/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.251.0/31  |  -  |  -  |  -  |  -  |  -  |
@@ -411,12 +405,6 @@ interface Vlan100
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.10.10.1/24
-!
-interface Vlan200
-   description VLAN200
-   no shutdown
-   vrf Tenant_A_OP_Zone
-   ip address virtual 20.20.20.1/24
 !
 interface Vlan210
    description Tenant_A_OP_Zone_1
@@ -463,7 +451,6 @@ interface Vlan4094
 | ---- | --- | ---------- | --------------- |
 | 100 | 10100 | - | - |
 | 110 | 10110 | - | - |
-| 200 | 10200 | - | - |
 | 210 | 10210 | - | - |
 
 #### VRF to VNI and Multicast Group Mappings
@@ -483,7 +470,6 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 100 vni 10100
    vxlan vlan 110 vni 10110
-   vxlan vlan 200 vni 10200
    vxlan vlan 210 vni 10210
    vxlan vrf Tenant_A_OP_Zone vni 10
 ```
@@ -644,7 +630,7 @@ router ospf 100
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Extend | 192.2.255.3:10110 | 10110:10110 | - | - | learned | 110 |
-| Tenant_A_OP_Zone | 192.2.255.3:10 | 10:10 | - | - | learned | 100,200,210 |
+| Tenant_A_OP_Zone | 192.2.255.3:10 | 10:10 | - | - | learned | 100,210 |
 
 ### Router BGP VRFs
 
@@ -695,7 +681,7 @@ router bgp 65201
       rd 192.2.255.3:10
       route-target both 10:10
       redistribute learned
-      vlan 100,200,210
+      vlan 100,210
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate

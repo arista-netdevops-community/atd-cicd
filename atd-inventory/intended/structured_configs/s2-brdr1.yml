@@ -16,13 +16,6 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       ebgp_multihop: 3
-    EVPN-OVERLAY-CORE:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 15
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: '65203'
@@ -36,20 +29,11 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-      EVPN-OVERLAY-CORE:
-        activate: false
       MLAG-IPv4-UNDERLAY-PEER:
         activate: true
   address_family_evpn:
-    neighbor_default:
-      next_hop_self_received_evpn_routes:
-        enable: true
-        inter_domain: true
     peer_groups:
       EVPN-OVERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-CORE:
-        domain_remote: true
         activate: true
   neighbors:
     192.2.255.1:
@@ -60,10 +44,6 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: s2-spine2
       remote_as: '65002'
-    192.0.255.7:
-      peer_group: EVPN-OVERLAY-CORE
-      description: s1-brdr1
-      remote_as: '65103'
   vrfs:
     Tenant_A_OP_Zone:
       router_id: 192.2.255.7
@@ -86,29 +66,17 @@ router_bgp:
       route_targets:
         both:
         - '10:10'
-        import_export_evpn_domains:
-        - domain: remote
-          route_target: '10:10'
       redistribute_routes:
       - learned
-      vlan: 100,200,210
-      rd_evpn_domain:
-        domain: remote
-        rd: 192.2.255.7:10
+      vlan: 100,210
     Extend:
       tenant: Tenant_A
       rd: 192.2.255.7:10110
       route_targets:
         both:
         - 10110:10110
-        import_export_evpn_domains:
-        - domain: remote
-          route_target: 10110:10110
       redistribute_routes:
       - learned
-      rd_evpn_domain:
-        domain: remote
-        rd: 192.2.255.7:10110
       vlan: '110'
 static_routes:
 - vrf: default
@@ -165,9 +133,6 @@ vlans:
   100:
     tenant: Tenant_A
     name: VLAN100
-  200:
-    tenant: Tenant_A
-    name: VLAN200
   210:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -201,14 +166,6 @@ vlan_interfaces:
     shutdown: false
     ip_address_virtual: 10.10.10.1/24
     vrf: Tenant_A_OP_Zone
-  Vlan200:
-    tenant: Tenant_A
-    tags:
-    - special
-    description: VLAN200
-    shutdown: false
-    ip_address_virtual: 20.20.20.1/24
-    vrf: Tenant_A_OP_Zone
   Vlan210:
     tenant: Tenant_A
     tags:
@@ -235,17 +192,6 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
-  Port-Channel4:
-    peer: s1-brdr1
-    peer_interface: Port-Channel4
-    peer_type: l3leaf
-    description: P2P_LINK_TO_s1-brdr1_Port-Channel4
-    type: routed
-    shutdown: false
-    mtu: 1500
-    ip_address: 172.16.200.1/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
 ethernet_interfaces:
   Ethernet1:
     peer: s2-brdr2
@@ -275,7 +221,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.32.255.17/31
+    ip_address: 172.31.255.17/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet3:
@@ -286,27 +232,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.32.255.19/31
+    ip_address: 172.31.255.19/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
-  Ethernet4:
-    peer: s1-brdr1
-    peer_interface: Port-Channel4
-    peer_type: l3leaf
-    description: P2P_LINK_TO_s1-brdr1_Port-Channel4
-    shutdown: false
-    channel_group:
-      id: 4
-      mode: active
-  Ethernet5:
-    peer: s1-brdr1
-    peer_interface: Port-Channel4
-    peer_type: l3leaf
-    description: P2P_LINK_TO_s1-brdr1_Port-Channel4
-    shutdown: false
-    channel_group:
-      id: 4
-      mode: active
 mlag_configuration:
   domain_id: ATD_BORDER-DC2
   local_interface: Vlan4094
@@ -340,7 +268,6 @@ router_ospf:
       - Ethernet2
       - Ethernet3
       - Vlan4093
-      - Port-Channel4
       bfd_enable: false
 router_bfd:
   multihop:
@@ -368,8 +295,6 @@ vxlan_interface:
       vlans:
         100:
           vni: 10100
-        200:
-          vni: 10200
         210:
           vni: 10210
         110:

@@ -256,8 +256,8 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet5 | routed | - | 172.32.255.13/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet5 | routed | - | 172.32.255.15/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet5 | routed | - | 172.31.255.13/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet5 | routed | - | 172.31.255.15/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -273,7 +273,7 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.13/31
+   ip address 172.31.255.13/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
@@ -282,7 +282,7 @@ interface Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.32.255.15/31
+   ip address 172.31.255.15/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !

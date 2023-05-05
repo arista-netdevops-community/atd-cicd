@@ -228,7 +228,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.32.255.13/31
+    ip_address: 172.31.255.13/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet3:
@@ -239,7 +239,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     type: routed
-    ip_address: 172.32.255.15/31
+    ip_address: 172.31.255.15/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Ethernet4:
