@@ -1,5 +1,4 @@
 ---
-
 CVP_DEVICES_INIT:
   - fqdn: s1-leaf1
     parentContainerName: STAGING
@@ -109,30 +108,6 @@ CVP_ATD_CONTAINER:
     parentContainerName: Tenant
 
 CVP_CONTAINERS_DELETE:
-  S1-Leaf:
-    parentContainerName: S1
-  S1-Brdr:
-    parentContainerName: S1
-  # S1-Core:
-  #   parentContainerName: S1
-  S1-Spine:
-    parentContainerName: S1
-  # S1-Hosts:
-  #   parentContainerName: S1
-  # S1:
-  #   parentContainerName: Tenant
-  S2-Leaf:
-    parentContainerName: S2
-  S2-Brdr:
-    parentContainerName: S2
-  # S2-Core:
-  #   parentContainerName: S2
-  S2-Spine:
-    parentContainerName: S2
-  # S2-Hosts:
-  #   parentContainerName: S2
-  # S2:
-  #   parentContainerName: Tenant
   ATD_LEAF1-DC1:
     parentContainerName: ATD_LEAFS-DC1
   ATD_LEAF2-DC1:
@@ -155,3 +130,28 @@ CVP_CONTAINERS_DELETE:
     parentContainerName: ATD_FABRIC
   ATD_FABRIC:
     parentContainerName: Tenant
+
+  # S1-Leaf:
+  #   parentContainerName: S1
+  # S1-Brdr:
+  #   parentContainerName: S1
+  # # S1-Core:
+  # #   parentContainerName: S1
+  # S1-Spine:
+  #   parentContainerName: S1
+  # # S1-Hosts:
+  # #   parentContainerName: S1
+  # # S1:
+  # #   parentContainerName: Tenant
+  # S2-Leaf:
+  #   parentContainerName: S2
+  # S2-Brdr:
+  #   parentContainerName: S2
+  # # S2-Core:
+  # #   parentContainerName: S2
+  # S2-Spine:
+  #   parentContainerName: S2
+  # # S2-Hosts:
+  # #   parentContainerName: S2
+  # # S2:
+  # #   parentContainerName: Tenant

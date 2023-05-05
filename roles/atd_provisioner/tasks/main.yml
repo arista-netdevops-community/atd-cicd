@@ -11,6 +11,7 @@
   arista.cvp.cv_device_v3:
     devices: "{{ CVP_DEVICES_INIT }}"
     state: present
+    apply_mode: strict
   register: cvp_device_results
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
