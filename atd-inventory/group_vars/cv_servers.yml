@@ -119,8 +119,8 @@ CVP_CONTAINERS_DELETE:
     parentContainerName: S1
   # S1-Hosts:
   #   parentContainerName: S1
-  S1:
-    parentContainerName: Tenant
+  # S1:
+  #   parentContainerName: Tenant
   S2-Leaf:
     parentContainerName: S2
   S2-Brdr:
@@ -131,13 +131,27 @@ CVP_CONTAINERS_DELETE:
     parentContainerName: S2
   # S2-Hosts:
   #   parentContainerName: S2
-  S2:
+  # S2:
+  #   parentContainerName: Tenant
+  ATD_LEAF1-DC1:
+    parentContainerName: ATD_LEAFS-DC1
+  ATD_LEAF2-DC1:
+    parentContainerName: ATD_LEAFS-DC1
+  ATD_BORDER-DC1:
+    parentContainerName: ATD_BORDER-DC1
+  ATD_SPINES-DC1:
+    parentContainerName: DC1
+  DC1:
+    parentContainerName: ATD_FABRIC
+  ATD_LEAF1-DC2:
+    parentContainerName: ATD_LEAFS-DC1
+  ATD_LEAF2-DC2:
+    parentContainerName: ATD_LEAFS-DC1
+  ATD_BORDER-DC2:
+    parentContainerName: ATD_BORDER-DC1
+  ATD_SPINES-DC2:
+    parentContainerName: DC1
+  DC2:
+    parentContainerName: ATD_FABRIC
+  ATD_FABRIC:
     parentContainerName: Tenant
-  # ATD_LEAF1-DC1:
-  #   parentContainerName: ATD_LEAFS-DC1
-  # ATD_LEAF2-DC1:
-  #   parentContainerName: ATD_LEAFS-DC1
-  # ATD_BORDER-DC1:
-  #   parentContainerName: ATD_BORDER-DC1
-  # ATD_SPINES:
-  #   parentContainerName: ATD_FABRIC
