@@ -43,12 +43,11 @@ l3leaf:
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
     filter:
-      tags: [ opzone ]
       # only_vlans_in_use: true
   node_groups:
     ATD_LEAF1-DC1:
-      # filter: 
-      #   tags: [ special, opzone ]
+      filter: 
+        tags: [ special, opzone ]
       bgp_as: 65101
       nodes:
         s1-leaf1:
@@ -60,6 +59,8 @@ l3leaf:
           mgmt_ip: 192.168.0.13/24
           uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
     ATD_LEAF2-DC1:
+      filter:
+        tags: [ opzone ]
       bgp_as: 65102
       nodes:
         s1-leaf3:
@@ -71,8 +72,8 @@ l3leaf:
           mgmt_ip: 192.168.0.15/24
           uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
     ATD_BORDER-DC1:
-      # filter: 
-      #   tags: [ special, opzone ]
+      filter: 
+        tags: [ special, opzone ]
       bgp_as: 65103
       nodes:
         s1-brdr1:

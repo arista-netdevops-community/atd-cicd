@@ -68,7 +68,7 @@ router_bgp:
         - '10:10'
       redistribute_routes:
       - learned
-      vlan: 100,210
+      vlan: 100,200,210
     Extend:
       tenant: Tenant_A
       rd: 192.0.255.4:10110
@@ -133,6 +133,9 @@ vlans:
   100:
     tenant: Tenant_A
     name: VLAN100
+  200:
+    tenant: Tenant_A
+    name: VLAN200
   210:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -165,6 +168,14 @@ vlan_interfaces:
     description: VLAN100
     shutdown: false
     ip_address_virtual: 10.10.10.1/24
+    vrf: Tenant_A_OP_Zone
+  Vlan200:
+    tenant: Tenant_A
+    tags:
+    - special
+    description: VLAN200
+    shutdown: false
+    ip_address_virtual: 20.20.20.1/24
     vrf: Tenant_A_OP_Zone
   Vlan210:
     tenant: Tenant_A
@@ -314,6 +325,8 @@ vxlan_interface:
       vlans:
         100:
           vni: 10100
+        200:
+          vni: 10200
         210:
           vni: 10210
         110:
