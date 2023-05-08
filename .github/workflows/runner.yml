@@ -30,18 +30,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: yaml-lint
-        uses: ibiqlik/action-yamllint@v3
-        with:
-          file_or_dir: atd-inventory/group_vars/
-          config_file: .yamllint.yml
+      # - name: yaml-lint
+      #   uses: ibiqlik/action-yamllint@v3
+      #   with:
+      #     file_or_dir: atd-inventory/group_vars/
+      #     config_file: .yamllint.yml
 
+      # - name: Build Configurations
+      #   run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-build.yml
       - name: Build Configurations
-        run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-build.yml
+        run: ansible-playbook -i atd-inventory/inventory-act.yml playbooks/atd-fabric-build.yml
+
+      # - name: Deploy Configurations
+      #   run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-provision.yml
 
       - name: Deploy Configurations
-        run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-provision.yml
-
+        run: ansible-playbook -i atd-inventory/inventory-act.yml playbooks/atd-fabric-provision.yml
 
 
 
