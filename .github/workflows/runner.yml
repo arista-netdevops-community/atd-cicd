@@ -15,26 +15,26 @@ jobs:
     # runs-on: ubuntu-latest
     runs-on: self-hosted
     steps:
-      - name: Install Ansible
-        run: pip install ansible
+      # - name: Install Ansible
+      #   run: pip install ansible
 
-      - name: Install Arista AVD
-        run: ansible-galaxy collection install arista.avd:>=3.8
+      # - name: Install Arista AVD
+      #   run: ansible-galaxy collection install arista.avd:>=3.8
 
-      - name: Install AVD Requirements
-        run: sudo pip install -r ~/.ansible/collections/ansible_collections/arista/avd/requirements.txt
+      # - name: Install AVD Requirements
+      #   run: sudo pip install -r ~/.ansible/collections/ansible_collections/arista/avd/requirements.txt
 
-      - name: Upgrade requests to 2.27.0 or above
-        run: pip install requests>=2.27.0 --upgrade
+      # - name: Upgrade requests to 2.27.0 or above
+      #   run: pip install requests>=2.27.0 --upgrade
 
-      - name: Install OpenVPN
-        run: sudo apt install openvpn
+      # - name: Install OpenVPN
+      #   run: sudo apt install openvpn
 
-      - name: Checkout
-        uses: actions/checkout@v3
+      # - name: Checkout
+      #   uses: actions/checkout@v3
 
-      - name: VPN Setup
-        run: sudo cp act-files/act-openvpn-profile.ovpn /etc/openvpn/client.conf
+      # - name: VPN Setup
+      #   run: sudo cp act-files/act-openvpn-profile.ovpn /etc/openvpn/client.conf
 
       - name: Start VPN
         run: sudo systemctl start openvpn@client
