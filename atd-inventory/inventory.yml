@@ -13,7 +13,7 @@ all:
           children:
             DC1:
               children:
-                ATD_SPINES-DC1:
+                ATD_SPINES_DC1:
                   vars:
                     type: spine
                   hosts:
@@ -21,9 +21,9 @@ all:
                       ansible_host: 192.168.0.10
                     s1-spine2:
                       ansible_host: 192.168.0.11
-                ATD_LEAFS-DC1:
+                ATD_LEAFS_DC1:
                   children:
-                    ATD_LEAF1-DC1:
+                    ATD_LEAF1_DC1:
                       vars:
                         type: l3leaf
                       hosts:
@@ -31,7 +31,7 @@ all:
                           ansible_host: 192.168.0.12
                         s1-leaf2:
                           ansible_host: 192.168.0.13
-                    ATD_LEAF2-DC1:
+                    ATD_LEAF2_DC1:
                       vars:
                         type: l3leaf
                       hosts:
@@ -39,7 +39,7 @@ all:
                           ansible_host: 192.168.0.14
                         s1-leaf4:
                           ansible_host: 192.168.0.15
-                    ATD_BORDER-DC1:
+                    ATD_BORDER_DC1:
                       vars:
                         type: l3leaf
                       hosts:
@@ -49,7 +49,7 @@ all:
                           ansible_host: 192.168.0.101
             DC2:
               children:
-                ATD_SPINES-DC2:
+                ATD_SPINES_DC2:
                   vars:
                     type: spine
                   hosts:
@@ -57,9 +57,9 @@ all:
                       ansible_host: 192.168.0.20
                     s2-spine2:
                       ansible_host: 192.168.0.21
-                ATD_LEAFS-DC2:
+                ATD_LEAFS_DC2:
                   children:
-                    ATD_LEAF1-DC2:
+                    ATD_LEAF1_DC2:
                       vars:
                         type: l3leaf
                       hosts:
@@ -67,7 +67,7 @@ all:
                           ansible_host: 192.168.0.22
                         s2-leaf2:
                           ansible_host: 192.168.0.23
-                    ATD_LEAF2-DC2:
+                    ATD_LEAF2_DC2:
                       vars:
                         type: l3leaf
                       hosts:
@@ -75,7 +75,7 @@ all:
                           ansible_host: 192.168.0.24
                         s2-leaf4:
                           ansible_host: 192.168.0.25
-                    ATD_BORDER-DC2:
+                    ATD_BORDER_DC2:
                       vars:
                         type: l3leaf
                       hosts:
@@ -85,12 +85,12 @@ all:
                           ansible_host: 192.168.0.201
         ATD_TENANTS_NETWORKS:
           children:
-            ATD_LEAFS-DC1:
-            ATD_LEAFS-DC2:
+            ATD_LEAFS_DC1:
+            ATD_LEAFS_DC2:
         ATD_SERVERS:
           children:
-            ATD_LEAFS-DC1:
-            ATD_LEAFS-DC2:
+            ATD_LEAFS_DC1:
+            ATD_LEAFS_DC2:
 
 
   vars:
