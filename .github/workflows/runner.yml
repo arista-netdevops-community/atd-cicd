@@ -1,4 +1,7 @@
 name: Test the dev network
+# To enable runner on ansible server:
+#   source ~/venv/bin/activate
+#   ./run.sh
 
 on:
   push:
@@ -9,7 +12,8 @@ jobs:
       net: dev
       PASS: ${{ secrets.PASS }}
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Install Ansible
         run: pip install ansible
@@ -23,8 +27,19 @@ jobs:
       - name: Upgrade requests to 2.27.0 or above
         run: pip install requests>=2.27.0 --upgrade
 
+      - name: Install OpenVPN
+        run: sudo apt install openvpn
+
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: VPN Setup
+        run: sudo cp act-files/act-openvpn-profile.ovpn /etc/openvpn/client.conf
+
+      - name: Start VPN
+        run: sudo systemctl start openvpn@client
+      - name: sleep
+        run: sleep 3
 
       - name: yaml-lint
         uses: ibiqlik/action-yamllint@v3

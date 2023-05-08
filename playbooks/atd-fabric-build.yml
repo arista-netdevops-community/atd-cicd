@@ -15,3 +15,16 @@
     - name: Generate device intended config and documentation
       ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
+
+    # - name: Build an ACT topolgy
+    #   ansible.builtin.import_role:
+    #   # import_role:
+    #     name: act_topology_gen
+    #   vars:
+    #     veos_version: 4.29.0.2F
+    #     act_veos_username: cvpadmin
+    #     act_veos_password: cvp123!
+    #     act_generic_user: ansible
+    #     act_generic_password: ansible
+    #     act_ansible_node_ip: 192.168.0.6
+    #     act_cvp_version: 2022.2.0
