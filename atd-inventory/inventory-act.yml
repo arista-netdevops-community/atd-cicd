@@ -1,0 +1,108 @@
+---
+all:
+  children:
+    cv_servers:
+      hosts:
+        cv_atd1:
+          ansible_host: 192.168.0.5
+          cv_collection: v3
+          execute_tasks: true
+    ATD_LAB:
+      children:
+        ATD_FABRIC:
+          children:
+            DC1:
+              children:
+                ATD_SPINES-DC1:
+                  vars:
+                    type: spine
+                  hosts:
+                    s1-spine1:
+                      ansible_host: 192.168.0.10
+                    s1-spine2:
+                      ansible_host: 192.168.0.11
+                ATD_LEAFS-DC1:
+                  children:
+                    ATD_LEAF1-DC1:
+                      vars:
+                        type: l3leaf
+                      hosts:
+                        s1-leaf1:
+                          ansible_host: 192.168.0.12
+                        s1-leaf2:
+                          ansible_host: 192.168.0.13
+                    ATD_LEAF2-DC1:
+                      vars:
+                        type: l3leaf
+                      hosts:
+                        s1-leaf3:
+                          ansible_host: 192.168.0.14
+                        s1-leaf4:
+                          ansible_host: 192.168.0.15
+                    ATD_BORDER-DC1:
+                      vars:
+                        type: l3leaf
+                      hosts:
+                        s1-brdr1:
+                          ansible_host: 192.168.0.100
+                        s1-brdr2:
+                          ansible_host: 192.168.0.101
+            DC2:
+              children:
+                ATD_SPINES-DC2:
+                  vars:
+                    type: spine
+                  hosts:
+                    s2-spine1:
+                      ansible_host: 192.168.0.20
+                    s2-spine2:
+                      ansible_host: 192.168.0.21
+                ATD_LEAFS-DC2:
+                  children:
+                    ATD_LEAF1-DC2:
+                      vars:
+                        type: l3leaf
+                      hosts:
+                        s2-leaf1:
+                          ansible_host: 192.168.0.22
+                        s2-leaf2:
+                          ansible_host: 192.168.0.23
+                    ATD_LEAF2-DC2:
+                      vars:
+                        type: l3leaf
+                      hosts:
+                        s2-leaf3:
+                          ansible_host: 192.168.0.24
+                        s2-leaf4:
+                          ansible_host: 192.168.0.25
+                    ATD_BORDER-DC2:
+                      vars:
+                        type: l3leaf
+                      hosts:
+                        s2-brdr1:
+                          ansible_host: 192.168.0.200
+                        s2-brdr2:
+                          ansible_host: 192.168.0.201
+        ATD_TENANTS_NETWORKS:
+          children:
+            ATD_LEAFS-DC1:
+            ATD_LEAFS-DC2:
+        ATD_SERVERS:
+          children:
+            ATD_LEAFS-DC1:
+            ATD_LEAFS-DC2:
+
+
+  vars:
+    ansible_user: cvpadmin
+    ansible_password: "cvp123!"
+    ansible_network_os: arista.eos.eos
+    # Configure privilege escalation
+    ansible_become: true
+    ansible_become_method: enable
+    # HTTPAPI configuration
+    ansible_connection: httpapi
+    ansible_httpapi_port: 443
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_python_interpreter: $(which python3)
