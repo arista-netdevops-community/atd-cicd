@@ -12,34 +12,23 @@ jobs:
       net: dev
       PASS: ${{ secrets.PASS }}
     timeout-minutes: 15
-    # runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
     steps:
-      # - name: Install Ansible
-      #   run: pip install ansible
+      - name: Install Ansible
+        run: pip install ansible
 
-      # - name: Install Arista AVD
-      #   run: ansible-galaxy collection install arista.avd:>=3.8
+      - name: Install Arista AVD
+        run: ansible-galaxy collection install arista.avd:>=3.8
 
-      # - name: Install AVD Requirements
-      #   run: sudo pip install -r ~/.ansible/collections/ansible_collections/arista/avd/requirements.txt
+      - name: Install AVD Requirements
+        run: sudo pip install -r ~/.ansible/collections/ansible_collections/arista/avd/requirements.txt
 
-      # - name: Upgrade requests to 2.27.0 or above
-      #   run: pip install requests>=2.27.0 --upgrade
+      - name: Upgrade requests to 2.27.0 or above
+        run: pip install requests>=2.27.0 --upgrade
 
-      # - name: Install OpenVPN
-      #   run: sudo apt install openvpn
-
-      # - name: Checkout
-      #   uses: actions/checkout@v3
-
-      # - name: VPN Setup
-      #   run: sudo cp act-files/act-openvpn-profile.ovpn /etc/openvpn/client.conf
-
-      - name: Start VPN
-        run: sudo systemctl start openvpn@client
-      - name: sleep
-        run: sleep 3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: yaml-lint
         uses: ibiqlik/action-yamllint@v3
@@ -52,3 +41,18 @@ jobs:
 
       - name: Deploy Configurations
         run: ansible-playbook -i atd-inventory/inventory.yml playbooks/atd-fabric-provision.yml
+
+
+
+
+
+      # - name: Install OpenVPN
+      #   run: sudo apt install openvpn
+
+      # - name: VPN Setup
+      #   run: sudo cp act-files/act-openvpn-profile.ovpn /etc/openvpn/client.conf
+
+      # - name: Start VPN
+      #   run: sudo systemctl start openvpn@client
+      # - name: sleep
+      #   run: sleep 3
