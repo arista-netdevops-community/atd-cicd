@@ -1,93 +1,21 @@
 ---
 cvp_devices:
-  - fqdn: s1-brdr1
-    parentContainerName: ATD_BORDER_DC1
+  - fqdn: s1-core1
+    parentContainerName: CORE
     configlets:
-      - AVD_s1-brdr1
-  - fqdn: s1-brdr2
-    parentContainerName: ATD_BORDER_DC1
+      - AVD_s1-core1
+  - fqdn: s1-core2
+    parentContainerName: CORE
     configlets:
-      - AVD_s1-brdr2
-  - fqdn: s1-leaf1
-    parentContainerName: ATD_LEAF1_DC1
+      - AVD_s1-core2
+  - fqdn: s2-core1
+    parentContainerName: CORE
     configlets:
-      - AVD_s1-leaf1
-  - fqdn: s1-leaf2
-    parentContainerName: ATD_LEAF1_DC1
+      - AVD_s2-core1
+  - fqdn: s2-core2
+    parentContainerName: CORE
     configlets:
-      - AVD_s1-leaf2
-  - fqdn: s1-leaf3
-    parentContainerName: ATD_LEAF2_DC1
-    configlets:
-      - AVD_s1-leaf3
-  - fqdn: s1-leaf4
-    parentContainerName: ATD_LEAF2_DC1
-    configlets:
-      - AVD_s1-leaf4
-  - fqdn: s1-spine1
-    parentContainerName: ATD_SPINES_DC1
-    configlets:
-      - AVD_s1-spine1
-  - fqdn: s1-spine2
-    parentContainerName: ATD_SPINES_DC1
-    configlets:
-      - AVD_s1-spine2
-  - fqdn: s2-brdr1
-    parentContainerName: ATD_BORDER_DC2
-    configlets:
-      - AVD_s2-brdr1
-  - fqdn: s2-brdr2
-    parentContainerName: ATD_BORDER_DC2
-    configlets:
-      - AVD_s2-brdr2
-  - fqdn: s2-leaf1
-    parentContainerName: ATD_LEAF1_DC2
-    configlets:
-      - AVD_s2-leaf1
-  - fqdn: s2-leaf2
-    parentContainerName: ATD_LEAF1_DC2
-    configlets:
-      - AVD_s2-leaf2
-  - fqdn: s2-leaf3
-    parentContainerName: ATD_LEAF2_DC2
-    configlets:
-      - AVD_s2-leaf3
-  - fqdn: s2-leaf4
-    parentContainerName: ATD_LEAF2_DC2
-    configlets:
-      - AVD_s2-leaf4
-  - fqdn: s2-spine1
-    parentContainerName: ATD_SPINES_DC2
-    configlets:
-      - AVD_s2-spine1
-  - fqdn: s2-spine2
-    parentContainerName: ATD_SPINES_DC2
-    configlets:
-      - AVD_s2-spine2
+      - AVD_s2-core2
 cvp_containers:
-  ATD_BORDER_DC1:
-    parentContainerName: ATD_LEAFS_DC1
-  ATD_BORDER_DC2:
-    parentContainerName: ATD_LEAFS_DC2
-  ATD_FABRIC:
+  CORE:
     parentContainerName: Tenant
-  ATD_LEAF1_DC1:
-    parentContainerName: ATD_LEAFS_DC1
-  ATD_LEAF1_DC2:
-    parentContainerName: ATD_LEAFS_DC2
-  ATD_LEAF2_DC1:
-    parentContainerName: ATD_LEAFS_DC1
-  ATD_LEAF2_DC2:
-    parentContainerName: ATD_LEAFS_DC2
-  ATD_LEAFS_DC1:
-    parentContainerName: DC1
-  ATD_LEAFS_DC2:
-    parentContainerName: DC2
-  ATD_SPINES_DC1:
-    parentContainerName: DC1
-  ATD_SPINES_DC2:
-    parentContainerName: DC2
-  DC1:
-    parentContainerName: ATD_FABRIC
-  DC2:
-    parentContainerName: ATD_FABRIC

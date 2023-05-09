@@ -252,8 +252,8 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet8 | routed | - | 172.31.255.21/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet8 | routed | - | 172.31.255.23/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet8 | routed | - | 172.30.12.21/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet8 | routed | - | 172.30.12.23/31 | default | 1500 | False | - | - |
 | Ethernet5 | s2 Border Leaf 1 | routed | - | 172.16.200.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -270,14 +270,14 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.21/31
+   ip address 172.30.12.21/31
 !
 interface Ethernet3
    description P2P_LINK_TO_S2-SPINE2_Ethernet8
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.23/31
+   ip address 172.30.12.23/31
 !
 interface Ethernet5
    description s2 Border Leaf 1
@@ -585,8 +585,8 @@ ip route 0.0.0.0/0 192.168.0.1
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
 | 10.255.251.8 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
 | 172.16.200.2 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.31.255.20 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.31.255.22 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.12.20 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.12.22 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.2.255.1 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.2.255.2 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 10.255.251.8 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
@@ -647,12 +647,12 @@ router bgp 65203
    neighbor 172.16.200.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.200.2 remote-as 65103
    neighbor 172.16.200.2 description s1-brdr2
-   neighbor 172.31.255.20 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.31.255.20 remote-as 65002
-   neighbor 172.31.255.20 description s2-spine1_Ethernet8
-   neighbor 172.31.255.22 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.31.255.22 remote-as 65002
-   neighbor 172.31.255.22 description s2-spine2_Ethernet8
+   neighbor 172.30.12.20 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.12.20 remote-as 65002
+   neighbor 172.30.12.20 description s2-spine1_Ethernet8
+   neighbor 172.30.12.22 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.12.22 remote-as 65002
+   neighbor 172.30.12.22 description s2-spine2_Ethernet8
    neighbor 192.2.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.2.255.1 remote-as 65002
    neighbor 192.2.255.1 description s2-spine1

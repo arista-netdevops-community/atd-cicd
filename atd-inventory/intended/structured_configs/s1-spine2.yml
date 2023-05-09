@@ -32,27 +32,27 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 172.30.255.3
+  - ip_address: 172.30.11.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     description: s1-leaf1_Ethernet3
-  - ip_address: 172.30.255.7
+  - ip_address: 172.30.11.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     description: s1-leaf2_Ethernet3
-  - ip_address: 172.30.255.11
+  - ip_address: 172.30.11.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: s1-leaf3_Ethernet3
-  - ip_address: 172.30.255.15
+  - ip_address: 172.30.11.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: s1-leaf4_Ethernet3
-  - ip_address: 172.30.255.19
+  - ip_address: 172.30.11.19
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65103'
     description: s1-brdr1_Ethernet3
-  - ip_address: 172.30.255.23
+  - ip_address: 172.30.11.23
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65103'
     description: s1-brdr2_Ethernet3
@@ -126,7 +126,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.2/31
+  ip_address: 172.30.11.2/31
 - name: Ethernet3
   peer: s1-leaf2
   peer_interface: Ethernet3
@@ -135,7 +135,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.6/31
+  ip_address: 172.30.11.6/31
 - name: Ethernet4
   peer: s1-leaf3
   peer_interface: Ethernet3
@@ -144,7 +144,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.10/31
+  ip_address: 172.30.11.10/31
 - name: Ethernet5
   peer: s1-leaf4
   peer_interface: Ethernet3
@@ -153,7 +153,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.14/31
+  ip_address: 172.30.11.14/31
 - name: Ethernet7
   peer: s1-brdr1
   peer_interface: Ethernet3
@@ -162,7 +162,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.18/31
+  ip_address: 172.30.11.18/31
 - name: Ethernet8
   peer: s1-brdr2
   peer_interface: Ethernet3
@@ -171,7 +171,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.22/31
+  ip_address: 172.30.11.22/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

@@ -1,0 +1,198 @@
+router_bgp:
+  as: '65503'
+  router_id: 10.200.10.3
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    password: AQQvKeimxJu+uGQ/yYvv9w==
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 10.255.0.8
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65505'
+    description: s2-core2_Ethernet1
+  - ip_address: 10.255.0.3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65501'
+    description: s1-core1_Ethernet4
+  - ip_address: 10.255.0.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65505'
+    description: s2-core2_Ethernet6
+  - ip_address: 10.200.10.1
+    peer_group: EVPN-OVERLAY-PEERS
+    description: s1-core1
+    remote_as: '65501'
+  - ip_address: 10.200.10.4
+    peer_group: EVPN-OVERLAY-PEERS
+    description: s2-core2
+    remote_as: '65505'
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vlans:
+  - id: 2100
+    tenant: Tenant_A
+    rd: 10.200.10.3:12100
+    route_targets:
+      both:
+      - 12100:12100
+    redistribute_routes:
+    - learned
+  - id: 2200
+    tenant: Tenant_A
+    rd: 10.200.10.3:12200
+    route_targets:
+      both:
+      - 12200:12200
+    redistribute_routes:
+    - learned
+static_routes:
+- vrf: default
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.0.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+ip_name_servers:
+- ip_address: 192.168.2.1
+  vrf: default
+- ip_address: 8.8.8.8
+  vrf: default
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 16384
+vrfs:
+- name: default
+  ip_routing: false
+management_interfaces:
+- name: Management0
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.202/24
+  gateway: 192.168.0.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: s2-core2
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_S2-CORE2_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.0.9/31
+- name: Ethernet4
+  peer: s1-core1
+  peer_interface: Ethernet4
+  peer_type: l3leaf
+  description: P2P_LINK_TO_S1-CORE1_Ethernet4
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.0.2/31
+- name: Ethernet6
+  peer: s2-core2
+  peer_interface: Ethernet6
+  peer_type: l3leaf
+  description: P2P_LINK_TO_S2-CORE2_Ethernet6
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.0.12/31
+- name: Ethernet2
+  peer: CORE_LINK1
+  peer_type: network_port
+  port_profile: CORE_LINK1
+  description: CORE_LINK1
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '2100'
+  spanning_tree_portfast: edge
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.200.10.3/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.200.20.3/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.200.10.0/24 eq 32
+  - sequence: 20
+    action: permit 10.200.20.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+vlans:
+- id: 2100
+  name: CORE_LINK1
+  tenant: Tenant_A
+- id: 2200
+  name: CORE_LINK2
+  tenant: Tenant_A
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:cc:01
+vxlan_interface:
+  Vxlan1:
+    description: s2-core1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      vlans:
+      - id: 2100
+        vni: 12100
+      - id: 2200
+        vni: 12200

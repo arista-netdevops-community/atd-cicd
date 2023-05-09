@@ -14,9 +14,9 @@ cvp_configlets:
     trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n
     \  description MLAG_PEER_s1-brdr2_Ethernet1\n   no shutdown\n   channel-group
     1 mode active\n!\ninterface Ethernet2\n   description P2P_LINK_TO_S1-SPINE1_Ethernet7\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.17/31\n!\ninterface
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.17/31\n!\ninterface
     Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet7\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.30.255.19/31\n!\ninterface Ethernet4\n
+    1500\n   no switchport\n   ip address 172.30.11.19/31\n!\ninterface Ethernet4\n
     \  description s1 Border Leaf 1\n   no shutdown\n   mtu 1500\n   no switchport\n
     \  ip address 172.16.200.0/31\n!\ninterface Ethernet6\n   description MLAG_PEER_s1-brdr2_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -68,33 +68,33 @@ cvp_configlets:
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.9
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.9 description s1-brdr2\n
     \  neighbor 172.16.200.1 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.16.200.1
-    remote-as 65203\n   neighbor 172.16.200.1 description s2-brdr1\n   neighbor 172.30.255.16
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.16 remote-as 65001\n   neighbor
-    172.30.255.16 description s1-spine1_Ethernet7\n   neighbor 172.30.255.18 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.18 remote-as 65001\n   neighbor
-    172.30.255.18 description s1-spine2_Ethernet7\n   neighbor 192.0.255.1 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n   neighbor 192.0.255.1
-    description s1-spine1\n   neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n
-    \  neighbor 192.2.255.7 peer group EVPN-OVERLAY-CORE\n   neighbor 192.2.255.7
-    remote-as 65203\n   neighbor 192.2.255.7 description s2-brdr1\n   redistribute
-    connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle Extend\n      rd
-    192.0.255.7:10110\n      rd evpn domain remote 192.0.255.7:10110\n      route-target
-    both 10110:10110\n      route-target import export evpn domain remote 10110:10110\n
-    \     redistribute learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n
-    \     rd 192.0.255.7:10\n      rd evpn domain remote 192.0.255.7:10\n      route-target
-    both 10:10\n      route-target import export evpn domain remote 10:10\n      redistribute
-    learned\n      vlan 100,200,210\n   !\n   address-family evpn\n      neighbor
-    EVPN-OVERLAY-CORE activate\n      neighbor EVPN-OVERLAY-CORE domain remote\n      neighbor
-    EVPN-OVERLAY-PEERS activate\n      neighbor default next-hop-self received-evpn-routes
-    route-type ip-prefix inter-domain\n   !\n   address-family ipv4\n      no neighbor
-    EVPN-OVERLAY-CORE activate\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor
-    IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n
-    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.0.255.7:10\n      route-target import
-    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.0.255.7\n
-    \     neighbor 10.255.251.9 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf default\n      no shutdown\n!\nend\n"
+    remote-as 65203\n   neighbor 172.16.200.1 description s2-brdr1\n   neighbor 172.30.11.16
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.16 remote-as 65001\n   neighbor
+    172.30.11.16 description s1-spine1_Ethernet7\n   neighbor 172.30.11.18 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.18 remote-as 65001\n   neighbor 172.30.11.18
+    description s1-spine2_Ethernet7\n   neighbor 192.0.255.1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 192.0.255.1 remote-as 65001\n   neighbor 192.0.255.1 description s1-spine1\n
+    \  neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.2
+    remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n   neighbor 192.2.255.7
+    peer group EVPN-OVERLAY-CORE\n   neighbor 192.2.255.7 remote-as 65203\n   neighbor
+    192.2.255.7 description s2-brdr1\n   redistribute connected route-map RM-CONN-2-BGP\n
+    \  !\n   vlan-aware-bundle Extend\n      rd 192.0.255.7:10110\n      rd evpn domain
+    remote 192.0.255.7:10110\n      route-target both 10110:10110\n      route-target
+    import export evpn domain remote 10110:10110\n      redistribute learned\n      vlan
+    110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.0.255.7:10\n      rd
+    evpn domain remote 192.0.255.7:10\n      route-target both 10:10\n      route-target
+    import export evpn domain remote 10:10\n      redistribute learned\n      vlan
+    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-CORE activate\n
+    \     neighbor EVPN-OVERLAY-CORE domain remote\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n      neighbor default next-hop-self received-evpn-routes route-type
+    ip-prefix inter-domain\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-CORE
+    activate\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_OP_Zone\n
+    \     rd 192.0.255.7:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 192.0.255.7\n      neighbor 10.255.251.9 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nmanagement api
+    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf default\n      no
+    shutdown\n!\nend\n"
   AVD_s1-brdr2: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
     1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
     model multi-agent\n!\nhostname s1-brdr2\nip name-server vrf default 8.8.8.8\nip
@@ -110,9 +110,9 @@ cvp_configlets:
     trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n
     \  description MLAG_PEER_s1-brdr1_Ethernet1\n   no shutdown\n   channel-group
     1 mode active\n!\ninterface Ethernet2\n   description P2P_LINK_TO_S1-SPINE1_Ethernet8\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.21/31\n!\ninterface
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.21/31\n!\ninterface
     Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet8\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.30.255.23/31\n!\ninterface Ethernet5\n
+    1500\n   no switchport\n   ip address 172.30.11.23/31\n!\ninterface Ethernet5\n
     \  description s1 Border Leaf 1\n   no shutdown\n   mtu 1500\n   no switchport\n
     \  ip address 172.16.200.2/31\n!\ninterface Ethernet6\n   description MLAG_PEER_s1-brdr1_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -161,26 +161,124 @@ cvp_configlets:
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.8
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.8 description s1-brdr1\n
     \  neighbor 172.16.200.3 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.16.200.3
-    remote-as 65203\n   neighbor 172.16.200.3 description s2-brdr2\n   neighbor 172.30.255.20
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.20 remote-as 65001\n   neighbor
-    172.30.255.20 description s1-spine1_Ethernet8\n   neighbor 172.30.255.22 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.22 remote-as 65001\n   neighbor
-    172.30.255.22 description s1-spine2_Ethernet8\n   neighbor 192.0.255.1 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n   neighbor 192.0.255.1
-    description s1-spine1\n   neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle
-    Extend\n      rd 192.0.255.8:10110\n      route-target both 10110:10110\n      redistribute
-    learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd
-    192.0.255.8:10\n      route-target both 10:10\n      redistribute learned\n      vlan
-    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
-    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
-    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
-    activate\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.0.255.8:10\n      route-target
-    import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.0.255.8\n
+    remote-as 65203\n   neighbor 172.16.200.3 description s2-brdr2\n   neighbor 172.30.11.20
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.20 remote-as 65001\n   neighbor
+    172.30.11.20 description s1-spine1_Ethernet8\n   neighbor 172.30.11.22 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.22 remote-as 65001\n   neighbor 172.30.11.22
+    description s1-spine2_Ethernet8\n   neighbor 192.0.255.1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 192.0.255.1 remote-as 65001\n   neighbor 192.0.255.1 description s1-spine1\n
+    \  neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.2
+    remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle Extend\n      rd
+    192.0.255.8:10110\n      route-target both 10110:10110\n      redistribute learned\n
+    \     vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.0.255.8:10\n
+    \     route-target both 10:10\n      redistribute learned\n      vlan 100,200,210\n
+    \  !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n
+    \  address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor
+    IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n
+    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.0.255.8:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.0.255.8\n
     \     neighbor 10.255.251.8 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
     connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
     \  !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s1-core1: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s1-core1\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    mstp\nspanning-tree mst 0 priority 16384\n!\nno enable password\nno aaa root\n!\nvlan
+    2100\n   name CORE_LINK1\n!\nvlan 2200\n   name CORE_LINK2\n!\ninterface Ethernet1\n
+    \  description P2P_LINK_TO_S1-CORE2_Ethernet1\n   no shutdown\n   mtu 1500\n   no
+    switchport\n   ip address 10.255.0.1/31\n!\ninterface Ethernet2\n   description
+    CORE_LINK1\n   no shutdown\n   switchport access vlan 2100\n   switchport mode
+    access\n   switchport\n   spanning-tree portfast\n!\ninterface Ethernet4\n   description
+    P2P_LINK_TO_S2-CORE1_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.0.3/31\n!\ninterface Ethernet6\n   description P2P_LINK_TO_S1-CORE2_Ethernet6\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.0.4/31\n!\ninterface
+    Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
+    10.200.10.1/32\n!\ninterface Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n
+    \  no shutdown\n   ip address 10.200.20.1/32\n!\ninterface Management0\n   description
+    oob_management\n   no shutdown\n   ip address 192.168.0.102/24\n!\ninterface Vxlan1\n
+    \  description s1-core1_VTEP\n   vxlan source-interface Loopback1\n   vxlan udp-port
+    4789\n   vxlan vlan 2100 vni 12100\n   vxlan vlan 2200 vni 12200\n!\nip virtual-router
+    mac-address 00:1c:73:00:cc:01\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
+    \  seq 10 permit 10.200.10.0/24 eq 32\n   seq 20 permit 10.200.20.0/24 eq 32\n!\nip
+    route 0.0.0.0/0 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip
+    address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65501\n   router-id 10.200.10.1\n
+    \  no bgp default ipv4-unicast\n   distance bgp 20 200 200\n   graceful-restart
+    restart-time 300\n   graceful-restart\n   maximum-paths 4 ecmp 4\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.200.10.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.2 remote-as 65502\n   neighbor 10.200.10.2 description s1-core2\n
+    \  neighbor 10.200.10.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.200.10.3
+    remote-as 65503\n   neighbor 10.200.10.3 description s2-core1\n   neighbor 10.255.0.0
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.0 remote-as 65502\n   neighbor
+    10.255.0.0 description s1-core2_Ethernet1\n   neighbor 10.255.0.2 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.255.0.2 remote-as 65503\n   neighbor 10.255.0.2 description s2-core1_Ethernet4\n
+    \  neighbor 10.255.0.5 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.5
+    remote-as 65502\n   neighbor 10.255.0.5 description s1-core2_Ethernet6\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   vlan 2100\n      rd 10.200.10.1:12100\n
+    \     route-target both 12100:12100\n      redistribute learned\n   !\n   vlan
+    2200\n      rd 10.200.10.1:12200\n      route-target both 12200:12200\n      redistribute
+    learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s1-core2: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s1-core2\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    mstp\nspanning-tree mst 0 priority 16384\n!\nno enable password\nno aaa root\n!\nvlan
+    2100\n   name CORE_LINK1\n!\nvlan 2200\n   name CORE_LINK2\n!\ninterface Ethernet1\n
+    \  description P2P_LINK_TO_S1-CORE1_Ethernet1\n   no shutdown\n   mtu 1500\n   no
+    switchport\n   ip address 10.255.0.0/31\n!\ninterface Ethernet3\n   description
+    CORE_LINK2\n   no shutdown\n   switchport access vlan 2200\n   switchport mode
+    access\n   switchport\n   spanning-tree portfast\n!\ninterface Ethernet4\n   description
+    P2P_LINK_TO_S2-CORE2_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.0.7/31\n!\ninterface Ethernet6\n   description P2P_LINK_TO_S1-CORE1_Ethernet6\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.0.5/31\n!\ninterface
+    Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
+    10.200.10.2/32\n!\ninterface Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n
+    \  no shutdown\n   ip address 10.200.20.2/32\n!\ninterface Management0\n   description
+    oob_management\n   no shutdown\n   ip address 192.168.0.103/24\n!\ninterface Vxlan1\n
+    \  description s1-core2_VTEP\n   vxlan source-interface Loopback1\n   vxlan udp-port
+    4789\n   vxlan vlan 2100 vni 12100\n   vxlan vlan 2200 vni 12200\n!\nip virtual-router
+    mac-address 00:1c:73:00:cc:01\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
+    \  seq 10 permit 10.200.10.0/24 eq 32\n   seq 20 permit 10.200.20.0/24 eq 32\n!\nip
+    route 0.0.0.0/0 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip
+    address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65502\n   router-id 10.200.10.2\n
+    \  no bgp default ipv4-unicast\n   distance bgp 20 200 200\n   graceful-restart
+    restart-time 300\n   graceful-restart\n   maximum-paths 4 ecmp 4\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.200.10.1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.1 remote-as 65501\n   neighbor 10.200.10.1 description s1-core1\n
+    \  neighbor 10.200.10.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.200.10.4
+    remote-as 65505\n   neighbor 10.200.10.4 description s2-core2\n   neighbor 10.255.0.1
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.1 remote-as 65501\n   neighbor
+    10.255.0.1 description s1-core1_Ethernet1\n   neighbor 10.255.0.4 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.255.0.4 remote-as 65501\n   neighbor 10.255.0.4 description s1-core1_Ethernet6\n
+    \  neighbor 10.255.0.6 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.6
+    remote-as 65505\n   neighbor 10.255.0.6 description s2-core2_Ethernet4\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   vlan 2100\n      rd 10.200.10.2:12100\n
+    \     route-target both 12100:12100\n      redistribute learned\n   !\n   vlan
+    2200\n      rd 10.200.10.2:12200\n      route-target both 12200:12200\n      redistribute
+    learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
   AVD_s1-leaf1: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
     1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
     model multi-agent\n!\nhostname s1-leaf1\nip name-server vrf default 8.8.8.8\nip
@@ -199,8 +297,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s1-leaf2_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S1-SPINE1_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.1/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet2\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.3/31\n!\ninterface
+    \  ip address 172.30.11.1/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.3/31\n!\ninterface
     Ethernet4\n   description s1-Host1_E1\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s1-leaf2_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -248,10 +346,10 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.1
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.1 description s1-leaf2\n
-    \  neighbor 172.30.255.0 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.0
-    remote-as 65001\n   neighbor 172.30.255.0 description s1-spine1_Ethernet2\n   neighbor
-    172.30.255.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.2 remote-as
-    65001\n   neighbor 172.30.255.2 description s1-spine2_Ethernet2\n   neighbor 192.0.255.1
+    \  neighbor 172.30.11.0 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.0
+    remote-as 65001\n   neighbor 172.30.11.0 description s1-spine1_Ethernet2\n   neighbor
+    172.30.11.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.2 remote-as
+    65001\n   neighbor 172.30.11.2 description s1-spine2_Ethernet2\n   neighbor 192.0.255.1
     peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n   neighbor
     192.0.255.1 description s1-spine1\n   neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n
     \  neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n
@@ -285,8 +383,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s1-leaf1_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S1-SPINE1_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.5/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet3\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.7/31\n!\ninterface
+    \  ip address 172.30.11.5/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.7/31\n!\ninterface
     Ethernet4\n   description s1-Host1_E2\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s1-leaf1_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -334,10 +432,10 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.0
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.0 description s1-leaf1\n
-    \  neighbor 172.30.255.4 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.4
-    remote-as 65001\n   neighbor 172.30.255.4 description s1-spine1_Ethernet3\n   neighbor
-    172.30.255.6 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.6 remote-as
-    65001\n   neighbor 172.30.255.6 description s1-spine2_Ethernet3\n   neighbor 192.0.255.1
+    \  neighbor 172.30.11.4 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.4
+    remote-as 65001\n   neighbor 172.30.11.4 description s1-spine1_Ethernet3\n   neighbor
+    172.30.11.6 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.6 remote-as
+    65001\n   neighbor 172.30.11.6 description s1-spine2_Ethernet3\n   neighbor 192.0.255.1
     peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n   neighbor
     192.0.255.1 description s1-spine1\n   neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n
     \  neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n
@@ -371,8 +469,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s1-leaf4_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S1-SPINE1_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.9/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet4\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.11/31\n!\ninterface
+    \  ip address 172.30.11.9/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet4\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.11/31\n!\ninterface
     Ethernet4\n   description s1-Host2_E1\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s1-leaf4_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -420,20 +518,20 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.5
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.5 description s1-leaf4\n
-    \  neighbor 172.30.255.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.8
-    remote-as 65001\n   neighbor 172.30.255.8 description s1-spine1_Ethernet4\n   neighbor
-    172.30.255.10 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.10 remote-as
-    65001\n   neighbor 172.30.255.10 description s1-spine2_Ethernet4\n   neighbor
-    192.0.255.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n
-    \  neighbor 192.0.255.1 description s1-spine1\n   neighbor 192.0.255.2 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2
-    description s1-spine2\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
-    \  vlan-aware-bundle Extend\n      rd 192.0.255.5:10110\n      route-target both
-    10110:10110\n      redistribute learned\n      vlan 110\n   !\n   vlan-aware-bundle
-    Tenant_A_OP_Zone\n      rd 192.0.255.5:10\n      route-target both 10:10\n      redistribute
-    learned\n      vlan 100,200,210\n   !\n   address-family evpn\n      neighbor
-    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
-    activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    \  neighbor 172.30.11.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.8
+    remote-as 65001\n   neighbor 172.30.11.8 description s1-spine1_Ethernet4\n   neighbor
+    172.30.11.10 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.10 remote-as
+    65001\n   neighbor 172.30.11.10 description s1-spine2_Ethernet4\n   neighbor 192.0.255.1
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n   neighbor
+    192.0.255.1 description s1-spine1\n   neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle
+    Extend\n      rd 192.0.255.5:10110\n      route-target both 10110:10110\n      redistribute
+    learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd
+    192.0.255.5:10\n      route-target both 10:10\n      redistribute learned\n      vlan
+    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.0.255.5:10\n      route-target
     import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.0.255.5\n
     \     neighbor 10.255.251.5 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
@@ -457,8 +555,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s1-leaf3_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S1-SPINE1_Ethernet5\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.13/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet5\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.15/31\n!\ninterface
+    \  ip address 172.30.11.13/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-SPINE2_Ethernet5\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.15/31\n!\ninterface
     Ethernet4\n   description s1-Host2_E2\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s1-leaf3_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -506,20 +604,20 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.4
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.4 description s1-leaf3\n
-    \  neighbor 172.30.255.12 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.12
-    remote-as 65001\n   neighbor 172.30.255.12 description s1-spine1_Ethernet5\n   neighbor
-    172.30.255.14 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.255.14 remote-as
-    65001\n   neighbor 172.30.255.14 description s1-spine2_Ethernet5\n   neighbor
-    192.0.255.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n
-    \  neighbor 192.0.255.1 description s1-spine1\n   neighbor 192.0.255.2 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2
-    description s1-spine2\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
-    \  vlan-aware-bundle Extend\n      rd 192.0.255.6:10110\n      route-target both
-    10110:10110\n      redistribute learned\n      vlan 110\n   !\n   vlan-aware-bundle
-    Tenant_A_OP_Zone\n      rd 192.0.255.6:10\n      route-target both 10:10\n      redistribute
-    learned\n      vlan 100,200,210\n   !\n   address-family evpn\n      neighbor
-    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
-    activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    \  neighbor 172.30.11.12 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.12
+    remote-as 65001\n   neighbor 172.30.11.12 description s1-spine1_Ethernet5\n   neighbor
+    172.30.11.14 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.14 remote-as
+    65001\n   neighbor 172.30.11.14 description s1-spine2_Ethernet5\n   neighbor 192.0.255.1
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.1 remote-as 65001\n   neighbor
+    192.0.255.1 description s1-spine1\n   neighbor 192.0.255.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 192.0.255.2 remote-as 65001\n   neighbor 192.0.255.2 description s1-spine2\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle
+    Extend\n      rd 192.0.255.6:10110\n      route-target both 10110:10110\n      redistribute
+    learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd
+    192.0.255.6:10\n      route-target both 10:10\n      redistribute learned\n      vlan
+    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.0.255.6:10\n      route-target
     import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.0.255.6\n
     \     neighbor 10.255.251.4 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
@@ -531,15 +629,15 @@ cvp_configlets:
     name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
     none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S1-LEAF1_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.0/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-LEAF2_Ethernet2\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.4/31\n!\ninterface
+    \  ip address 172.30.11.0/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-LEAF2_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.4/31\n!\ninterface
     Ethernet4\n   description P2P_LINK_TO_S1-LEAF3_Ethernet2\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.30.255.8/31\n!\ninterface Ethernet5\n
+    1500\n   no switchport\n   ip address 172.30.11.8/31\n!\ninterface Ethernet5\n
     \  description P2P_LINK_TO_S1-LEAF4_Ethernet2\n   no shutdown\n   mtu 1500\n   no
-    switchport\n   ip address 172.30.255.12/31\n!\ninterface Ethernet7\n   description
+    switchport\n   ip address 172.30.11.12/31\n!\ninterface Ethernet7\n   description
     P2P_LINK_TO_S1-BRDR1_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.16/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S1-BRDR2_Ethernet2\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.20/31\n!\ninterface
+    \  ip address 172.30.11.16/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S1-BRDR2_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.20/31\n!\ninterface
     Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
     192.0.255.1/32\n!\ninterface Management0\n   description oob_management\n   no
     shutdown\n   ip address 192.168.0.10/24\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
@@ -555,18 +653,17 @@ cvp_configlets:
     send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
     peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
     \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor 172.30.255.1 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.1 remote-as 65101\n   neighbor 172.30.255.1 description
-    s1-leaf1_Ethernet2\n   neighbor 172.30.255.5 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.5 remote-as 65101\n   neighbor 172.30.255.5 description
-    s1-leaf2_Ethernet2\n   neighbor 172.30.255.9 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.9 remote-as 65102\n   neighbor 172.30.255.9 description
-    s1-leaf3_Ethernet2\n   neighbor 172.30.255.13 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.13 remote-as 65102\n   neighbor 172.30.255.13 description
-    s1-leaf4_Ethernet2\n   neighbor 172.30.255.17 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.17 remote-as 65103\n   neighbor 172.30.255.17 description
-    s1-brdr1_Ethernet2\n   neighbor 172.30.255.21 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.21 remote-as 65103\n   neighbor 172.30.255.21 description
+    maximum-routes 12000\n   neighbor 172.30.11.1 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.11.1 remote-as 65101\n   neighbor 172.30.11.1 description s1-leaf1_Ethernet2\n
+    \  neighbor 172.30.11.5 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.5
+    remote-as 65101\n   neighbor 172.30.11.5 description s1-leaf2_Ethernet2\n   neighbor
+    172.30.11.9 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.9 remote-as
+    65102\n   neighbor 172.30.11.9 description s1-leaf3_Ethernet2\n   neighbor 172.30.11.13
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.13 remote-as 65102\n   neighbor
+    172.30.11.13 description s1-leaf4_Ethernet2\n   neighbor 172.30.11.17 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.17 remote-as 65103\n   neighbor 172.30.11.17
+    description s1-brdr1_Ethernet2\n   neighbor 172.30.11.21 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.11.21 remote-as 65103\n   neighbor 172.30.11.21 description
     s1-brdr2_Ethernet2\n   neighbor 192.0.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor
     192.0.255.3 remote-as 65101\n   neighbor 192.0.255.3 description s1-leaf1\n   neighbor
     192.0.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.4 remote-as 65101\n
@@ -588,15 +685,15 @@ cvp_configlets:
     name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
     none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S1-LEAF1_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.2/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-LEAF2_Ethernet3\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.6/31\n!\ninterface
+    \  ip address 172.30.11.2/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S1-LEAF2_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.6/31\n!\ninterface
     Ethernet4\n   description P2P_LINK_TO_S1-LEAF3_Ethernet3\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.30.255.10/31\n!\ninterface Ethernet5\n
+    1500\n   no switchport\n   ip address 172.30.11.10/31\n!\ninterface Ethernet5\n
     \  description P2P_LINK_TO_S1-LEAF4_Ethernet3\n   no shutdown\n   mtu 1500\n   no
-    switchport\n   ip address 172.30.255.14/31\n!\ninterface Ethernet7\n   description
+    switchport\n   ip address 172.30.11.14/31\n!\ninterface Ethernet7\n   description
     P2P_LINK_TO_S1-BRDR1_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.30.255.18/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S1-BRDR2_Ethernet3\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.255.22/31\n!\ninterface
+    \  ip address 172.30.11.18/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S1-BRDR2_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.11.22/31\n!\ninterface
     Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
     192.0.255.2/32\n!\ninterface Management0\n   description oob_management\n   no
     shutdown\n   ip address 192.168.0.11/24\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
@@ -612,18 +709,17 @@ cvp_configlets:
     send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
     peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
     \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor 172.30.255.3 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.3 remote-as 65101\n   neighbor 172.30.255.3 description
-    s1-leaf1_Ethernet3\n   neighbor 172.30.255.7 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.7 remote-as 65101\n   neighbor 172.30.255.7 description
-    s1-leaf2_Ethernet3\n   neighbor 172.30.255.11 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.11 remote-as 65102\n   neighbor 172.30.255.11 description
-    s1-leaf3_Ethernet3\n   neighbor 172.30.255.15 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.15 remote-as 65102\n   neighbor 172.30.255.15 description
-    s1-leaf4_Ethernet3\n   neighbor 172.30.255.19 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.19 remote-as 65103\n   neighbor 172.30.255.19 description
-    s1-brdr1_Ethernet3\n   neighbor 172.30.255.23 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.30.255.23 remote-as 65103\n   neighbor 172.30.255.23 description
+    maximum-routes 12000\n   neighbor 172.30.11.3 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.11.3 remote-as 65101\n   neighbor 172.30.11.3 description s1-leaf1_Ethernet3\n
+    \  neighbor 172.30.11.7 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.7
+    remote-as 65101\n   neighbor 172.30.11.7 description s1-leaf2_Ethernet3\n   neighbor
+    172.30.11.11 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.11 remote-as
+    65102\n   neighbor 172.30.11.11 description s1-leaf3_Ethernet3\n   neighbor 172.30.11.15
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.15 remote-as 65102\n   neighbor
+    172.30.11.15 description s1-leaf4_Ethernet3\n   neighbor 172.30.11.19 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.11.19 remote-as 65103\n   neighbor 172.30.11.19
+    description s1-brdr1_Ethernet3\n   neighbor 172.30.11.23 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.11.23 remote-as 65103\n   neighbor 172.30.11.23 description
     s1-brdr2_Ethernet3\n   neighbor 192.0.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor
     192.0.255.3 remote-as 65101\n   neighbor 192.0.255.3 description s1-leaf1\n   neighbor
     192.0.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.0.255.4 remote-as 65101\n
@@ -654,9 +750,9 @@ cvp_configlets:
     trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n
     \  description MLAG_PEER_s2-brdr2_Ethernet1\n   no shutdown\n   channel-group
     1 mode active\n!\ninterface Ethernet2\n   description P2P_LINK_TO_S2-SPINE1_Ethernet7\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.17/31\n!\ninterface
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.17/31\n!\ninterface
     Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet7\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.31.255.19/31\n!\ninterface Ethernet4\n
+    1500\n   no switchport\n   ip address 172.30.12.19/31\n!\ninterface Ethernet4\n
     \  description s2 Border Leaf 1\n   no shutdown\n   mtu 1500\n   no switchport\n
     \  ip address 172.16.200.1/31\n!\ninterface Ethernet6\n   description MLAG_PEER_s2-brdr2_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -708,33 +804,33 @@ cvp_configlets:
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.9
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.9 description s2-brdr2\n
     \  neighbor 172.16.200.0 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.16.200.0
-    remote-as 65103\n   neighbor 172.16.200.0 description s1-brdr1\n   neighbor 172.31.255.16
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.16 remote-as 65002\n   neighbor
-    172.31.255.16 description s2-spine1_Ethernet7\n   neighbor 172.31.255.18 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.18 remote-as 65002\n   neighbor
-    172.31.255.18 description s2-spine2_Ethernet7\n   neighbor 192.0.255.7 peer group
-    EVPN-OVERLAY-CORE\n   neighbor 192.0.255.7 remote-as 65103\n   neighbor 192.0.255.7
-    description s1-brdr1\n   neighbor 192.2.255.1 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 192.2.255.1 remote-as 65002\n   neighbor 192.2.255.1 description s2-spine1\n
-    \  neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.2
-    remote-as 65002\n   neighbor 192.2.255.2 description s2-spine2\n   redistribute
-    connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle Extend\n      rd
-    192.2.255.7:10110\n      rd evpn domain remote 192.2.255.7:10110\n      route-target
-    both 10110:10110\n      route-target import export evpn domain remote 10110:10110\n
-    \     redistribute learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n
-    \     rd 192.2.255.7:10\n      rd evpn domain remote 192.2.255.7:10\n      route-target
-    both 10:10\n      route-target import export evpn domain remote 10:10\n      redistribute
-    learned\n      vlan 100,200,210\n   !\n   address-family evpn\n      neighbor
-    EVPN-OVERLAY-CORE activate\n      neighbor EVPN-OVERLAY-CORE domain remote\n      neighbor
-    EVPN-OVERLAY-PEERS activate\n      neighbor default next-hop-self received-evpn-routes
-    route-type ip-prefix inter-domain\n   !\n   address-family ipv4\n      no neighbor
-    EVPN-OVERLAY-CORE activate\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor
-    IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n
-    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.2.255.7:10\n      route-target import
-    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.2.255.7\n
-    \     neighbor 10.255.251.9 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf default\n      no shutdown\n!\nend\n"
+    remote-as 65103\n   neighbor 172.16.200.0 description s1-brdr1\n   neighbor 172.30.12.16
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.16 remote-as 65002\n   neighbor
+    172.30.12.16 description s2-spine1_Ethernet7\n   neighbor 172.30.12.18 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.18 remote-as 65002\n   neighbor 172.30.12.18
+    description s2-spine2_Ethernet7\n   neighbor 192.0.255.7 peer group EVPN-OVERLAY-CORE\n
+    \  neighbor 192.0.255.7 remote-as 65103\n   neighbor 192.0.255.7 description s1-brdr1\n
+    \  neighbor 192.2.255.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1
+    remote-as 65002\n   neighbor 192.2.255.1 description s2-spine1\n   neighbor 192.2.255.2
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.2 remote-as 65002\n   neighbor
+    192.2.255.2 description s2-spine2\n   redistribute connected route-map RM-CONN-2-BGP\n
+    \  !\n   vlan-aware-bundle Extend\n      rd 192.2.255.7:10110\n      rd evpn domain
+    remote 192.2.255.7:10110\n      route-target both 10110:10110\n      route-target
+    import export evpn domain remote 10110:10110\n      redistribute learned\n      vlan
+    110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.2.255.7:10\n      rd
+    evpn domain remote 192.2.255.7:10\n      route-target both 10:10\n      route-target
+    import export evpn domain remote 10:10\n      redistribute learned\n      vlan
+    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-CORE activate\n
+    \     neighbor EVPN-OVERLAY-CORE domain remote\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n      neighbor default next-hop-self received-evpn-routes route-type
+    ip-prefix inter-domain\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-CORE
+    activate\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_OP_Zone\n
+    \     rd 192.2.255.7:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 192.2.255.7\n      neighbor 10.255.251.9 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nmanagement api
+    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf default\n      no
+    shutdown\n!\nend\n"
   AVD_s2-brdr2: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
     1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
     model multi-agent\n!\nhostname s2-brdr2\nip name-server vrf default 8.8.8.8\nip
@@ -750,9 +846,9 @@ cvp_configlets:
     trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n
     \  description MLAG_PEER_s2-brdr1_Ethernet1\n   no shutdown\n   channel-group
     1 mode active\n!\ninterface Ethernet2\n   description P2P_LINK_TO_S2-SPINE1_Ethernet8\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.21/31\n!\ninterface
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.21/31\n!\ninterface
     Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet8\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.31.255.23/31\n!\ninterface Ethernet5\n
+    1500\n   no switchport\n   ip address 172.30.12.23/31\n!\ninterface Ethernet5\n
     \  description s2 Border Leaf 1\n   no shutdown\n   mtu 1500\n   no switchport\n
     \  ip address 172.16.200.3/31\n!\ninterface Ethernet6\n   description MLAG_PEER_s2-brdr1_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -801,26 +897,124 @@ cvp_configlets:
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.8
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.8 description s2-brdr1\n
     \  neighbor 172.16.200.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.16.200.2
-    remote-as 65103\n   neighbor 172.16.200.2 description s1-brdr2\n   neighbor 172.31.255.20
-    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.20 remote-as 65002\n   neighbor
-    172.31.255.20 description s2-spine1_Ethernet8\n   neighbor 172.31.255.22 peer
-    group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.22 remote-as 65002\n   neighbor
-    172.31.255.22 description s2-spine2_Ethernet8\n   neighbor 192.2.255.1 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1 remote-as 65002\n   neighbor 192.2.255.1
-    description s2-spine1\n   neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS\n
-    \  neighbor 192.2.255.2 remote-as 65002\n   neighbor 192.2.255.2 description s2-spine2\n
-    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle
-    Extend\n      rd 192.2.255.8:10110\n      route-target both 10110:10110\n      redistribute
-    learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd
-    192.2.255.8:10\n      route-target both 10:10\n      redistribute learned\n      vlan
-    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
-    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
-    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
-    activate\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.2.255.8:10\n      route-target
-    import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.2.255.8\n
+    remote-as 65103\n   neighbor 172.16.200.2 description s1-brdr2\n   neighbor 172.30.12.20
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.20 remote-as 65002\n   neighbor
+    172.30.12.20 description s2-spine1_Ethernet8\n   neighbor 172.30.12.22 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.22 remote-as 65002\n   neighbor 172.30.12.22
+    description s2-spine2_Ethernet8\n   neighbor 192.2.255.1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 192.2.255.1 remote-as 65002\n   neighbor 192.2.255.1 description s2-spine1\n
+    \  neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.2
+    remote-as 65002\n   neighbor 192.2.255.2 description s2-spine2\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle Extend\n      rd
+    192.2.255.8:10110\n      route-target both 10110:10110\n      redistribute learned\n
+    \     vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.2.255.8:10\n
+    \     route-target both 10:10\n      redistribute learned\n      vlan 100,200,210\n
+    \  !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n
+    \  address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor
+    IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n
+    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.2.255.8:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.2.255.8\n
     \     neighbor 10.255.251.8 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
     connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
     \  !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s2-core1: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s2-core1\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    mstp\nspanning-tree mst 0 priority 16384\n!\nno enable password\nno aaa root\n!\nvlan
+    2100\n   name CORE_LINK1\n!\nvlan 2200\n   name CORE_LINK2\n!\ninterface Ethernet1\n
+    \  description P2P_LINK_TO_S2-CORE2_Ethernet1\n   no shutdown\n   mtu 1500\n   no
+    switchport\n   ip address 10.255.0.9/31\n!\ninterface Ethernet2\n   description
+    CORE_LINK1\n   no shutdown\n   switchport access vlan 2100\n   switchport mode
+    access\n   switchport\n   spanning-tree portfast\n!\ninterface Ethernet4\n   description
+    P2P_LINK_TO_S1-CORE1_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.0.2/31\n!\ninterface Ethernet6\n   description P2P_LINK_TO_S2-CORE2_Ethernet6\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.0.12/31\n!\ninterface
+    Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
+    10.200.10.3/32\n!\ninterface Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n
+    \  no shutdown\n   ip address 10.200.20.3/32\n!\ninterface Management0\n   description
+    oob_management\n   no shutdown\n   ip address 192.168.0.202/24\n!\ninterface Vxlan1\n
+    \  description s2-core1_VTEP\n   vxlan source-interface Loopback1\n   vxlan udp-port
+    4789\n   vxlan vlan 2100 vni 12100\n   vxlan vlan 2200 vni 12200\n!\nip virtual-router
+    mac-address 00:1c:73:00:cc:01\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
+    \  seq 10 permit 10.200.10.0/24 eq 32\n   seq 20 permit 10.200.20.0/24 eq 32\n!\nip
+    route 0.0.0.0/0 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip
+    address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65503\n   router-id 10.200.10.3\n
+    \  no bgp default ipv4-unicast\n   distance bgp 20 200 200\n   graceful-restart
+    restart-time 300\n   graceful-restart\n   maximum-paths 4 ecmp 4\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.200.10.1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.1 remote-as 65501\n   neighbor 10.200.10.1 description s1-core1\n
+    \  neighbor 10.200.10.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.200.10.4
+    remote-as 65505\n   neighbor 10.200.10.4 description s2-core2\n   neighbor 10.255.0.3
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.3 remote-as 65501\n   neighbor
+    10.255.0.3 description s1-core1_Ethernet4\n   neighbor 10.255.0.8 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.255.0.8 remote-as 65505\n   neighbor 10.255.0.8 description s2-core2_Ethernet1\n
+    \  neighbor 10.255.0.13 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.13
+    remote-as 65505\n   neighbor 10.255.0.13 description s2-core2_Ethernet6\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   vlan 2100\n      rd 10.200.10.3:12100\n
+    \     route-target both 12100:12100\n      redistribute learned\n   !\n   vlan
+    2200\n      rd 10.200.10.3:12200\n      route-target both 12200:12200\n      redistribute
+    learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
+  AVD_s2-core2: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s2-core2\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    mstp\nspanning-tree mst 0 priority 16384\n!\nno enable password\nno aaa root\n!\nvlan
+    2100\n   name CORE_LINK1\n!\nvlan 2200\n   name CORE_LINK2\n!\ninterface Ethernet1\n
+    \  description P2P_LINK_TO_S2-CORE1_Ethernet1\n   no shutdown\n   mtu 1500\n   no
+    switchport\n   ip address 10.255.0.8/31\n!\ninterface Ethernet3\n   description
+    CORE_LINK2\n   no shutdown\n   switchport access vlan 2200\n   switchport mode
+    access\n   switchport\n   spanning-tree portfast\n!\ninterface Ethernet4\n   description
+    P2P_LINK_TO_S1-CORE2_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.0.6/31\n!\ninterface Ethernet6\n   description P2P_LINK_TO_S2-CORE1_Ethernet6\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.0.13/31\n!\ninterface
+    Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
+    10.200.10.4/32\n!\ninterface Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n
+    \  no shutdown\n   ip address 10.200.20.4/32\n!\ninterface Management0\n   description
+    oob_management\n   no shutdown\n   ip address 192.168.0.203/24\n!\ninterface Vxlan1\n
+    \  description s2-core2_VTEP\n   vxlan source-interface Loopback1\n   vxlan udp-port
+    4789\n   vxlan vlan 2100 vni 12100\n   vxlan vlan 2200 vni 12200\n!\nip virtual-router
+    mac-address 00:1c:73:00:cc:01\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
+    \  seq 10 permit 10.200.10.0/24 eq 32\n   seq 20 permit 10.200.20.0/24 eq 32\n!\nip
+    route 0.0.0.0/0 192.168.0.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip
+    address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65505\n   router-id 10.200.10.4\n
+    \  no bgp default ipv4-unicast\n   distance bgp 20 200 200\n   graceful-restart
+    restart-time 300\n   graceful-restart\n   maximum-paths 4 ecmp 4\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
+    \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.200.10.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.2 remote-as 65502\n   neighbor 10.200.10.2 description s1-core2\n
+    \  neighbor 10.200.10.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.200.10.3
+    remote-as 65503\n   neighbor 10.200.10.3 description s2-core1\n   neighbor 10.255.0.7
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.7 remote-as 65502\n   neighbor
+    10.255.0.7 description s1-core2_Ethernet4\n   neighbor 10.255.0.9 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 10.255.0.9 remote-as 65503\n   neighbor 10.255.0.9 description s2-core1_Ethernet1\n
+    \  neighbor 10.255.0.12 peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.0.12
+    remote-as 65503\n   neighbor 10.255.0.12 description s2-core1_Ethernet6\n   redistribute
+    connected route-map RM-CONN-2-BGP\n   !\n   vlan 2100\n      rd 10.200.10.4:12100\n
+    \     route-target both 12100:12100\n      redistribute learned\n   !\n   vlan
+    2200\n      rd 10.200.10.4:12200\n      route-target both 12200:12200\n      redistribute
+    learned\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
   AVD_s2-leaf1: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
     1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
     model multi-agent\n!\nhostname s2-leaf1\nip name-server vrf default 8.8.8.8\nip
@@ -839,8 +1033,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s2-leaf2_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S2-SPINE1_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.1/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet2\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.3/31\n!\ninterface
+    \  ip address 172.30.12.1/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.3/31\n!\ninterface
     Ethernet4\n   description s2-Host1_E1\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s2-leaf2_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -888,10 +1082,10 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.1
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.1 description s2-leaf2\n
-    \  neighbor 172.31.255.0 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.0
-    remote-as 65002\n   neighbor 172.31.255.0 description s2-spine1_Ethernet2\n   neighbor
-    172.31.255.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.2 remote-as
-    65002\n   neighbor 172.31.255.2 description s2-spine2_Ethernet2\n   neighbor 192.2.255.1
+    \  neighbor 172.30.12.0 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.0
+    remote-as 65002\n   neighbor 172.30.12.0 description s2-spine1_Ethernet2\n   neighbor
+    172.30.12.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.2 remote-as
+    65002\n   neighbor 172.30.12.2 description s2-spine2_Ethernet2\n   neighbor 192.2.255.1
     peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1 remote-as 65002\n   neighbor
     192.2.255.1 description s2-spine1\n   neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS\n
     \  neighbor 192.2.255.2 remote-as 65002\n   neighbor 192.2.255.2 description s2-spine2\n
@@ -925,8 +1119,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s2-leaf1_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S2-SPINE1_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.5/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet3\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.7/31\n!\ninterface
+    \  ip address 172.30.12.5/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.7/31\n!\ninterface
     Ethernet4\n   description s2-Host1_E2\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s2-leaf1_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -974,10 +1168,10 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.0
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.0 description s2-leaf1\n
-    \  neighbor 172.31.255.4 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.4
-    remote-as 65002\n   neighbor 172.31.255.4 description s2-spine1_Ethernet3\n   neighbor
-    172.31.255.6 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.6 remote-as
-    65002\n   neighbor 172.31.255.6 description s2-spine2_Ethernet3\n   neighbor 192.2.255.1
+    \  neighbor 172.30.12.4 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.4
+    remote-as 65002\n   neighbor 172.30.12.4 description s2-spine1_Ethernet3\n   neighbor
+    172.30.12.6 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.6 remote-as
+    65002\n   neighbor 172.30.12.6 description s2-spine2_Ethernet3\n   neighbor 192.2.255.1
     peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1 remote-as 65002\n   neighbor
     192.2.255.1 description s2-spine1\n   neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS\n
     \  neighbor 192.2.255.2 remote-as 65002\n   neighbor 192.2.255.2 description s2-spine2\n
@@ -1011,8 +1205,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s2-leaf4_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S2-SPINE1_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.9/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet4\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.11/31\n!\ninterface
+    \  ip address 172.30.12.9/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet4\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.11/31\n!\ninterface
     Ethernet4\n   description s2-Host2_E1\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s2-leaf4_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -1060,20 +1254,20 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.5
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.5 description s2-leaf4\n
-    \  neighbor 172.31.255.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.8
-    remote-as 65002\n   neighbor 172.31.255.8 description s2-spine1_Ethernet4\n   neighbor
-    172.31.255.10 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.10 remote-as
-    65002\n   neighbor 172.31.255.10 description s2-spine2_Ethernet4\n   neighbor
-    192.2.255.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1 remote-as 65002\n
-    \  neighbor 192.2.255.1 description s2-spine1\n   neighbor 192.2.255.2 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.2 remote-as 65002\n   neighbor 192.2.255.2
-    description s2-spine2\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
-    \  vlan-aware-bundle Extend\n      rd 192.2.255.5:10110\n      route-target both
-    10110:10110\n      redistribute learned\n      vlan 110\n   !\n   vlan-aware-bundle
-    Tenant_A_OP_Zone\n      rd 192.2.255.5:10\n      route-target both 10:10\n      redistribute
-    learned\n      vlan 100,200,210\n   !\n   address-family evpn\n      neighbor
-    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
-    activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    \  neighbor 172.30.12.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.8
+    remote-as 65002\n   neighbor 172.30.12.8 description s2-spine1_Ethernet4\n   neighbor
+    172.30.12.10 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.10 remote-as
+    65002\n   neighbor 172.30.12.10 description s2-spine2_Ethernet4\n   neighbor 192.2.255.1
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1 remote-as 65002\n   neighbor
+    192.2.255.1 description s2-spine1\n   neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 192.2.255.2 remote-as 65002\n   neighbor 192.2.255.2 description s2-spine2\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle
+    Extend\n      rd 192.2.255.5:10110\n      route-target both 10110:10110\n      redistribute
+    learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd
+    192.2.255.5:10\n      route-target both 10:10\n      redistribute learned\n      vlan
+    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.2.255.5:10\n      route-target
     import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.2.255.5\n
     \     neighbor 10.255.251.5 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
@@ -1097,8 +1291,8 @@ cvp_configlets:
     4\n!\ninterface Ethernet1\n   description MLAG_PEER_s2-leaf3_Ethernet1\n   no
     shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S2-SPINE1_Ethernet5\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.13/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet5\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.15/31\n!\ninterface
+    \  ip address 172.30.12.13/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-SPINE2_Ethernet5\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.15/31\n!\ninterface
     Ethernet4\n   description s2-Host2_E2\n   no shutdown\n   channel-group 4 mode
     active\n!\ninterface Ethernet6\n   description MLAG_PEER_s2-leaf3_Ethernet6\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Loopback0\n   description
@@ -1146,20 +1340,20 @@ cvp_configlets:
     send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor
     MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.4
     peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor 10.255.251.4 description s2-leaf3\n
-    \  neighbor 172.31.255.12 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.12
-    remote-as 65002\n   neighbor 172.31.255.12 description s2-spine1_Ethernet5\n   neighbor
-    172.31.255.14 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.14 remote-as
-    65002\n   neighbor 172.31.255.14 description s2-spine2_Ethernet5\n   neighbor
-    192.2.255.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1 remote-as 65002\n
-    \  neighbor 192.2.255.1 description s2-spine1\n   neighbor 192.2.255.2 peer group
-    EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.2 remote-as 65002\n   neighbor 192.2.255.2
-    description s2-spine2\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
-    \  vlan-aware-bundle Extend\n      rd 192.2.255.6:10110\n      route-target both
-    10110:10110\n      redistribute learned\n      vlan 110\n   !\n   vlan-aware-bundle
-    Tenant_A_OP_Zone\n      rd 192.2.255.6:10\n      route-target both 10:10\n      redistribute
-    learned\n      vlan 100,200,210\n   !\n   address-family evpn\n      neighbor
-    EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS
-    activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
+    \  neighbor 172.30.12.12 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.12
+    remote-as 65002\n   neighbor 172.30.12.12 description s2-spine1_Ethernet5\n   neighbor
+    172.30.12.14 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.14 remote-as
+    65002\n   neighbor 172.30.12.14 description s2-spine2_Ethernet5\n   neighbor 192.2.255.1
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.1 remote-as 65002\n   neighbor
+    192.2.255.1 description s2-spine1\n   neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 192.2.255.2 remote-as 65002\n   neighbor 192.2.255.2 description s2-spine2\n
+    \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle
+    Extend\n      rd 192.2.255.6:10110\n      route-target both 10110:10110\n      redistribute
+    learned\n      vlan 110\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd
+    192.2.255.6:10\n      route-target both 10:10\n      redistribute learned\n      vlan
+    100,200,210\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n
+    \  !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER
     activate\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.2.255.6:10\n      route-target
     import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.2.255.6\n
     \     neighbor 10.255.251.4 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
@@ -1171,15 +1365,15 @@ cvp_configlets:
     name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
     none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S2-LEAF1_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.0/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-LEAF2_Ethernet2\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.4/31\n!\ninterface
+    \  ip address 172.30.12.0/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-LEAF2_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.4/31\n!\ninterface
     Ethernet4\n   description P2P_LINK_TO_S2-LEAF3_Ethernet2\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.31.255.8/31\n!\ninterface Ethernet5\n
+    1500\n   no switchport\n   ip address 172.30.12.8/31\n!\ninterface Ethernet5\n
     \  description P2P_LINK_TO_S2-LEAF4_Ethernet2\n   no shutdown\n   mtu 1500\n   no
-    switchport\n   ip address 172.31.255.12/31\n!\ninterface Ethernet7\n   description
+    switchport\n   ip address 172.30.12.12/31\n!\ninterface Ethernet7\n   description
     P2P_LINK_TO_S2-BRDR1_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.16/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S2-BRDR2_Ethernet2\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.20/31\n!\ninterface
+    \  ip address 172.30.12.16/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S2-BRDR2_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.20/31\n!\ninterface
     Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
     192.2.255.1/32\n!\ninterface Management0\n   description oob_management\n   no
     shutdown\n   ip address 192.168.0.20/24\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
@@ -1195,18 +1389,17 @@ cvp_configlets:
     send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
     peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
     \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor 172.31.255.1 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.1 remote-as 65201\n   neighbor 172.31.255.1 description
-    s2-leaf1_Ethernet2\n   neighbor 172.31.255.5 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.5 remote-as 65201\n   neighbor 172.31.255.5 description
-    s2-leaf2_Ethernet2\n   neighbor 172.31.255.9 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.9 remote-as 65202\n   neighbor 172.31.255.9 description
-    s2-leaf3_Ethernet2\n   neighbor 172.31.255.13 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.13 remote-as 65202\n   neighbor 172.31.255.13 description
-    s2-leaf4_Ethernet2\n   neighbor 172.31.255.17 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.17 remote-as 65203\n   neighbor 172.31.255.17 description
-    s2-brdr1_Ethernet2\n   neighbor 172.31.255.21 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.21 remote-as 65203\n   neighbor 172.31.255.21 description
+    maximum-routes 12000\n   neighbor 172.30.12.1 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.12.1 remote-as 65201\n   neighbor 172.30.12.1 description s2-leaf1_Ethernet2\n
+    \  neighbor 172.30.12.5 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.5
+    remote-as 65201\n   neighbor 172.30.12.5 description s2-leaf2_Ethernet2\n   neighbor
+    172.30.12.9 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.9 remote-as
+    65202\n   neighbor 172.30.12.9 description s2-leaf3_Ethernet2\n   neighbor 172.30.12.13
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.13 remote-as 65202\n   neighbor
+    172.30.12.13 description s2-leaf4_Ethernet2\n   neighbor 172.30.12.17 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.17 remote-as 65203\n   neighbor 172.30.12.17
+    description s2-brdr1_Ethernet2\n   neighbor 172.30.12.21 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.12.21 remote-as 65203\n   neighbor 172.30.12.21 description
     s2-brdr2_Ethernet2\n   neighbor 192.2.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor
     192.2.255.3 remote-as 65201\n   neighbor 192.2.255.3 description s2-leaf1\n   neighbor
     192.2.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.4 remote-as 65201\n
@@ -1228,15 +1421,15 @@ cvp_configlets:
     name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
     none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_S2-LEAF1_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.2/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-LEAF2_Ethernet3\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.6/31\n!\ninterface
+    \  ip address 172.30.12.2/31\n!\ninterface Ethernet3\n   description P2P_LINK_TO_S2-LEAF2_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.6/31\n!\ninterface
     Ethernet4\n   description P2P_LINK_TO_S2-LEAF3_Ethernet3\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.31.255.10/31\n!\ninterface Ethernet5\n
+    1500\n   no switchport\n   ip address 172.30.12.10/31\n!\ninterface Ethernet5\n
     \  description P2P_LINK_TO_S2-LEAF4_Ethernet3\n   no shutdown\n   mtu 1500\n   no
-    switchport\n   ip address 172.31.255.14/31\n!\ninterface Ethernet7\n   description
+    switchport\n   ip address 172.30.12.14/31\n!\ninterface Ethernet7\n   description
     P2P_LINK_TO_S2-BRDR1_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.18/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S2-BRDR2_Ethernet3\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.22/31\n!\ninterface
+    \  ip address 172.30.12.18/31\n!\ninterface Ethernet8\n   description P2P_LINK_TO_S2-BRDR2_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.30.12.22/31\n!\ninterface
     Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
     192.2.255.2/32\n!\ninterface Management0\n   description oob_management\n   no
     shutdown\n   ip address 192.168.0.21/24\n!\nip routing\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
@@ -1252,18 +1445,17 @@ cvp_configlets:
     send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
     peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
     \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
-    maximum-routes 12000\n   neighbor 172.31.255.3 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.3 remote-as 65201\n   neighbor 172.31.255.3 description
-    s2-leaf1_Ethernet3\n   neighbor 172.31.255.7 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.7 remote-as 65201\n   neighbor 172.31.255.7 description
-    s2-leaf2_Ethernet3\n   neighbor 172.31.255.11 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.11 remote-as 65202\n   neighbor 172.31.255.11 description
-    s2-leaf3_Ethernet3\n   neighbor 172.31.255.15 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.15 remote-as 65202\n   neighbor 172.31.255.15 description
-    s2-leaf4_Ethernet3\n   neighbor 172.31.255.19 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.19 remote-as 65203\n   neighbor 172.31.255.19 description
-    s2-brdr1_Ethernet3\n   neighbor 172.31.255.23 peer group IPv4-UNDERLAY-PEERS\n
-    \  neighbor 172.31.255.23 remote-as 65203\n   neighbor 172.31.255.23 description
+    maximum-routes 12000\n   neighbor 172.30.12.3 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.12.3 remote-as 65201\n   neighbor 172.30.12.3 description s2-leaf1_Ethernet3\n
+    \  neighbor 172.30.12.7 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.7
+    remote-as 65201\n   neighbor 172.30.12.7 description s2-leaf2_Ethernet3\n   neighbor
+    172.30.12.11 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.11 remote-as
+    65202\n   neighbor 172.30.12.11 description s2-leaf3_Ethernet3\n   neighbor 172.30.12.15
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.15 remote-as 65202\n   neighbor
+    172.30.12.15 description s2-leaf4_Ethernet3\n   neighbor 172.30.12.19 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 172.30.12.19 remote-as 65203\n   neighbor 172.30.12.19
+    description s2-brdr1_Ethernet3\n   neighbor 172.30.12.23 peer group IPv4-UNDERLAY-PEERS\n
+    \  neighbor 172.30.12.23 remote-as 65203\n   neighbor 172.30.12.23 description
     s2-brdr2_Ethernet3\n   neighbor 192.2.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor
     192.2.255.3 remote-as 65201\n   neighbor 192.2.255.3 description s2-leaf1\n   neighbor
     192.2.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.2.255.4 remote-as 65201\n
@@ -1280,58 +1472,10 @@ cvp_configlets:
     IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n   protocol https\n
     \  no shutdown\n   !\n   vrf default\n      no shutdown\n!\nend\n"
 cvp_topology:
-  ATD_BORDER_DC1:
+  CORE:
     devices:
-    - s1-brdr1
-    - s1-brdr2
-    parent_container: ATD_LEAFS_DC1
-  ATD_BORDER_DC2:
-    devices:
-    - s2-brdr1
-    - s2-brdr2
-    parent_container: ATD_LEAFS_DC2
-  ATD_FABRIC:
-    devices: []
+    - s1-core1
+    - s1-core2
+    - s2-core1
+    - s2-core2
     parent_container: Tenant
-  ATD_LEAF1_DC1:
-    devices:
-    - s1-leaf1
-    - s1-leaf2
-    parent_container: ATD_LEAFS_DC1
-  ATD_LEAF1_DC2:
-    devices:
-    - s2-leaf1
-    - s2-leaf2
-    parent_container: ATD_LEAFS_DC2
-  ATD_LEAF2_DC1:
-    devices:
-    - s1-leaf3
-    - s1-leaf4
-    parent_container: ATD_LEAFS_DC1
-  ATD_LEAF2_DC2:
-    devices:
-    - s2-leaf3
-    - s2-leaf4
-    parent_container: ATD_LEAFS_DC2
-  ATD_LEAFS_DC1:
-    devices: []
-    parent_container: DC1
-  ATD_LEAFS_DC2:
-    devices: []
-    parent_container: DC2
-  ATD_SPINES_DC1:
-    devices:
-    - s1-spine1
-    - s1-spine2
-    parent_container: DC1
-  ATD_SPINES_DC2:
-    devices:
-    - s2-spine1
-    - s2-spine2
-    parent_container: DC2
-  DC1:
-    devices: []
-    parent_container: ATD_FABRIC
-  DC2:
-    devices: []
-    parent_container: ATD_FABRIC

@@ -157,12 +157,12 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_S1-LEAF1_Ethernet3 | routed | - | 172.30.255.2/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_S1-LEAF2_Ethernet3 | routed | - | 172.30.255.6/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_S1-LEAF3_Ethernet3 | routed | - | 172.30.255.10/31 | default | 1500 | False | - | - |
-| Ethernet5 | P2P_LINK_TO_S1-LEAF4_Ethernet3 | routed | - | 172.30.255.14/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_S1-BRDR1_Ethernet3 | routed | - | 172.30.255.18/31 | default | 1500 | False | - | - |
-| Ethernet8 | P2P_LINK_TO_S1-BRDR2_Ethernet3 | routed | - | 172.30.255.22/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_S1-LEAF1_Ethernet3 | routed | - | 172.30.11.2/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_S1-LEAF2_Ethernet3 | routed | - | 172.30.11.6/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_S1-LEAF3_Ethernet3 | routed | - | 172.30.11.10/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_S1-LEAF4_Ethernet3 | routed | - | 172.30.11.14/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_S1-BRDR1_Ethernet3 | routed | - | 172.30.11.18/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_S1-BRDR2_Ethernet3 | routed | - | 172.30.11.22/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -173,42 +173,42 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.2/31
+   ip address 172.30.11.2/31
 !
 interface Ethernet3
    description P2P_LINK_TO_S1-LEAF2_Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.6/31
+   ip address 172.30.11.6/31
 !
 interface Ethernet4
    description P2P_LINK_TO_S1-LEAF3_Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.10/31
+   ip address 172.30.11.10/31
 !
 interface Ethernet5
    description P2P_LINK_TO_S1-LEAF4_Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.14/31
+   ip address 172.30.11.14/31
 !
 interface Ethernet7
    description P2P_LINK_TO_S1-BRDR1_Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.18/31
+   ip address 172.30.11.18/31
 !
 interface Ethernet8
    description P2P_LINK_TO_S1-BRDR2_Ethernet3
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.30.255.22/31
+   ip address 172.30.11.22/31
 ```
 
 ### Loopback Interfaces
@@ -330,12 +330,12 @@ ip route 0.0.0.0/0 192.168.0.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 172.30.255.3 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.30.255.7 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.30.255.11 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.30.255.15 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.30.255.19 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 172.30.255.23 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.11.3 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.11.7 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.11.11 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.11.15 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.11.19 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.30.11.23 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.0.255.3 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.0.255.4 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.0.255.5 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
@@ -374,24 +374,24 @@ router bgp 65001
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.30.255.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.30.255.3 remote-as 65101
-   neighbor 172.30.255.3 description s1-leaf1_Ethernet3
-   neighbor 172.30.255.7 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.30.255.7 remote-as 65101
-   neighbor 172.30.255.7 description s1-leaf2_Ethernet3
-   neighbor 172.30.255.11 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.30.255.11 remote-as 65102
-   neighbor 172.30.255.11 description s1-leaf3_Ethernet3
-   neighbor 172.30.255.15 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.30.255.15 remote-as 65102
-   neighbor 172.30.255.15 description s1-leaf4_Ethernet3
-   neighbor 172.30.255.19 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.30.255.19 remote-as 65103
-   neighbor 172.30.255.19 description s1-brdr1_Ethernet3
-   neighbor 172.30.255.23 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.30.255.23 remote-as 65103
-   neighbor 172.30.255.23 description s1-brdr2_Ethernet3
+   neighbor 172.30.11.3 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.11.3 remote-as 65101
+   neighbor 172.30.11.3 description s1-leaf1_Ethernet3
+   neighbor 172.30.11.7 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.11.7 remote-as 65101
+   neighbor 172.30.11.7 description s1-leaf2_Ethernet3
+   neighbor 172.30.11.11 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.11.11 remote-as 65102
+   neighbor 172.30.11.11 description s1-leaf3_Ethernet3
+   neighbor 172.30.11.15 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.11.15 remote-as 65102
+   neighbor 172.30.11.15 description s1-leaf4_Ethernet3
+   neighbor 172.30.11.19 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.11.19 remote-as 65103
+   neighbor 172.30.11.19 description s1-brdr1_Ethernet3
+   neighbor 172.30.11.23 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.30.11.23 remote-as 65103
+   neighbor 172.30.11.23 description s1-brdr2_Ethernet3
    neighbor 192.0.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.0.255.3 remote-as 65101
    neighbor 192.0.255.3 description s1-leaf1

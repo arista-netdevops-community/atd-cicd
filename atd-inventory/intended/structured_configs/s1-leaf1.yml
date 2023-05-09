@@ -42,11 +42,11 @@ router_bgp:
   - ip_address: 10.255.251.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: s1-leaf2
-  - ip_address: 172.30.255.0
+  - ip_address: 172.30.11.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: s1-spine1_Ethernet2
-  - ip_address: 172.30.255.2
+  - ip_address: 172.30.11.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: s1-spine2_Ethernet2
@@ -259,7 +259,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.1/31
+  ip_address: 172.30.11.1/31
 - name: Ethernet3
   peer: s1-spine2
   peer_interface: Ethernet2
@@ -268,7 +268,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 172.30.255.3/31
+  ip_address: 172.30.11.3/31
 - name: Ethernet4
   peer: s1-Host1
   peer_interface: E1
