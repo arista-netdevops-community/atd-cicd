@@ -34,13 +34,12 @@ underlay_routing_protocol: OSPF
 
 # bgp peer groups passwords
 bgp_peer_groups:
-  IPv4_UNDERLAY_PEERS:
+  ipv4_underlay_peers:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
-  EVPN_OVERLAY_PEERS:
+  evpn_overlay_peers:
     password: "q+VNViP5i4rVjW1cxFv2wA=="
-  MLAG_IPv4_UNDERLAY_PEER:
+  mlag_ipv4_underlay_peer:
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
-
 
 #### Override for vEOS Lab Caveats ####
 
@@ -57,20 +56,19 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 
-
 l3_edge:
   p2p_links_ip_pools:
     BORDER_IP: 172.16.200.0/24
   p2p_links:
     - id: 1
       ip_pool: BORDER_IP
-      nodes: [ s1-brdr1, s2-brdr1 ]
-      interfaces: [ Ethernet4, Ethernet4 ]
-      as: [ 65003, 65203 ]
-      descriptions: [ "s1 Border Leaf 1", "s2 Border Leaf 1" ]
+      nodes: [s1-brdr1, s2-brdr1]
+      interfaces: [Ethernet4, Ethernet4]
+      as: [65003, 65203]
+      descriptions: ["s1 Border Leaf 1", "s2 Border Leaf 1"]
       include_in_underlay_protocol: true
       port_channel:
         mode: active
         nodes_child_interfaces:
-          s1-brdr1: [ Ethernet4, Ethernet5 ]
-          s2-brdr1: [ Ethernet4, Ethernet5 ]
+          s1-brdr1: [Ethernet4, Ethernet5]
+          s2-brdr1: [Ethernet4, Ethernet5]
