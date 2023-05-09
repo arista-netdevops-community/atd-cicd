@@ -31,13 +31,13 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [Router OSPF](#router-ospf)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
+  - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -254,9 +254,7 @@ vlan 4094
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet2 | P2P_LINK_TO_S2-SPINE1_Ethernet7 | routed | - | 172.31.255.17/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_S2-SPINE2_Ethernet7 | routed | - | 172.31.255.19/31 | default | 1500 | False | - | - |
-| Ethernet4 | s2 Border Leaf 1 | *routed | 4 | *172.16.200.1/31 | **default | *1500 | *False | **- | **- |
-| Ethernet5 | s2 Border Leaf 1 | *routed | 4 | *172.16.200.1/31 | **default | *1500 | *False | **- | **- |
-*Inherited from Port-Channel Interface
+| Ethernet4 | s2 Border Leaf 1 | routed | - | 172.16.200.1/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -273,8 +271,6 @@ interface Ethernet2
    mtu 1500
    no switchport
    ip address 172.31.255.17/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Ethernet3
    description P2P_LINK_TO_S2-SPINE2_Ethernet7
@@ -282,18 +278,13 @@ interface Ethernet3
    mtu 1500
    no switchport
    ip address 172.31.255.19/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Ethernet4
    description s2 Border Leaf 1
    no shutdown
-   channel-group 4 mode active
-!
-interface Ethernet5
-   description s2 Border Leaf 1
-   no shutdown
-   channel-group 4 mode active
+   mtu 1500
+   no switchport
+   ip address 172.16.200.1/31
 !
 interface Ethernet6
    description MLAG_PEER_s2-brdr2_Ethernet6
@@ -311,12 +302,6 @@ interface Ethernet6
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | MLAG_PEER_s2-brdr2_Po1 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
-##### IPv4
-
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel4 | s2 Border Leaf 1 | routed | - | 172.16.200.1/31 | default | 1500 | False | - | - |
-
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
@@ -329,15 +314,6 @@ interface Port-Channel1
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-!
-interface Port-Channel4
-   description s2 Border Leaf 1
-   no shutdown
-   mtu 1500
-   no switchport
-   ip address 172.16.200.1/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 ```
 
 ### Loopback Interfaces
@@ -369,13 +345,11 @@ interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
    ip address 192.2.255.7/32
-   ip ospf area 0.0.0.0
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 192.2.254.7/32
-   ip ospf area 0.0.0.0
 !
 interface Loopback100
    description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
@@ -442,8 +416,6 @@ interface Vlan4093
    no shutdown
    mtu 1500
    ip address 10.255.251.8/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Vlan4094
    description MLAG_PEER
@@ -509,13 +481,13 @@ service routing protocols model multi-agent
 
 #### Virtual Router MAC Address Summary
 
-##### Virtual Router MAC Address: 00:1c:73:00:dc:02
+##### Virtual Router MAC Address: 00:1c:73:00:dc:01
 
 #### Virtual Router MAC Address Configuration
 
 ```eos
 !
-ip virtual-router mac-address 00:1c:73:00:dc:02
+ip virtual-router mac-address 00:1c:73:00:dc:01
 ```
 
 ### IP Routing
@@ -560,39 +532,6 @@ ip routing vrf Tenant_A_OP_Zone
 ip route 0.0.0.0/0 192.168.0.1
 ```
 
-### Router OSPF
-
-#### Router OSPF Summary
-
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.2.255.7 | enabled | Ethernet2 <br> Ethernet3 <br> Vlan4093 <br> Port-Channel4 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
-
-#### OSPF Interfaces
-
-| Interface | Area | Cost | Point To Point |
-| -------- | -------- | -------- | -------- |
-| Ethernet2 | 0.0.0.0 | - | True |
-| Ethernet3 | 0.0.0.0 | - | True |
-| Port-Channel4 | 0.0.0.0 | - | True |
-| Vlan4093 | 0.0.0.0 | - | True |
-| Loopback0 | 0.0.0.0 | - | - |
-| Loopback1 | 0.0.0.0 | - | - |
-
-#### Router OSPF Device Configuration
-
-```eos
-!
-router ospf 100
-   router-id 192.2.255.7
-   passive-interface default
-   no passive-interface Ethernet2
-   no passive-interface Ethernet3
-   no passive-interface Vlan4093
-   no passive-interface Port-Channel4
-   max-lsa 12000
-```
-
 ### Router BGP
 
 #### Router BGP Summary
@@ -633,6 +572,14 @@ router ospf 100
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
+##### IPv4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | all |
+| Maximum routes | 12000 |
+
 ##### MLAG-IPv4-UNDERLAY-PEER
 
 | Settings | Value |
@@ -647,6 +594,10 @@ router ospf 100
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 10.255.251.9 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
+| 172.16.200.0 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.255.16 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.255.18 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.0.255.7 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
 | 192.2.255.1 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.2.255.2 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
@@ -706,6 +657,10 @@ router bgp 65203
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65203
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
@@ -714,6 +669,17 @@ router bgp 65203
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
+   neighbor 10.255.251.9 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 10.255.251.9 description s2-brdr2
+   neighbor 172.16.200.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.200.0 remote-as 65103
+   neighbor 172.16.200.0 description s1-brdr1
+   neighbor 172.31.255.16 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.16 remote-as 65002
+   neighbor 172.31.255.16 description s2-spine1_Ethernet7
+   neighbor 172.31.255.18 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.18 remote-as 65002
+   neighbor 172.31.255.18 description s2-spine2_Ethernet7
    neighbor 192.0.255.7 peer group EVPN-OVERLAY-CORE
    neighbor 192.0.255.7 remote-as 65103
    neighbor 192.0.255.7 description s1-brdr1
@@ -723,6 +689,7 @@ router bgp 65203
    neighbor 192.2.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.2.255.2 remote-as 65002
    neighbor 192.2.255.2 description s2-spine2
+   redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Extend
       rd 192.2.255.7:10110
@@ -749,6 +716,7 @@ router bgp 65203
    address-family ipv4
       no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
+      neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf Tenant_A_OP_Zone
@@ -795,9 +763,35 @@ router bfd
 
 ## Filters
 
+### Prefix-lists
+
+#### Prefix-lists Summary
+
+##### PL-LOOPBACKS-EVPN-OVERLAY
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 192.2.255.0/24 eq 32 |
+| 20 | permit 192.2.254.0/24 eq 32 |
+
+#### Prefix-lists Device Configuration
+
+```eos
+!
+ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+   seq 10 permit 192.2.255.0/24 eq 32
+   seq 20 permit 192.2.254.0/24 eq 32
+```
+
 ### Route-maps
 
 #### Route-maps Summary
+
+##### RM-CONN-2-BGP
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -808,6 +802,9 @@ router bfd
 #### Route-maps Device Configuration
 
 ```eos
+!
+route-map RM-CONN-2-BGP permit 10
+   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

@@ -21,10 +21,12 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [Router OSPF](#router-ospf)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
+- [Filters](#filters)
+  - [Prefix-lists](#prefix-lists)
+  - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -172,8 +174,6 @@ interface Ethernet2
    mtu 1500
    no switchport
    ip address 172.31.255.0/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Ethernet3
    description P2P_LINK_TO_S2-LEAF2_Ethernet2
@@ -181,8 +181,6 @@ interface Ethernet3
    mtu 1500
    no switchport
    ip address 172.31.255.4/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Ethernet4
    description P2P_LINK_TO_S2-LEAF3_Ethernet2
@@ -190,8 +188,6 @@ interface Ethernet4
    mtu 1500
    no switchport
    ip address 172.31.255.8/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Ethernet5
    description P2P_LINK_TO_S2-LEAF4_Ethernet2
@@ -199,8 +195,6 @@ interface Ethernet5
    mtu 1500
    no switchport
    ip address 172.31.255.12/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Ethernet7
    description P2P_LINK_TO_S2-BRDR1_Ethernet2
@@ -208,8 +202,6 @@ interface Ethernet7
    mtu 1500
    no switchport
    ip address 172.31.255.16/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 !
 interface Ethernet8
    description P2P_LINK_TO_S2-BRDR2_Ethernet2
@@ -217,8 +209,6 @@ interface Ethernet8
    mtu 1500
    no switchport
    ip address 172.31.255.20/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 ```
 
 ### Loopback Interfaces
@@ -246,7 +236,6 @@ interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
    ip address 192.2.255.1/32
-   ip ospf area 0.0.0.0
 ```
 
 ## Routing
@@ -299,42 +288,6 @@ ip routing
 ip route 0.0.0.0/0 192.168.0.1
 ```
 
-### Router OSPF
-
-#### Router OSPF Summary
-
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.2.255.1 | enabled | Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet7 <br> Ethernet8 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
-
-#### OSPF Interfaces
-
-| Interface | Area | Cost | Point To Point |
-| -------- | -------- | -------- | -------- |
-| Ethernet2 | 0.0.0.0 | - | True |
-| Ethernet3 | 0.0.0.0 | - | True |
-| Ethernet4 | 0.0.0.0 | - | True |
-| Ethernet5 | 0.0.0.0 | - | True |
-| Ethernet7 | 0.0.0.0 | - | True |
-| Ethernet8 | 0.0.0.0 | - | True |
-| Loopback0 | 0.0.0.0 | - | - |
-
-#### Router OSPF Device Configuration
-
-```eos
-!
-router ospf 100
-   router-id 192.2.255.1
-   passive-interface default
-   no passive-interface Ethernet2
-   no passive-interface Ethernet3
-   no passive-interface Ethernet4
-   no passive-interface Ethernet5
-   no passive-interface Ethernet7
-   no passive-interface Ethernet8
-   max-lsa 12000
-```
-
 ### Router BGP
 
 #### Router BGP Summary
@@ -365,10 +318,24 @@ router ospf 100
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
+##### IPv4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | all |
+| Maximum routes | 12000 |
+
 #### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 172.31.255.1 | 65201 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.255.5 | 65201 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.255.9 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.255.13 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.255.17 | 65203 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 172.31.255.21 | 65203 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.2.255.3 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.2.255.4 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.2.255.5 | 65202 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
@@ -403,6 +370,28 @@ router bgp 65002
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor 172.31.255.1 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.1 remote-as 65201
+   neighbor 172.31.255.1 description s2-leaf1_Ethernet2
+   neighbor 172.31.255.5 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.5 remote-as 65201
+   neighbor 172.31.255.5 description s2-leaf2_Ethernet2
+   neighbor 172.31.255.9 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.9 remote-as 65202
+   neighbor 172.31.255.9 description s2-leaf3_Ethernet2
+   neighbor 172.31.255.13 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.13 remote-as 65202
+   neighbor 172.31.255.13 description s2-leaf4_Ethernet2
+   neighbor 172.31.255.17 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.17 remote-as 65203
+   neighbor 172.31.255.17 description s2-brdr1_Ethernet2
+   neighbor 172.31.255.21 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.21 remote-as 65203
+   neighbor 172.31.255.21 description s2-brdr2_Ethernet2
    neighbor 192.2.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.2.255.3 remote-as 65201
    neighbor 192.2.255.3 description s2-leaf1
@@ -421,12 +410,14 @@ router bgp 65002
    neighbor 192.2.255.8 peer group EVPN-OVERLAY-PEERS
    neighbor 192.2.255.8 remote-as 65203
    neighbor 192.2.255.8 description s2-brdr2
+   redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
+      neighbor IPv4-UNDERLAY-PEERS activate
 ```
 
 ## BFD
@@ -445,6 +436,44 @@ router bgp 65002
 !
 router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
+```
+
+## Filters
+
+### Prefix-lists
+
+#### Prefix-lists Summary
+
+##### PL-LOOPBACKS-EVPN-OVERLAY
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 192.2.255.0/24 eq 32 |
+
+#### Prefix-lists Device Configuration
+
+```eos
+!
+ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+   seq 10 permit 192.2.255.0/24 eq 32
+```
+
+### Route-maps
+
+#### Route-maps Summary
+
+##### RM-CONN-2-BGP
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+
+#### Route-maps Device Configuration
+
+```eos
+!
+route-map RM-CONN-2-BGP permit 10
+   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```
 
 ## VRF Instances

@@ -48,11 +48,11 @@
 | l3leaf | s1-brdr1 | Ethernet1 | mlag_peer | s1-brdr2 | Ethernet1 |
 | l3leaf | s1-brdr1 | Ethernet2 | spine | s1-spine1 | Ethernet7 |
 | l3leaf | s1-brdr1 | Ethernet3 | spine | s1-spine2 | Ethernet7 |
-| l3leaf | s1-brdr1 | Ethernet4 | l3leaf | s2-brdr1 | Port-Channel4 |
-| l3leaf | s1-brdr1 | Ethernet5 | l3leaf | s2-brdr1 | Port-Channel4 |
+| l3leaf | s1-brdr1 | Ethernet4 | l3leaf | s2-brdr1 | Ethernet4 |
 | l3leaf | s1-brdr1 | Ethernet6 | mlag_peer | s1-brdr2 | Ethernet6 |
 | l3leaf | s1-brdr2 | Ethernet2 | spine | s1-spine1 | Ethernet8 |
 | l3leaf | s1-brdr2 | Ethernet3 | spine | s1-spine2 | Ethernet8 |
+| l3leaf | s1-brdr2 | Ethernet5 | l3leaf | s2-brdr2 | Ethernet5 |
 | l3leaf | s1-leaf1 | Ethernet1 | mlag_peer | s1-leaf2 | Ethernet1 |
 | l3leaf | s1-leaf1 | Ethernet2 | spine | s1-spine1 | Ethernet2 |
 | l3leaf | s1-leaf1 | Ethernet3 | spine | s1-spine2 | Ethernet2 |
@@ -68,8 +68,6 @@
 | l3leaf | s2-brdr1 | Ethernet1 | mlag_peer | s2-brdr2 | Ethernet1 |
 | l3leaf | s2-brdr1 | Ethernet2 | spine | s2-spine1 | Ethernet7 |
 | l3leaf | s2-brdr1 | Ethernet3 | spine | s2-spine2 | Ethernet7 |
-| l3leaf | s2-brdr1 | Ethernet4 | l3leaf | s1-brdr1 | Port-Channel4 |
-| l3leaf | s2-brdr1 | Ethernet5 | l3leaf | s1-brdr1 | Port-Channel4 |
 | l3leaf | s2-brdr1 | Ethernet6 | mlag_peer | s2-brdr2 | Ethernet6 |
 | l3leaf | s2-brdr2 | Ethernet2 | spine | s2-spine1 | Ethernet8 |
 | l3leaf | s2-brdr2 | Ethernet3 | spine | s2-spine2 | Ethernet8 |
@@ -101,8 +99,10 @@
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
 | s1-brdr1 | Ethernet2 | 172.30.255.17/31 | s1-spine1 | Ethernet7 | 172.30.255.16/31 |
 | s1-brdr1 | Ethernet3 | 172.30.255.19/31 | s1-spine2 | Ethernet7 | 172.30.255.18/31 |
+| s1-brdr1 | Ethernet4 | 172.16.200.0/31 | s2-brdr1 | Ethernet4 | 172.16.200.1/31 |
 | s1-brdr2 | Ethernet2 | 172.30.255.21/31 | s1-spine1 | Ethernet8 | 172.30.255.20/31 |
 | s1-brdr2 | Ethernet3 | 172.30.255.23/31 | s1-spine2 | Ethernet8 | 172.30.255.22/31 |
+| s1-brdr2 | Ethernet5 | 172.16.200.2/31 | s2-brdr2 | Ethernet5 | 172.16.200.3/31 |
 | s1-leaf1 | Ethernet2 | 172.30.255.1/31 | s1-spine1 | Ethernet2 | 172.30.255.0/31 |
 | s1-leaf1 | Ethernet3 | 172.30.255.3/31 | s1-spine2 | Ethernet2 | 172.30.255.2/31 |
 | s1-leaf2 | Ethernet2 | 172.30.255.5/31 | s1-spine1 | Ethernet3 | 172.30.255.4/31 |
