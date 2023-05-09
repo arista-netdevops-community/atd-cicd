@@ -70,7 +70,7 @@ l3_edge:
     - id: 2
       ip_pool: BORDER_IP
       nodes: [s1-brdr2, s2-brdr2]
-      interfaces: [Ethernet5, Ethernet5]
+      interfaces: [Ethernet4, Ethernet4]
       as: [65103, 65203]
       descriptions: ["s1 Border Leaf 1", "s2 Border Leaf 1"]
       include_in_underlay_protocol: true

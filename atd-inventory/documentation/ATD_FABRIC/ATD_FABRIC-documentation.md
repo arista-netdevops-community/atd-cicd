@@ -52,7 +52,7 @@
 | l3leaf | s1-brdr1 | Ethernet6 | mlag_peer | s1-brdr2 | Ethernet6 |
 | l3leaf | s1-brdr2 | Ethernet2 | spine | s1-spine1 | Ethernet8 |
 | l3leaf | s1-brdr2 | Ethernet3 | spine | s1-spine2 | Ethernet8 |
-| l3leaf | s1-brdr2 | Ethernet5 | l3leaf | s2-brdr2 | Ethernet5 |
+| l3leaf | s1-brdr2 | Ethernet4 | l3leaf | s2-brdr2 | Ethernet4 |
 | l3leaf | s1-leaf1 | Ethernet1 | mlag_peer | s1-leaf2 | Ethernet1 |
 | l3leaf | s1-leaf1 | Ethernet2 | spine | s1-spine1 | Ethernet2 |
 | l3leaf | s1-leaf1 | Ethernet3 | spine | s1-spine2 | Ethernet2 |
@@ -102,7 +102,7 @@
 | s1-brdr1 | Ethernet4 | 172.16.200.0/31 | s2-brdr1 | Ethernet4 | 172.16.200.1/31 |
 | s1-brdr2 | Ethernet2 | 172.30.11.21/31 | s1-spine1 | Ethernet8 | 172.30.11.20/31 |
 | s1-brdr2 | Ethernet3 | 172.30.11.23/31 | s1-spine2 | Ethernet8 | 172.30.11.22/31 |
-| s1-brdr2 | Ethernet5 | 172.16.200.2/31 | s2-brdr2 | Ethernet5 | 172.16.200.3/31 |
+| s1-brdr2 | Ethernet4 | 172.16.200.2/31 | s2-brdr2 | Ethernet4 | 172.16.200.3/31 |
 | s1-leaf1 | Ethernet2 | 172.30.11.1/31 | s1-spine1 | Ethernet2 | 172.30.11.0/31 |
 | s1-leaf1 | Ethernet3 | 172.30.11.3/31 | s1-spine2 | Ethernet2 | 172.30.11.2/31 |
 | s1-leaf2 | Ethernet2 | 172.30.11.5/31 | s1-spine1 | Ethernet3 | 172.30.11.4/31 |

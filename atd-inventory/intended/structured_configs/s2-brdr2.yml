@@ -266,9 +266,9 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.30.12.23/31
-- name: Ethernet5
+- name: Ethernet4
   peer: s1-brdr2
-  peer_interface: Ethernet5
+  peer_interface: Ethernet4
   peer_type: l3leaf
   description: s2 Border Leaf 1
   type: routed

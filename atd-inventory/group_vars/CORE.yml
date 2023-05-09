@@ -18,7 +18,7 @@ name_servers:
 dns_domain: atd.lab
 
 
-underlay_routing_protocol: EBGP
+underlay_routing_protocol: OSPF
 
 # Optional, enable multicast features
 # underlay_multicast: true
