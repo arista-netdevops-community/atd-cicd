@@ -17,7 +17,6 @@ name_servers:
 
 dns_domain: atd.lab
 
-
 underlay_routing_protocol: OSPF
 
 # Optional, enable multicast features
@@ -110,7 +109,6 @@ tenants:
       2200:
         name: CORE_LINK2
 
-
 port_profiles:
   - profile: CORE_LINK1
     mode: access
@@ -121,10 +119,6 @@ port_profiles:
     vlans: "2200"
     spanning_tree_portfast: edge
 
-
-# Network Ports
-# All switch_ports ranges are expanded into individual port configurations
-# Switches are matched with regex matching the full hostname.
 network_ports:
   - switches:
       - s1-core1

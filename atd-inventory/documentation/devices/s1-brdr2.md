@@ -254,7 +254,7 @@ vlan 4094
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet2 | P2P_LINK_TO_S1-SPINE1_Ethernet8 | routed | - | 172.30.11.21/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_S1-SPINE2_Ethernet8 | routed | - | 172.30.11.23/31 | default | 1500 | False | - | - |
-| Ethernet5 | s1 Border Leaf 1 | routed | - | 172.16.200.2/31 | default | 1500 | False | - | - |
+| Ethernet4 | s1 Border Leaf 1 | routed | - | 172.16.200.2/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -279,7 +279,7 @@ interface Ethernet3
    no switchport
    ip address 172.30.11.23/31
 !
-interface Ethernet5
+interface Ethernet4
    description s1 Border Leaf 1
    no shutdown
    mtu 1500
