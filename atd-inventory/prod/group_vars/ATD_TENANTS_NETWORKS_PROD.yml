@@ -24,17 +24,17 @@ tenants:
     #   underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
     #   underlay_l2_multicast_group_ipv4_pool_offset: 2
     vrfs:
-    #   Tenant_A_OP_Zone:
-    #     vrf_vni: 10
-    #     vtep_diagnostic:
-    #       loopback: 100
-    #       loopback_ip_range: 10.255.1.0/24
-    #     svis:
-    #       210:
-    #         name: Tenant_A_OP_Zone_1
-    #         tags: [opzone]
-    #         enabled: true
-    #         ip_address_virtual: 10.1.10.1/24
-    # l2vlans:
-    #   110:
-    #     name: Extend
+      Tenant_A_OP_Zone:
+        vrf_vni: 10
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          210:
+            name: Tenant_A_OP_Zone_1
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+    l2vlans:
+      110:
+        name: Extend
