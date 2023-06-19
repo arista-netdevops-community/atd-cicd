@@ -1,6 +1,6 @@
 ---
 - name: Provision ATD environment to prepare AVD Lab
-  hosts: cv_servers_dev
+  hosts: cv_servers
   connection: local
   gather_facts: false
   vars:

@@ -1,0 +1,17 @@
+---
+- name: Manage Arista EOS EVPN/VXLAN Configuration
+  hosts: CORE
+  connection: local
+  gather_facts: false
+  vars:
+    fabric_dir_name: "{{ fabric_name }}"
+    execute_tasks: false
+  tasks:
+
+    - name: Generate intended variables
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen

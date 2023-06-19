@@ -1,0 +1,50 @@
+---
+all:
+  children:
+    cv_servers:
+      hosts:
+        cv_atd1:
+          ansible_host: dual-dc-testing-1-a10d91c1-eos.topo.testdrive-dev.arista.com
+          cv_collection: v3
+          execute_tasks: false
+    # CORE_EVPN:
+    #   vars:
+    #     type: l3leaf
+    #   hosts:
+    #     s1-core1:
+    #       ansible_host: 192.168.0.102
+    #     s1-core2:
+    #       ansible_host: 192.168.0.103
+    #     s2-core1:
+    #       ansible_host: 192.168.0.202
+    #     s2-core2:
+    #       ansible_host: 192.168.0.203
+    CORE:
+      vars:
+        type: pe
+      hosts:
+        s1-core1:
+          ansible_host: 192.168.0.102
+        s1-core2:
+          ansible_host: 192.168.0.103
+        s2-core1:
+          ansible_host: 192.168.0.202
+        s2-core2:
+          ansible_host: 192.168.0.203
+
+
+  vars:
+    ansible_user: arista
+    ansible_password: arista5nj7
+    ansible_network_os: arista.eos.eos
+    # Configure privilege escalation
+    ansible_become: true
+    ansible_become_method: enable
+    # HTTPAPI configuration
+    ansible_connection: httpapi
+    ansible_httpapi_port: 443
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_python_interpreter: $(which python3)
+    avd_data_conversion_mode: error
+    avd_data_validation_mode: error

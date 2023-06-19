@@ -1,0 +1,173 @@
+---
+# L3LS Fabric Values - update these values with caution,
+# SOME CHANGES COULD BE DISRUPTIVE.
+
+fabric_name: CORE
+
+design:
+  type: mpls
+
+type: pe
+
+# OOB Management network default gateway
+mgmt_gateway: 192.168.0.1
+# If ATD is running cEOS, management interface is Management0
+# If ATD is running vEOS, management interface is Management1
+mgmt_interface: Management0
+mgmt_interface_vrf: default
+
+name_servers:
+  - 192.168.2.1
+  - 8.8.8.8
+
+dns_domain: atd.lab
+
+underlay_routing_protocol: isis-ldp
+overlay_routing_protocol: ibgp
+
+bgp_as: 64555
+bgp_mesh_pes: true
+
+bgp_peer_groups:
+  # all passwords set to "arista"
+  mpls_overlay_peers:
+    password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+  rr_overlay_peers:
+    password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+
+management_security:
+  password:
+    encryption_key_common: true
+
+#### Override for vEOS Lab Caveats ####
+
+# Disable update wait-for-convergence and update wait-for-install,
+# which is not supported in vEOS-LAB.
+# Refer to design guide
+
+# Adjust default bfd values
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+
+pe:
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.200.10.0/24
+    vtep_loopback_ipv4_pool: 10.200.20.0/24
+    uplink_ipv4_pool: 10.255.0.0/24
+    virtual_router_mac_address: 00:1c:73:00:cc:00
+    isis_system_id_prefix: '0000.0001'
+    overlay_address_families: [ evpn ]
+    spanning_tree_mode: none
+  nodes:
+    - name: s1-core1
+      id: 1
+      mgmt_ip: 192.168.0.102/24
+    - name: s1-core2
+      id: 2
+      mgmt_ip: 192.168.0.103/24
+    - name: s2-core1
+      id: 3
+      mgmt_ip: 192.168.0.202/24
+    - name: s2-core2
+      id: 4
+      bgp_as: 65505
+      mgmt_ip: 192.168.0.203/24
+
+
+
+core_interfaces:
+  # First, an IP-pool for the underlay p2p links is defined
+  p2p_links_ip_pools:
+    - name: core_pool
+      ipv4_pool: 10.255.0.0/24
+  p2p_links_profiles:
+    - name: core_profile
+      mtu: 9214
+      isis_metric: 50
+      ip_pool: core_pool
+      isis_circuit_type: level-2
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+  p2p_links:
+    - nodes: [ s1-core1, s1-core2 ]
+      id: 1
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: core_profile
+    - nodes: [ s1-core1, s1-core2 ]
+      id: 2
+      interfaces: [ Ethernet6, Ethernet6 ]
+      profile: core_profile
+    - nodes: [ s1-core1, s2-core1 ]
+      id: 3
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: core_profile
+    - nodes: [ s1-core2, s2-core2 ]
+      id: 4
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: core_profile
+    - nodes: [ s2-core1, s2-core2 ]
+      id: 5
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: core_profile
+    - nodes: [ s2-core1, s2-core2 ]
+      id: 6
+      interfaces: [ Ethernet6, Ethernet6 ]
+      profile: core_profile
+
+
+
+tenants:
+
+  # Specify a tenant name. | Required
+  # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+  # Networks services can be filtered by tenant name.
+  - name: VPN_SERVICE
+    pseudowire_rt_base: 10000
+    point_to_point_services:
+      - name: CIRCUIT_1
+        type: vpws-pseudowire
+        lldp_disable: true
+        endpoints:
+          - id: 101
+            nodes: [ s1-core1 ]
+            interfaces: [ Ethernet2 ]
+          - id: 201
+            nodes: [ s2-core1 ]
+            interfaces: [ Ethernet2 ]
+      - name: CIRCUIT_2
+        type: vpws-pseudowire
+        lldp_disable: true
+        endpoints:
+          - id: 102
+            nodes: [ s1-core1 ]
+            interfaces: [ Ethernet3 ]
+          - id: 202
+            nodes: [ s2-core1 ]
+            interfaces: [ Ethernet3 ]
+      - name: CIRCUIT_3
+        type: vpws-pseudowire
+        lldp_disable: true
+        endpoints:
+          - id: 103
+            nodes: [ s1-core2 ]
+            interfaces: [ Ethernet2 ]
+          - id: 203
+            nodes: [ s2-core2 ]
+            interfaces: [ Ethernet3 ]
+      - name: CIRCUIT_4
+        type: vpws-pseudowire
+        lldp_disable: true
+        endpoints:
+          - id: 104
+            nodes: [ s1-core2 ]
+            interfaces: [ Ethernet3 ]
+          - id: 204
+            nodes: [ s2-core2 ]
+            interfaces: [ Ethernet2 ]
+
+custom_structured_configuration_eos_cli: |
+  platform tfa personality arfa

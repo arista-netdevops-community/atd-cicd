@@ -1,0 +1,108 @@
+---
+all:
+  children:
+    cv_servers:
+      hosts:
+        cv_atd1:
+          ansible_host: dual-dc-testing-1-a10d91c1-eos.topo.testdrive-dev.arista.com
+          cv_collection: v3
+          execute_tasks: false
+    DC_FABRICS:
+      children:
+        DC1:
+          children:
+            SPINES_DC1:
+              vars:
+                type: spine
+              hosts:
+                s1-spine1:
+                  ansible_host: 192.168.0.10
+                s1-spine2:
+                  ansible_host: 192.168.0.11
+            LEAFS_DC1:
+              children:
+                LEAF1_DC1:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    s1-leaf1:
+                      ansible_host: 192.168.0.12
+                    s1-leaf2:
+                      ansible_host: 192.168.0.13
+                LEAF2_DC1:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    s1-leaf3:
+                      ansible_host: 192.168.0.14
+                    s1-leaf4:
+                      ansible_host: 192.168.0.15
+                BORDER_DC1:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    s1-brdr1:
+                      ansible_host: 192.168.0.100
+                    s1-brdr2:
+                      ansible_host: 192.168.0.101
+        DC2:
+          children:
+            SPINES_DC2:
+              vars:
+                type: spine
+              hosts:
+                s2-spine1:
+                  ansible_host: 192.168.0.20
+                s2-spine2:
+                  ansible_host: 192.168.0.21
+            LEAFS_DC2:
+              children:
+                LEAF1_DC2:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    s2-leaf1:
+                      ansible_host: 192.168.0.22
+                    s2-leaf2:
+                      ansible_host: 192.168.0.23
+                LEAF2_DC2:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    s2-leaf3:
+                      ansible_host: 192.168.0.24
+                    s2-leaf4:
+                      ansible_host: 192.168.0.25
+                BORDER_DC2:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    s2-brdr1:
+                      ansible_host: 192.168.0.200
+                    s2-brdr2:
+                      ansible_host: 192.168.0.201
+    TENANTS_NETWORKS:
+      children:
+        LEAFS_DC1:
+        LEAFS_DC2:
+    SERVERS:
+      children:
+        LEAFS_DC1:
+        LEAFS_DC2:
+
+
+  vars:
+    ansible_user: arista
+    ansible_password: arista5nj7
+    ansible_network_os: arista.eos.eos
+    # Configure privilege escalation
+    ansible_become: true
+    ansible_become_method: enable
+    # HTTPAPI configuration
+    ansible_connection: httpapi
+    ansible_httpapi_port: 443
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_python_interpreter: $(which python3)
+    avd_data_conversion_mode: error
+    avd_data_validation_mode: error

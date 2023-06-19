@@ -1,0 +1,7 @@
+Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
+pe,s1-core1,Ethernet1,10.255.0.0/31,pe,s1-core2,Ethernet1,10.255.0.1/31
+pe,s1-core1,Ethernet4,10.255.0.4/31,pe,s2-core1,Ethernet4,10.255.0.5/31
+pe,s1-core1,Ethernet6,10.255.0.2/31,pe,s1-core2,Ethernet6,10.255.0.3/31
+pe,s1-core2,Ethernet4,10.255.0.6/31,pe,s2-core2,Ethernet4,10.255.0.7/31
+pe,s2-core1,Ethernet1,10.255.0.8/31,pe,s2-core2,Ethernet1,10.255.0.9/31
+pe,s2-core1,Ethernet6,10.255.0.10/31,pe,s2-core2,Ethernet6,10.255.0.11/31

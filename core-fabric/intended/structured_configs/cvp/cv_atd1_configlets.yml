@@ -1,0 +1,221 @@
+cvp_configlets:
+  AVD_s1-core1: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s1-core1\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet1\n   description
+    P2P_LINK_TO_s1-core2_Ethernet1\n   no shutdown\n   mtu 9214\n   no switchport\n
+    \  ip address 10.255.0.0/31\n   mpls ldp igp sync\n   mpls ldp interface\n   mpls
+    ip\n   isis enable CORE\n   isis circuit-type level-2\n   isis metric 50\n   isis
+    hello padding\n   isis network point-to-point\n   isis authentication mode md5\n
+    \  isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface Ethernet2\n   no shutdown\n
+    \  no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface Ethernet3\n
+    \  no shutdown\n   no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface
+    Ethernet4\n   description P2P_LINK_TO_s2-core1_Ethernet4\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.4/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Ethernet6\n   description P2P_LINK_TO_s1-core2_Ethernet6\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.2/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Loopback0\n   description MPLS_Overlay_peering\n   no shutdown\n   ip address
+    10.200.10.1/32\n   isis enable CORE\n   isis passive\n   mpls ldp interface\n!\ninterface
+    Management0\n   description oob_management\n   no shutdown\n   ip address 192.168.0.102/24\n!\nip
+    virtual-router mac-address 00:1c:73:00:cc:00\n!\nip routing\n!\nip route 0.0.0.0/0
+    192.168.0.1\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter
+    bgp 64555\n   router-id 10.200.10.1\n   maximum-paths 4 ecmp 4\n   no bgp default
+    ipv4-unicast\n   neighbor MPLS-OVERLAY-PEERS peer group\n   neighbor MPLS-OVERLAY-PEERS
+    remote-as 64555\n   neighbor MPLS-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    MPLS-OVERLAY-PEERS bfd\n   neighbor MPLS-OVERLAY-PEERS password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==\n
+    \  neighbor MPLS-OVERLAY-PEERS send-community\n   neighbor MPLS-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor 10.200.10.2 peer group MPLS-OVERLAY-PEERS\n   neighbor
+    10.200.10.2 description s1-core2\n   neighbor 10.200.10.3 peer group MPLS-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.3 description s2-core1\n   neighbor 10.200.10.4 peer group
+    MPLS-OVERLAY-PEERS\n   neighbor 10.200.10.4 description s2-core2\n   !\n   vpws
+    VPN_SERVICE\n      rd 10.200.10.1:10000\n      route-target import export evpn
+    10000:10000\n      !\n      pseudowire CIRCUIT_1\n         evpn vpws id local
+    101 remote 201\n      !\n      pseudowire CIRCUIT_2\n         evpn vpws id local
+    102 remote 202\n   !\n   address-family evpn\n      neighbor default encapsulation
+    mpls next-hop-self source-interface Loopback0\n      neighbor MPLS-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor MPLS-OVERLAY-PEERS activate\n!\nrouter
+    isis CORE\n   net 49.0001.0000.0001.0001.00\n   is-type level-2\n   router-id
+    ipv4 10.200.10.1\n   log-adjacency-changes\n   mpls ldp sync default\n   !\n   address-family
+    ipv4 unicast\n      maximum-paths 4\n   !\n!\nmpls ip\n!\nmpls ldp\n   interface
+    disabled default\n   router-id 10.200.10.1\n   no shutdown\n   transport-address
+    interface Loopback0\n!\npatch panel\n   patch CIRCUIT_1\n      connector 1 interface
+    Ethernet2\n      connector 2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_1\n
+    \  !\n   patch CIRCUIT_2\n      connector 1 interface Ethernet3\n      connector
+    2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_2\n   !\n!\nmanagement api
+    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf default\n      no
+    shutdown\n!\nmanagement security\n   password encryption-key common\n!\nplatform
+    tfa personality arfa\n!\nend\n"
+  AVD_s1-core2: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s1-core2\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet1\n   description
+    P2P_LINK_TO_s1-core1_Ethernet1\n   no shutdown\n   mtu 9214\n   no switchport\n
+    \  ip address 10.255.0.1/31\n   mpls ldp igp sync\n   mpls ldp interface\n   mpls
+    ip\n   isis enable CORE\n   isis circuit-type level-2\n   isis metric 50\n   isis
+    hello padding\n   isis network point-to-point\n   isis authentication mode md5\n
+    \  isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface Ethernet2\n   no shutdown\n
+    \  no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface Ethernet3\n
+    \  no shutdown\n   no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface
+    Ethernet4\n   description P2P_LINK_TO_s2-core2_Ethernet4\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.6/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Ethernet6\n   description P2P_LINK_TO_s1-core1_Ethernet6\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.3/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Loopback0\n   description MPLS_Overlay_peering\n   no shutdown\n   ip address
+    10.200.10.2/32\n   isis enable CORE\n   isis passive\n   mpls ldp interface\n!\ninterface
+    Management0\n   description oob_management\n   no shutdown\n   ip address 192.168.0.103/24\n!\nip
+    virtual-router mac-address 00:1c:73:00:cc:00\n!\nip routing\n!\nip route 0.0.0.0/0
+    192.168.0.1\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter
+    bgp 64555\n   router-id 10.200.10.2\n   maximum-paths 4 ecmp 4\n   no bgp default
+    ipv4-unicast\n   neighbor MPLS-OVERLAY-PEERS peer group\n   neighbor MPLS-OVERLAY-PEERS
+    remote-as 64555\n   neighbor MPLS-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    MPLS-OVERLAY-PEERS bfd\n   neighbor MPLS-OVERLAY-PEERS password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==\n
+    \  neighbor MPLS-OVERLAY-PEERS send-community\n   neighbor MPLS-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor 10.200.10.1 peer group MPLS-OVERLAY-PEERS\n   neighbor
+    10.200.10.1 description s1-core1\n   neighbor 10.200.10.3 peer group MPLS-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.3 description s2-core1\n   neighbor 10.200.10.4 peer group
+    MPLS-OVERLAY-PEERS\n   neighbor 10.200.10.4 description s2-core2\n   !\n   vpws
+    VPN_SERVICE\n      rd 10.200.10.2:10000\n      route-target import export evpn
+    10000:10000\n      !\n      pseudowire CIRCUIT_3\n         evpn vpws id local
+    103 remote 203\n      !\n      pseudowire CIRCUIT_4\n         evpn vpws id local
+    104 remote 204\n   !\n   address-family evpn\n      neighbor default encapsulation
+    mpls next-hop-self source-interface Loopback0\n      neighbor MPLS-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor MPLS-OVERLAY-PEERS activate\n!\nrouter
+    isis CORE\n   net 49.0001.0000.0001.0002.00\n   is-type level-2\n   router-id
+    ipv4 10.200.10.2\n   log-adjacency-changes\n   mpls ldp sync default\n   !\n   address-family
+    ipv4 unicast\n      maximum-paths 4\n   !\n!\nmpls ip\n!\nmpls ldp\n   interface
+    disabled default\n   router-id 10.200.10.2\n   no shutdown\n   transport-address
+    interface Loopback0\n!\npatch panel\n   patch CIRCUIT_3\n      connector 1 interface
+    Ethernet2\n      connector 2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_3\n
+    \  !\n   patch CIRCUIT_4\n      connector 1 interface Ethernet3\n      connector
+    2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_4\n   !\n!\nmanagement api
+    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf default\n      no
+    shutdown\n!\nmanagement security\n   password encryption-key common\n!\nplatform
+    tfa personality arfa\n!\nend\n"
+  AVD_s2-core1: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s2-core1\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet1\n   description
+    P2P_LINK_TO_s2-core2_Ethernet1\n   no shutdown\n   mtu 9214\n   no switchport\n
+    \  ip address 10.255.0.8/31\n   mpls ldp igp sync\n   mpls ldp interface\n   mpls
+    ip\n   isis enable CORE\n   isis circuit-type level-2\n   isis metric 50\n   isis
+    hello padding\n   isis network point-to-point\n   isis authentication mode md5\n
+    \  isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface Ethernet2\n   no shutdown\n
+    \  no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface Ethernet3\n
+    \  no shutdown\n   no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface
+    Ethernet4\n   description P2P_LINK_TO_s1-core1_Ethernet4\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.5/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Ethernet6\n   description P2P_LINK_TO_s2-core2_Ethernet6\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.10/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Loopback0\n   description MPLS_Overlay_peering\n   no shutdown\n   ip address
+    10.200.10.3/32\n   isis enable CORE\n   isis passive\n   mpls ldp interface\n!\ninterface
+    Management0\n   description oob_management\n   no shutdown\n   ip address 192.168.0.202/24\n!\nip
+    virtual-router mac-address 00:1c:73:00:cc:00\n!\nip routing\n!\nip route 0.0.0.0/0
+    192.168.0.1\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter
+    bgp 64555\n   router-id 10.200.10.3\n   maximum-paths 4 ecmp 4\n   no bgp default
+    ipv4-unicast\n   neighbor MPLS-OVERLAY-PEERS peer group\n   neighbor MPLS-OVERLAY-PEERS
+    remote-as 64555\n   neighbor MPLS-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    MPLS-OVERLAY-PEERS bfd\n   neighbor MPLS-OVERLAY-PEERS password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==\n
+    \  neighbor MPLS-OVERLAY-PEERS send-community\n   neighbor MPLS-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor 10.200.10.1 peer group MPLS-OVERLAY-PEERS\n   neighbor
+    10.200.10.1 description s1-core1\n   neighbor 10.200.10.2 peer group MPLS-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.2 description s1-core2\n   neighbor 10.200.10.4 peer group
+    MPLS-OVERLAY-PEERS\n   neighbor 10.200.10.4 description s2-core2\n   !\n   vpws
+    VPN_SERVICE\n      rd 10.200.10.3:10000\n      route-target import export evpn
+    10000:10000\n      !\n      pseudowire CIRCUIT_1\n         evpn vpws id local
+    201 remote 101\n      !\n      pseudowire CIRCUIT_2\n         evpn vpws id local
+    202 remote 102\n   !\n   address-family evpn\n      neighbor default encapsulation
+    mpls next-hop-self source-interface Loopback0\n      neighbor MPLS-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor MPLS-OVERLAY-PEERS activate\n!\nrouter
+    isis CORE\n   net 49.0001.0000.0001.0003.00\n   is-type level-2\n   router-id
+    ipv4 10.200.10.3\n   log-adjacency-changes\n   mpls ldp sync default\n   !\n   address-family
+    ipv4 unicast\n      maximum-paths 4\n   !\n!\nmpls ip\n!\nmpls ldp\n   interface
+    disabled default\n   router-id 10.200.10.3\n   no shutdown\n   transport-address
+    interface Loopback0\n!\npatch panel\n   patch CIRCUIT_1\n      connector 1 interface
+    Ethernet2\n      connector 2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_1\n
+    \  !\n   patch CIRCUIT_2\n      connector 1 interface Ethernet3\n      connector
+    2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_2\n   !\n!\nmanagement api
+    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf default\n      no
+    shutdown\n!\nmanagement security\n   password encryption-key common\n!\nplatform
+    tfa personality arfa\n!\nend\n"
+  AVD_s2-core2: "!RANCID-CONTENT-TYPE: arista\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname s2-core2\nip name-server vrf default 8.8.8.8\nip
+    name-server vrf default 192.168.2.1\ndns domain atd.lab\n!\nspanning-tree mode
+    none\n!\nno enable password\nno aaa root\n!\ninterface Ethernet1\n   description
+    P2P_LINK_TO_s2-core1_Ethernet1\n   no shutdown\n   mtu 9214\n   no switchport\n
+    \  ip address 10.255.0.9/31\n   mpls ldp igp sync\n   mpls ldp interface\n   mpls
+    ip\n   isis enable CORE\n   isis circuit-type level-2\n   isis metric 50\n   isis
+    hello padding\n   isis network point-to-point\n   isis authentication mode md5\n
+    \  isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface Ethernet2\n   no shutdown\n
+    \  no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface Ethernet3\n
+    \  no shutdown\n   no switchport\n   no lldp transmit\n   no lldp receive\n!\ninterface
+    Ethernet4\n   description P2P_LINK_TO_s1-core2_Ethernet4\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.7/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Ethernet6\n   description P2P_LINK_TO_s2-core1_Ethernet6\n   no shutdown\n   mtu
+    9214\n   no switchport\n   ip address 10.255.0.11/31\n   mpls ldp igp sync\n   mpls
+    ldp interface\n   mpls ip\n   isis enable CORE\n   isis circuit-type level-2\n
+    \  isis metric 50\n   isis hello padding\n   isis network point-to-point\n   isis
+    authentication mode md5\n   isis authentication key 7 $1c$sTNAlR6rKSw=\n!\ninterface
+    Loopback0\n   description MPLS_Overlay_peering\n   no shutdown\n   ip address
+    10.200.10.4/32\n   isis enable CORE\n   isis passive\n   mpls ldp interface\n!\ninterface
+    Management0\n   description oob_management\n   no shutdown\n   ip address 192.168.0.203/24\n!\nip
+    virtual-router mac-address 00:1c:73:00:cc:00\n!\nip routing\n!\nip route 0.0.0.0/0
+    192.168.0.1\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter
+    bgp 64555\n   router-id 10.200.10.4\n   maximum-paths 4 ecmp 4\n   no bgp default
+    ipv4-unicast\n   neighbor MPLS-OVERLAY-PEERS peer group\n   neighbor MPLS-OVERLAY-PEERS
+    remote-as 64555\n   neighbor MPLS-OVERLAY-PEERS update-source Loopback0\n   neighbor
+    MPLS-OVERLAY-PEERS bfd\n   neighbor MPLS-OVERLAY-PEERS password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==\n
+    \  neighbor MPLS-OVERLAY-PEERS send-community\n   neighbor MPLS-OVERLAY-PEERS
+    maximum-routes 0\n   neighbor 10.200.10.1 peer group MPLS-OVERLAY-PEERS\n   neighbor
+    10.200.10.1 description s1-core1\n   neighbor 10.200.10.2 peer group MPLS-OVERLAY-PEERS\n
+    \  neighbor 10.200.10.2 description s1-core2\n   neighbor 10.200.10.3 peer group
+    MPLS-OVERLAY-PEERS\n   neighbor 10.200.10.3 description s2-core1\n   !\n   vpws
+    VPN_SERVICE\n      rd 10.200.10.4:10000\n      route-target import export evpn
+    10000:10000\n      !\n      pseudowire CIRCUIT_3\n         evpn vpws id local
+    203 remote 103\n      !\n      pseudowire CIRCUIT_4\n         evpn vpws id local
+    204 remote 104\n   !\n   address-family evpn\n      neighbor default encapsulation
+    mpls next-hop-self source-interface Loopback0\n      neighbor MPLS-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor MPLS-OVERLAY-PEERS activate\n!\nrouter
+    isis CORE\n   net 49.0001.0000.0001.0004.00\n   is-type level-2\n   router-id
+    ipv4 10.200.10.4\n   log-adjacency-changes\n   mpls ldp sync default\n   !\n   address-family
+    ipv4 unicast\n      maximum-paths 4\n   !\n!\nmpls ip\n!\nmpls ldp\n   interface
+    disabled default\n   router-id 10.200.10.4\n   no shutdown\n   transport-address
+    interface Loopback0\n!\npatch panel\n   patch CIRCUIT_3\n      connector 1 interface
+    Ethernet3\n      connector 2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_3\n
+    \  !\n   patch CIRCUIT_4\n      connector 1 interface Ethernet2\n      connector
+    2 pseudowire bgp vpws VPN_SERVICE pseudowire CIRCUIT_4\n   !\n!\nmanagement api
+    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf default\n      no
+    shutdown\n!\nmanagement security\n   password encryption-key common\n!\nplatform
+    tfa personality arfa\n!\nend\n"
+cvp_topology:
+  CORE:
+    devices:
+    - s1-core1
+    - s1-core2
+    - s2-core1
+    - s2-core2
+    parent_container: Tenant

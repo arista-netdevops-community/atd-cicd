@@ -1,0 +1,48 @@
+name: Test the dev network
+
+on:
+  push:
+
+jobs:
+  test-deploy-dev:
+    env:
+      net: dev
+      PASS: ${{ secrets.PASS }}
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
+    steps:
+      - name: Install Ansible
+        run: pip install "ansible-core<2.15" --upgrade
+
+      - name: Install Arista AVD
+        run: ansible-galaxy collection install arista.avd:==4.1.0
+
+      - name: Install AVD Requirements
+        run: sudo pip install -r ~/.ansible/collections/ansible_collections/arista/avd/requirements.txt
+
+      - name: Upgrade requests to 2.27.0 or above
+        run: pip install requests>=2.27.0 --upgrade
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: dc-fabrics/
+          config_file: .yamllint.yml
+
+      - name: Build Configurations
+        run: ansible-playbook playbooks/dc-fabric-build.yml -i dc-fabrics/inventory.yml
+
+      - name: Deploy Configurations
+        run: ansible-playbook playbooks/dc-fabric-deploy.yml -i dc-fabrics/inventory.yml
+
+
+
+
+
+# To enable runner on ansible server:
+#   source ~/venv/bin/activate
+#   ./actions-runner/run.sh

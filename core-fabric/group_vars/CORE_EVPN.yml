@@ -1,0 +1,135 @@
+---
+# L3LS Fabric Values - update these values with caution,
+# SOME CHANGES COULD BE DISRUPTIVE.
+
+fabric_name: CORE
+
+# OOB Management network default gateway
+mgmt_gateway: 192.168.0.1
+# If ATD is running cEOS, management interface is Management0
+# If ATD is running vEOS, management interface is Management1
+mgmt_interface: Management0
+mgmt_interface_vrf: default
+
+name_servers:
+  - 192.168.2.1
+  - 8.8.8.8
+
+dns_domain: atd.lab
+
+underlay_routing_protocol: OSPF
+
+# Optional, enable multicast features
+# underlay_multicast: true
+# evpn_multicast: true
+
+# bgp peer groups passwords
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+  evpn_overlay_peers:
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
+  mlag_ipv4_underlay_peer:
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
+
+#### Override for vEOS Lab Caveats ####
+
+# Disable update wait-for-convergence and update wait-for-install,
+# which is not supported in vEOS-LAB.
+# Refer to design guide
+
+p2p_uplinks_mtu: 9214
+
+# Adjust default bfd values
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+
+l3leaf:
+  defaults:
+    platform: CEOS-LAB
+    evpn_role: server
+    loopback_ipv4_pool: 10.200.10.0/24
+    vtep_loopback_ipv4_pool: 10.200.20.0/24
+    uplink_ipv4_pool: 10.255.0.0/24
+    virtual_router_mac_address: 00:1c:73:00:cc:01
+    max_uplink_switches: 2
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  nodes:
+    s1-core1:
+      id: 1
+      bgp_as: 65501
+      mgmt_ip: 192.168.0.102/24
+      uplink_switch_interfaces: [ Ethernet1, Ethernet4]
+      uplink_interfaces: [Ethernet1, Ethernet4]
+      uplink_switches: [s1-core2, s2-core1]
+      evpn_route_servers: [s1-core2, s2-core1]
+    s1-core2:
+      id: 2
+      bgp_as: 65502
+      mgmt_ip: 192.168.0.103/24
+      uplink_switch_interfaces: [ Ethernet6, Ethernet4]
+      uplink_interfaces: [Ethernet6, Ethernet4]
+      uplink_switches: [s1-core1, s2-core2 ]
+      evpn_route_servers: [s1-core1, s2-core2]
+    s2-core1:
+      id: 3
+      bgp_as: 65503
+      mgmt_ip: 192.168.0.202/24
+      uplink_switch_interfaces: [Ethernet1]
+      uplink_interfaces: [Ethernet1]
+      uplink_switches: [s2-core2]
+      evpn_route_servers: [s1-core1, s2-core2]
+    s2-core2:
+      id: 4
+      bgp_as: 65505
+      mgmt_ip: 192.168.0.203/24
+      uplink_switch_interfaces: [Ethernet6]
+      uplink_interfaces: [Ethernet6]
+      uplink_switches: [s2-core1]
+      evpn_route_servers: [s1-core2, s2-core1]
+
+
+tenants:
+  # Tenant A Specific Information - VRFs / VLANs
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      2100:
+        name: CORE_LINK1
+      2200:
+        name: CORE_LINK2
+
+port_profiles:
+  - profile: CORE_LINK1
+    mode: access
+    vlans: "2100"
+    spanning_tree_portfast: edge
+  - profile: CORE_LINK2
+    mode: access
+    vlans: "2200"
+    spanning_tree_portfast: edge
+
+network_ports:
+  - switches:
+      - s1-core1
+      - s2-core1
+    switch_ports:
+      - Ethernet2
+    profile: CORE_LINK1
+    description: CORE_LINK1
+  - switches:
+      - s1-core2
+      - s2-core2
+    switch_ports:
+      - Ethernet3
+    profile: CORE_LINK2
+    description: CORE_LINK2

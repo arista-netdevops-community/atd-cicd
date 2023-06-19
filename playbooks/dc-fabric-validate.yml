@@ -1,0 +1,20 @@
+---
+- name: "Run Fabric states validation"
+  hosts: ATD_FABRIC_DEV
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - name: Deploy configuration to device
+      ansible.builtin.import_role:
+        name: arista.avd.eos_validate_state
+
+- name: "Run Fabric states validation"
+  hosts: ATD_FABRIC_PROD
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - name: Deploy configuration to device
+      ansible.builtin.import_role:
+        name: arista.avd.eos_validate_state

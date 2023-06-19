@@ -1,0 +1,93 @@
+---
+cvp_devices:
+  - fqdn: s1-brdr1
+    parentContainerName: BORDER_DC1
+    configlets:
+      - AVD_s1-brdr1
+  - fqdn: s1-brdr2
+    parentContainerName: BORDER_DC1
+    configlets:
+      - AVD_s1-brdr2
+  - fqdn: s1-leaf1
+    parentContainerName: LEAF1_DC1
+    configlets:
+      - AVD_s1-leaf1
+  - fqdn: s1-leaf2
+    parentContainerName: LEAF1_DC1
+    configlets:
+      - AVD_s1-leaf2
+  - fqdn: s1-leaf3
+    parentContainerName: LEAF2_DC1
+    configlets:
+      - AVD_s1-leaf3
+  - fqdn: s1-leaf4
+    parentContainerName: LEAF2_DC1
+    configlets:
+      - AVD_s1-leaf4
+  - fqdn: s1-spine1
+    parentContainerName: SPINES_DC1
+    configlets:
+      - AVD_s1-spine1
+  - fqdn: s1-spine2
+    parentContainerName: SPINES_DC1
+    configlets:
+      - AVD_s1-spine2
+  - fqdn: s2-brdr1
+    parentContainerName: BORDER_DC2
+    configlets:
+      - AVD_s2-brdr1
+  - fqdn: s2-brdr2
+    parentContainerName: BORDER_DC2
+    configlets:
+      - AVD_s2-brdr2
+  - fqdn: s2-leaf1
+    parentContainerName: LEAF1_DC2
+    configlets:
+      - AVD_s2-leaf1
+  - fqdn: s2-leaf2
+    parentContainerName: LEAF1_DC2
+    configlets:
+      - AVD_s2-leaf2
+  - fqdn: s2-leaf3
+    parentContainerName: LEAF2_DC2
+    configlets:
+      - AVD_s2-leaf3
+  - fqdn: s2-leaf4
+    parentContainerName: LEAF2_DC2
+    configlets:
+      - AVD_s2-leaf4
+  - fqdn: s2-spine1
+    parentContainerName: SPINES_DC2
+    configlets:
+      - AVD_s2-spine1
+  - fqdn: s2-spine2
+    parentContainerName: SPINES_DC2
+    configlets:
+      - AVD_s2-spine2
+cvp_containers:
+  BORDER_DC1:
+    parentContainerName: LEAFS_DC1
+  BORDER_DC2:
+    parentContainerName: LEAFS_DC2
+  DC1:
+    parentContainerName: DC_FABRICS
+  DC2:
+    parentContainerName: DC_FABRICS
+  DC_FABRICS:
+    parentContainerName: Tenant
+  LEAF1_DC1:
+    parentContainerName: LEAFS_DC1
+  LEAF1_DC2:
+    parentContainerName: LEAFS_DC2
+  LEAF2_DC1:
+    parentContainerName: LEAFS_DC1
+  LEAF2_DC2:
+    parentContainerName: LEAFS_DC2
+  LEAFS_DC1:
+    parentContainerName: DC1
+  LEAFS_DC2:
+    parentContainerName: DC2
+  SPINES_DC1:
+    parentContainerName: DC1
+  SPINES_DC2:
+    parentContainerName: DC2

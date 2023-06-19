@@ -1,0 +1,54 @@
+---
+# ACT Topology Variable
+
+non_fabric_nodes:
+  - s1-core1:
+      ip_addr: 192.168.0.221
+      node_type: veos
+      version: 4.27.8.1M
+      neighbors:
+        - neighborDevice: branch1-leaf1a
+          neighborPort: Ethernet5
+          port: Ethernet1
+        - neighborDevice: branch1-leaf1b
+          neighborPort: Ethernet5
+          port: Ethernet2
+        - neighborDevice: branch1-leaf1c
+          neighborPort: Ethernet5
+          port: Ethernet3
+  - s1-core2:
+      ip_addr: 192.168.0.222
+      node_type: veos
+      version: 4.27.8.1M
+      neighbors:
+        - neighborDevice: branch1-leaf2a
+          neighborPort: Ethernet5
+          port: Ethernet1
+        - neighborDevice: branch1-leaf2b
+          neighborPort: Ethernet5
+          port: Ethernet2
+        - neighborDevice: branch1-leaf2c
+          neighborPort: Ethernet5
+          port: Ethernet3
+  - s2-core1:
+      ip_addr: 192.168.0.223
+      node_type: veos
+      version: 4.27.8.1M
+      neighbors:
+        - neighborDevice: branch2-leaf1a
+          neighborPort: Ethernet5
+          port: Ethernet1
+        - neighborDevice: branch2-leaf1b
+          neighborPort: Ethernet5
+          port: Ethernet2
+  - s2-core2:
+      ip_addr: 192.168.0.223
+      node_type: veos
+      version: 4.27.8.1M
+      neighbors:
+        - neighborDevice: branch2-leaf1a
+          neighborPort: Ethernet5
+          port: Ethernet1
+        - neighborDevice: branch2-leaf1b
+          neighborPort: Ethernet5
+          port: Ethernet2

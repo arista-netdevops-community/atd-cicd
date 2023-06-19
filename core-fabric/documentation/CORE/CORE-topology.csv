@@ -1,0 +1,21 @@
+Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface Enabled
+pe,s1-core1,Ethernet1,pe,s1-core2,Ethernet1,True
+pe,s1-core1,Ethernet2,point_to_point_service,,,True
+pe,s1-core1,Ethernet3,point_to_point_service,,,True
+pe,s1-core1,Ethernet4,pe,s2-core1,Ethernet4,True
+pe,s1-core1,Ethernet6,pe,s1-core2,Ethernet6,True
+pe,s1-core2,Ethernet1,pe,s1-core1,Ethernet1,True
+pe,s1-core2,Ethernet2,point_to_point_service,,,True
+pe,s1-core2,Ethernet3,point_to_point_service,,,True
+pe,s1-core2,Ethernet4,pe,s2-core2,Ethernet4,True
+pe,s1-core2,Ethernet6,pe,s1-core1,Ethernet6,True
+pe,s2-core1,Ethernet1,pe,s2-core2,Ethernet1,True
+pe,s2-core1,Ethernet2,point_to_point_service,,,True
+pe,s2-core1,Ethernet3,point_to_point_service,,,True
+pe,s2-core1,Ethernet4,pe,s1-core1,Ethernet4,True
+pe,s2-core1,Ethernet6,pe,s2-core2,Ethernet6,True
+pe,s2-core2,Ethernet1,pe,s2-core1,Ethernet1,True
+pe,s2-core2,Ethernet2,point_to_point_service,,,True
+pe,s2-core2,Ethernet3,point_to_point_service,,,True
+pe,s2-core2,Ethernet4,pe,s1-core2,Ethernet4,True
+pe,s2-core2,Ethernet6,pe,s2-core1,Ethernet6,True
