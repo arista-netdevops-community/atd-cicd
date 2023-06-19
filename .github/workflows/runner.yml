@@ -2,6 +2,8 @@ name: Test the dev network
 
 on:
   push:
+    branches:
+      - 'main'
 
 jobs:
   test-deploy-dev:
