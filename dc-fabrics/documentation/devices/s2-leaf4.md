@@ -42,6 +42,9 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Virtual Source NAT](#virtual-source-nat)
+  - [Virtual Source NAT Summary](#virtual-source-nat-summary)
+  - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 - [EOS CLI](#eos-cli)
 
 ## Management
@@ -194,12 +197,33 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 100 | VLAN100 | - |
+| 110 | Extend | - |
+| 200 | VLAN200 | - |
+| 210 | Tenant_A_OP_Zone_1 | - |
+| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
 
 ```eos
+!
+vlan 100
+   name VLAN100
+!
+vlan 110
+   name Extend
+!
+vlan 200
+   name VLAN200
+!
+vlan 210
+   name Tenant_A_OP_Zone_1
+!
+vlan 3009
+   name MLAG_iBGP_Tenant_A_OP_Zone
+   trunk group LEAF_PEER_L3
 !
 vlan 4093
    name LEAF_PEER_L3
@@ -309,6 +333,7 @@ interface Port-Channel4
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.2.255.6/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.2.254.5/32 |
+| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.6/32 |
 
 ##### IPv6
 
@@ -316,6 +341,7 @@ interface Port-Channel4
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
 
 
 #### Loopback Interfaces Device Configuration
@@ -331,6 +357,12 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 192.2.254.5/32
+!
+interface Loopback100
+   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address 10.255.1.6/32
 ```
 
 ### VLAN Interfaces
@@ -339,6 +371,10 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan100 | VLAN100 | Tenant_A_OP_Zone | - | False |
+| Vlan200 | VLAN200 | Tenant_A_OP_Zone | - | False |
+| Vlan210 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
+| Vlan3009 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone | 9214 | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | 9214 | False |
 | Vlan4094 | MLAG_PEER | default | 9214 | False |
 
@@ -346,12 +382,41 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan100 |  Tenant_A_OP_Zone  |  -  |  10.10.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan200 |  Tenant_A_OP_Zone  |  -  |  20.20.20.1/24  |  -  |  -  |  -  |  -  |
+| Vlan210 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan3009 |  Tenant_A_OP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.5/31  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan100
+   description VLAN100
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.10.10.1/24
+!
+interface Vlan200
+   description VLAN200
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 20.20.20.1/24
+!
+interface Vlan210
+   description Tenant_A_OP_Zone_1
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.1.10.1/24
+!
+interface Vlan3009
+   description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
+   no shutdown
+   mtu 9214
+   vrf Tenant_A_OP_Zone
+   ipv6 enable
 !
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
@@ -377,6 +442,21 @@ interface Vlan4094
 | UDP port | 4789 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 
+##### VLAN to VNI, Flood List and Multicast Group Mappings
+
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 100 | 10100 | - | - |
+| 110 | 10110 | - | - |
+| 200 | 10200 | - | - |
+| 210 | 10210 | - | - |
+
+##### VRF to VNI and Multicast Group Mappings
+
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_OP_Zone | 10 | - |
+
 #### VXLAN Interface Device Configuration
 
 ```eos
@@ -386,6 +466,11 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan vlan 100 vni 10100
+   vxlan vlan 110 vni 10110
+   vxlan vlan 200 vni 10200
+   vxlan vlan 210 vni 10210
+   vxlan vrf Tenant_A_OP_Zone vni 10
 ```
 
 ## Routing
@@ -419,12 +504,14 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True (ipv6 interfaces) |
+| Tenant_A_OP_Zone | True (ipv6 interfaces) |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing ipv6 interfaces
+ip routing ipv6 interfaces vrf Tenant_A_OP_Zone
 ```
 
 ### IPv6 Routing
@@ -435,12 +522,14 @@ ip routing ipv6 interfaces
 | --- | --------------- |
 | default | True |
 | default | false |
+| Tenant_A_OP_Zone | true |
 
 #### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing
+ipv6 unicast-routing vrf Tenant_A_OP_Zone
 ```
 
 ### Static Routes
@@ -518,6 +607,7 @@ ip route 0.0.0.0/0 192.168.0.1
 | Ethernet2 | default | IPv4-UNDERLAY-PEERS | 65002 | - |
 | Ethernet3 | default | IPv4-UNDERLAY-PEERS | 65002 | - |
 | Vlan4093 | default | MLAG-IPv4-UNDERLAY-PEER | 65202 | - |
+| Vlan3009 | Tenant_A_OP_Zone | MLAG-IPv4-UNDERLAY-PEER | 65202 | - |
 
 #### Router BGP EVPN Address Family
 
@@ -526,6 +616,19 @@ ip route 0.0.0.0/0 192.168.0.1
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY-PEERS | True | default |
+
+#### Router BGP VLAN Aware Bundles
+
+| VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
+| ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
+| Extend | 192.2.255.6:10110 | 10110:10110 | - | - | learned | 110 |
+| Tenant_A_OP_Zone | 192.2.255.6:10 | 10:10 | - | - | learned | 100,200,210 |
+
+#### Router BGP VRFs
+
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A_OP_Zone | 192.2.255.6:10 | connected |
 
 #### Router BGP Device Configuration
 
@@ -571,6 +674,18 @@ router bgp 65202
    neighbor 192.2.255.2 description s2-spine2
    redistribute connected route-map RM-CONN-2-BGP
    !
+   vlan-aware-bundle Extend
+      rd 192.2.255.6:10110
+      route-target both 10110:10110
+      redistribute learned
+      vlan 110
+   !
+   vlan-aware-bundle Tenant_A_OP_Zone
+      rd 192.2.255.6:10
+      route-target both 10:10
+      redistribute learned
+      vlan 100,200,210
+   !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
    !
@@ -580,6 +695,14 @@ router bgp 65202
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER next-hop address-family ipv6 originate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
+   !
+   vrf Tenant_A_OP_Zone
+      rd 192.2.255.6:10
+      route-target import evpn 10:10
+      route-target export evpn 10:10
+      router-id 192.2.255.6
+      neighbor interface Vlan3009 peer-group MLAG-IPv4-UNDERLAY-PEER remote-as 65202
+      redistribute connected
 ```
 
 ## BFD
@@ -671,10 +794,28 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
+| Tenant_A_OP_Zone | enabled (ipv6 interface) |
 
 ### VRF Instances Device Configuration
 
 ```eos
+!
+vrf instance Tenant_A_OP_Zone
+```
+
+## Virtual Source NAT
+
+### Virtual Source NAT Summary
+
+| Source NAT VRF | Source NAT IP Address |
+| -------------- | --------------------- |
+| Tenant_A_OP_Zone | 10.255.1.6 |
+
+### Virtual Source NAT Configuration
+
+```eos
+!
+ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.6
 ```
 
 ## EOS CLI
