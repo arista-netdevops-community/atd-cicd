@@ -8,6 +8,11 @@ router_bgp:
     paths: 4
     ecmp: 4
   peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    password: AQQvKeimxJu+uGQ/yYvv9w==
+    maximum_routes: 12000
+    send_community: all
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -19,8 +24,42 @@ router_bgp:
     next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbor_interfaces:
+  - name: Ethernet2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65101'
+    description: s1-leaf1_Ethernet3
+  - name: Ethernet3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65101'
+    description: s1-leaf2_Ethernet3
+  - name: Ethernet4
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65102'
+    description: s1-leaf3_Ethernet3
+  - name: Ethernet5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65102'
+    description: s1-leaf4_Ethernet3
+  - name: Ethernet7
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    description: s1-brdr1_Ethernet3
+  - name: Ethernet8
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    description: s1-brdr2_Ethernet3
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -79,7 +118,8 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.0.1
 service_routing_protocols_model: multi-agent
-ip_routing: true
+ipv6_unicast_routing: true
+ip_routing_ipv6_interfaces: true
 vlan_internal_order:
   allocation: ascending
   range:
@@ -116,9 +156,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 172.30.11.2/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ipv6_enable: true
 - name: Ethernet3
   peer: s1-leaf2
   peer_interface: Ethernet3
@@ -127,9 +165,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 172.30.11.6/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ipv6_enable: true
 - name: Ethernet4
   peer: s1-leaf3
   peer_interface: Ethernet3
@@ -138,9 +174,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 172.30.11.10/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ipv6_enable: true
 - name: Ethernet5
   peer: s1-leaf4
   peer_interface: Ethernet3
@@ -149,9 +183,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 172.30.11.14/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ipv6_enable: true
 - name: Ethernet7
   peer: s1-brdr1
   peer_interface: Ethernet3
@@ -160,9 +192,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 172.30.11.18/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ipv6_enable: true
 - name: Ethernet8
   peer: s1-brdr2
   peer_interface: Ethernet3
@@ -171,32 +201,29 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 172.30.11.22/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ipv6_enable: true
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.0.255.2/32
-  ospf_area: 0.0.0.0
-router_ospf:
-  process_ids:
-  - id: 100
-    passive_interface_default: true
-    router_id: 192.0.255.2
-    max_lsa: 12000
-    no_passive_interfaces:
-    - Ethernet2
-    - Ethernet3
-    - Ethernet4
-    - Ethernet5
-    - Ethernet7
-    - Ethernet8
-    bfd_enable: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.0.255.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
-eos_cli: platform tfa personality arfa
+eos_cli: 'platform tfa personality arfa
+
+  '

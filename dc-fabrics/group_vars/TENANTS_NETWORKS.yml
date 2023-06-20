@@ -1,18 +1,4 @@
 # ---
-# svi_profiles:
-#   - profile: GENERIC
-#     mtu: 1560
-#     enabled: true
-#   - profile: GENERIC_FULL
-#     name: GENERIC Name
-#     mtu: 1560
-#     enabled: false
-#     ip_address_virtual: 10.1.10.254/24
-#   - profile: WITH_NO_MTU
-#     enabled: true
-#   - profile: WITH_SNOOPING
-#     enabled: true
-#     igmp_snooping_enabled: false
 
 # tenants:
 #   # Tenant A Specific Information - VRFs / VLANs
