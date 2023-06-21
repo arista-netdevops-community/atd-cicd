@@ -1,14 +1,13 @@
 ---
 port_profiles:
-  TENANT_A:
+  - profile: TENANT_A
     mode: access
     vlans: "110"
 
 servers:
-  host1:
+  - name: host1
     adapters:
-      - type: nic
-        server_ports: [Eth1, Eth2]
+      - endpoint_ports: [Eth1, Eth2]
         switch_ports: [Ethernet4, Ethernet4]
         switches: [s1-leaf1, s1-leaf2]
         profile: TENANT_A
