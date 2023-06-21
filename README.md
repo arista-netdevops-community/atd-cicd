@@ -19,6 +19,7 @@ You must install the base requirements if running outside of the ATD interactive
 ```shell
 python3 -m venv venv
 source venv/bin/activate
+pip3 install "ansible-core<2.15.0"
 ansible-galaxy collection install arista.avd arista.cvp --force
 export ARISTA_AVD_DIR=$(ansible-galaxy collection list arista.avd --format yaml | head -1 | cut -d: -f1)
 pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt

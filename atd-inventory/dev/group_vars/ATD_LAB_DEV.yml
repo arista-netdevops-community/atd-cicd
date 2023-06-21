@@ -6,8 +6,10 @@ mgmt_gateway: 192.168.0.1
 mgmt_interface: Management0
 mgmt_interface_vrf: default
 
-name_servers:
-  - 192.168.2.1
-  - 8.8.8.8
+ip_name_servers:
+  - ip_address: 192.168.2.1
+    vrf: default
+  - ip_address: 8.8.8.8
+    vrf: default
 
 dns_domain: atd.lab
