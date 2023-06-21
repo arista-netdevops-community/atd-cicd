@@ -1,6 +1,8 @@
 # ATD CI/CD
 
-Examples included are leveraging the Arista Test Drive (ATD) to learn about continuous integration and delivery (CI/CD) concepts.
+The examples leverage the Arista Test Drive (ATD) to learn about concepts of continuous integration and delivery (CI/CD).
+
+> ***NOTE:*** Ensure you have at least AVD version 4.0 installed.
 
 ## The topology
 
@@ -14,7 +16,7 @@ This repository leverages the dual data center (DC) ATD. If you are not leveragi
 
 ### Local installation
 
-You must install the base requirements if running outside of the ATD interactive developer environment (IDE).
+If running outside of the ATD interactive developer environment (IDE), you must install the base requirements.
 
 ```shell
 python3 -m venv venv
@@ -101,13 +103,13 @@ This repository relies on one environment variable to be set, our login credenti
 export PASS=<some password in local ATD>
 ```
 
-> ***NOTE:*** The value of `PASS` is the same secret used earlier. For example, `export PASS=arista1234`.
+> ***NOTE:*** `PASS` is the same secret used earlier. For example, `export PASS=arista1234`.
 
-## Create new branch
+## Create a new branch
 
 In a moment, we will be deploying changes to our environments. In reality, updates to a code repository would be done from a development or feature branch. We will follow this same workflow.
 
-> ***NOTE:*** This example will use the branch name of `new-dc`, if you use your own naming scheme, make sure to make the appropriate updates.
+> ***NOTE:*** This example will use the branch name of `new-dc`. If you use your naming scheme, make the appropriate updates.
 
 ```shell
 git checkout -b new-dc
@@ -151,7 +153,7 @@ git commit -m "Updating host variables"
 git push --set-upstream origin new-dc
 ```
 
-> ***NOTE:*** You will get a notification to sign in to GitHub. Follow these prompts.
+> ***NOTE:*** You will be notified to sign in to GitHub. Follow these prompts.
 
 ## Enable GitHub actions workflows
 
@@ -236,11 +238,11 @@ In case you need to become more familiar with Batfish. It's an open-source tool 
 
 ![Batfish example](diagrams/batfish.svg)
 
-In the Docker Compose file mentioned earlier, we use this Batfish service in our workflow. We then use the `pybatfish` Python package as our connector into this service to run any checks or ask the service questions about the network. Once these checks pass, we configure the infrastructure using the `eos_config_deploy_cvp` role within the AVD collection.
+We use this Batfish service in our workflow in the Docker Compose file mentioned earlier. We then use the `pybatfish` Python package as our connector into this service to run any checks or ask the service questions about the network. Once these checks pass, we configure the infrastructure using the `eos_config_deploy_cvp` role within the AVD collection.
 
 ## Migrate from OSPF to BGP underlay
 
-At the moment, this example deployment is using OSPF for the underlay. We want to migrate from OSPF to BGP. We have to make two minor updates to our group variables for development and production. In the `atd-inventory/dev/group_vars/ATD_FABRIC_DEV.yml` file, we have the variable `underlay_routing_protocol` set to OSPF. We can ***comment*** this out and leverage the default underlay of BGP used in AVD DC deployments.
+At the moment, this example deployment is using OSPF for the underlay. We want to migrate from OSPF to BGP. We must make two minor updates to our group variables for development and production. In the `atd-inventory/dev/group_vars/ATD_FABRIC_DEV.yml` file, the variable `underlay_routing_protocol` is set to OSPF. We can ***comment*** this out and leverage the default underlay of BGP used in AVD DC deployments.
 
 ```yaml
 # underlay_routing_protocol: OSPF
@@ -311,7 +313,7 @@ Once this is complete, click `Create pull request`. Since all checks have passed
 
 ![Merge PR 2](images/merge-pr-2.png)
 
-At this point, this will kick off our second workflow against the main branch. This is our production instance. If you go back to `Actions`, you can see this executing. Alternatively, you can see the updates running on CVP.
+At this point, this will kick off our second workflow against the main branch. This is our production instance. You can see this running if you go back to `Actions`. Alternatively, you can see the updates running on CVP.
 
 ![Deploy production](images/deploy-prod.png)
 
@@ -323,7 +325,7 @@ Congratulations, you have successfully deployed a development and production ins
 
 ### Simple tests with hosts (optional)
 
-In reality, AVD does not manage hosts. In this topology, hosts are just cEOS nodes. We have a playbook that will configure host1 from each environment. Again, to cut down on the number of devices for this example, the two hosts will be configured with two VRFs to send traffic across the network. An example of the configuration and execution command is below.
+In reality, AVD does not manage hosts. In this topology, hosts are just cEOS nodes. We have a playbook that will configure host1 from each environment. Again, to reduce the number of devices for this example, the two hosts will be configured with two VRFs to send traffic across the network. An example of the configuration and execution command is below.
 
 <!-- TODO add mermaid diagram with s1-host1 and two VRFs -->
 
@@ -353,7 +355,7 @@ From the ATD IDE, execute the following playbook.
 ansible-playbook playbooks/atd-host-provision.yml
 ```
 
-Once these tasks complete in CVP, you can connect to either `s1-host1` or `s2-host1` and test reachability.
+Once these tasks are complete in CVP, you can connect to either `s1-host1` or `s2-host1` and test reachability.
 
 ```text
 s1-host1# ping vrf BLUE 10.10.10.2
@@ -378,7 +380,7 @@ Ethernet2 is up, line protocol is up (connected)
   Hardware is Ethernet, address is 9e60.6f70.7324 (bia 9e60.6f70.7324)
 ```
 
-In this case, we can see Ethernet1 has a MAC address that ends with `117c`, and Ethernet2 has a MAC address that ends with `7324`. We can check where those MAC addresses were seen from the perspective of `s1-leaf1`.
+In this case, Ethernet1 has a MAC address that ends with `117c`, and Ethernet2 has a MAC address that ends with `7324`. We can check where those MAC addresses were seen from the perspective of `s1-leaf1`.
 
 ```text
 s1-leaf1#show mac address-table
@@ -401,4 +403,4 @@ Total Mac Addresses for this criterion: 0
 s1-leaf1#
 ```
 
-We can see the MAC ending in `117c` is connected to Ethernet 4 and the MAC ending in `7324` was seen on the VXLAN interface. We have successfully communicated through the fabric. Thank you for following along with this example. If you have any feedback or would like to report an issue/error, please open an issue on the main GitHub repository.
+The MAC ending in `117c` is connected to Ethernet 4, and the MAC ending in `7324` was seen on the VXLAN interface. We have successfully communicated through the fabric. Thank you for following along with this example. If you have any feedback or want to report an issue/error, please open an issue on the [GitHub repository](https://github.com/arista-netdevops-community/atd-cicd).
